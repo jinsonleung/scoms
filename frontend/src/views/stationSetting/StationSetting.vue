@@ -9,7 +9,7 @@
 
 <template>
   <div class="app-container">
-    <h1>==場站設置==</h1>
+    <h1>==场站设置==</h1>
     <el-row :gutter="20">
         <el-col :span="8"><div class="grid-content"><el-input v-model="state.num1"/></div></el-col>
         <el-col :span="8"><div class="grid-content"><el-input v-model="state.num2"/></div></el-col>

@@ -54,12 +54,12 @@
 
             <el-menu-item index="/testaxios">
                 <i class="ri-cactus-fill"></i>
-                <template #title>Aciox測試</template>
+                <template #title>Aciox测试</template>
             </el-menu-item>
 
             <el-menu-item index="/env">
                 <i class="ri-haze-fill"></i>
-                <template #title>環境變量</template>
+                <template #title>环境变量</template>
             </el-menu-item>
 
             <el-menu-item index="/introduce">
@@ -68,7 +68,11 @@
             </el-menu-item>
             <el-menu-item index="/goodlist">
                 <i class="ri-shopping-bag-2-fill"></i>
-                <template #title>商品維護</template>
+                <template #title>商品维护</template>
+            </el-menu-item>
+            <el-menu-item index="/characterRecognition">
+                <i class="ri-shopping-bag-2-fill"></i>
+                <template #title>文字识别</template>
             </el-menu-item>
         </el-menu>
     </div>

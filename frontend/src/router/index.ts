@@ -87,6 +87,12 @@ const routes = [
         component: ()=>import('@/views/env/index.vue'),
         meta:{title:'env'}
       },
+      { //文字识别
+        path: '/characterRecognition',
+        name: 'CharacterRecognition',
+        component: ()=>import('@/views/characterRecognition/index.vue'),
+        meta:{title:'character recognition'}
+      },
     ]
   },
   { //登录页面
