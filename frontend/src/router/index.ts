@@ -22,10 +22,10 @@ const routes = [
     component: ()=>import ('@/views/layout/index.vue'),
     children:[
       {
-        path:'/dashboard',
-        name: 'Dashboard',
-        component:()=>import('@/views/Dashboard/dashboard.vue'),
-        meta:{title:'dashboard'}
+        path:'/home',
+        name: 'Home',
+        component:()=>import('@/views/Home.vue'),
+        meta:{title:'home'}
       },
       {
         path:'/dashboard',

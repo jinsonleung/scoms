@@ -11,9 +11,10 @@
     <h1>==文字识别==</h1>
     <el-upload
         class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action="http://127.0.0.1:8000/books/add"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
+        :on-success="handleSuccess"
         :before-remove="beforeRemove"
         multiple
         :limit="3"
@@ -47,24 +48,36 @@ export default defineComponent({
           name: 'food2.jpeg',
           url: '@/assets/food2.jpeg'
         },
-      ]),
-    handleRemove = (file:any, fileList: any) => {
+      ])
+    const handleRemove = (file:any, fileList: any) => {
       console.log('handleRemove....', file, fileList)
       //console.log('Proxy.name',Proxy.name)
-    },
-    handlePreview = (file:any) => {
+    }
+    const handlePreview = (file:any) => {
       console.log('handlePreview....', file)
-    },
-    handleExceed = (files:any, fileList: any) => {
-        console.log('handleExceed....', file, fileList)
+    }
+    const handleSuccess = (res:any, file:any)=>{
+        console.log('handleSuccessres',res)
+        console.log('handleSuccessfile',file)
+        if (res) {
+            setTimeout(() => {
+                alert('上传成功')
+            }, 1500);
+
+        } else {
+          alert('视频上传失败，请重新上传！');
+        }
+      }
+    const handleExceed = (files:any, fileList: any) => {
+        console.log('handleExceed....', files, fileList)
 
         alert(
           `The limit is 3, you selected ${
             files.length
           } files this time, add up to ${files.length + fileList.length} totally`
         )
-    },
-    beforeRemove = (file:any, fileList: any) => {
+    }
+    const beforeRemove = (file:any, fileList: any) => {
       console.log('beforeRemove....', file, fileList)
       //return this.$confirm(`Cancel the transfert of ${file.name} ?`)
     }
@@ -73,6 +86,7 @@ export default defineComponent({
       fileList,
       handleRemove,
       handlePreview,
+      handleSuccess,
       handleExceed,
       beforeRemove,
       refData
