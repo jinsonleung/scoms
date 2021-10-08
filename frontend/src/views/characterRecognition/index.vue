@@ -32,13 +32,49 @@
 </template>
 
 <script lang='ts'>
-import {ref, defineComponent} from "vue";
+import {ref, defineComponent, reactive} from "vue";
 
 export default defineComponent({
   name: "CharacterRecognition",
   setup() {
-    const refData = ref(0);
+    const refData = ref(0)
+    const  fileList =reactive([
+        {
+          name: 'food.jpeg',
+          url: '@/assets/food.jpeg'
+        },
+        {
+          name: 'food2.jpeg',
+          url: '@/assets/food2.jpeg'
+        },
+      ]),
+    handleRemove = (file:any, fileList: any) => {
+      console.log('handleRemove....', file, fileList)
+      //console.log('Proxy.name',Proxy.name)
+    },
+    handlePreview = (file:any) => {
+      console.log('handlePreview....', file)
+    },
+    handleExceed = (files:any, fileList: any) => {
+        console.log('handleExceed....', file, fileList)
+
+        alert(
+          `The limit is 3, you selected ${
+            files.length
+          } files this time, add up to ${files.length + fileList.length} totally`
+        )
+    },
+    beforeRemove = (file:any, fileList: any) => {
+      console.log('beforeRemove....', file, fileList)
+      //return this.$confirm(`Cancel the transfert of ${file.name} ?`)
+    }
+
     return {
+      fileList,
+      handleRemove,
+      handlePreview,
+      handleExceed,
+      beforeRemove,
       refData
     };
   }
