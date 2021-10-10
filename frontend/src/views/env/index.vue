@@ -14,7 +14,7 @@
     MODE: {{ env.MODE }} <br>
     PORT_STRING: {{ env.PORT_STRING }} <br>
     APP_BASE_API: {{ env.APP_BASE_API }} <br>
-    APP_BASE_URL: {{ env.APP_BASE_URL }}
+    APP_BASE_URL: {{ env.APP_BASE_URL }} <br>
   </div>
 </template>
 
