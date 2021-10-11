@@ -11,12 +11,13 @@
     <h1>==文字识别==</h1>
     <el-upload
         class="upload-demo"
-        action="/books/getall"
+        action="http://127.0.0.1:8000/books/add"
+        :http-request="handleHttpRequest"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :on-success="handleSuccess"
         :before-remove="beforeRemove"
-        :before-upload="action"
+        :before-upload="beforeUpload"
         multiple
         :limit="3"
         :on-exceed="handleExceed"
@@ -87,11 +88,21 @@ export default defineComponent({
       //return this.$confirm(`Cancel the transfert of ${file.name} ?`)
     }
 
-    const action =()=>{
-      http.get("http://127.0.0.1:8000/books/getall").then((res: any) => {
-        console.log("==这是axios二次封装请求返回的数据==");
-        console.log(res.data);
-      });
+    // 重写文件上传方法
+     const handleHttpRequest =(params:any) => {
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+       http.get('http://127.0.0.1:8000/books/add').then((res:any)=>{
+         console.log(res.data)
+       })
+
+
+     }
+
+    const beforeUpload =()=>{
+      // http.get("http://127.0.0.1:8000/books/getall").then((res: any) => {
+      //   console.log("==这是axios二次封装请求返回的数据==");
+      //   console.log(res.data);
+      // });
     }
 
     // const action = () => { //正确
@@ -110,7 +121,8 @@ export default defineComponent({
       handleSuccess,
       handleExceed,
       beforeRemove,
-      action,
+      beforeUpload,
+      handleHttpRequest,
       refData
     };
   }
