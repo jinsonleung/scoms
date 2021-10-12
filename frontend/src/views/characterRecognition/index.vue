@@ -1,132 +1,83 @@
-<!--
- * @Author: Jinson.Liang
- * @Date: 2021-08-24 15:35:52
- * @LastEditors: Jinson.Liang
- * @LastEditTime: 2021-08-24 15:37:49
- * @Description:
- * @FilePath: \vue3-vite-ssis\src\views\security\SecurityAccident.vue
--->
 <template>
-  <div class="app-container">
-    <h1>==文字识别==</h1>
+  <div class="app">
+    <!-- 覆盖默认的上传行为 -->
     <el-upload
-        class="upload-demo"
-        action="http://127.0.0.1:8000/books/add"
-        :http-request="handleHttpRequest"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :before-remove="beforeRemove"
-        :before-upload="beforeUpload"
-        multiple
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
+      class="upload-demo"
+      drag
+      action=""
+      :http-request="uploadFile"
+      v-if="!data.url"
     >
-      <el-button size="small" type="primary">Click to upload</el-button>
-      <template #tip>
-        <div class="el-upload__tip">
-          jpg/png files with a size less than 500kb
-        </div>
-      </template>
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     </el-upload>
-  </div>
 
+    <div style="margin-top: 150px">
+      <img
+        :src="data.url"
+        alt=""
+        style="width: 500px; border: 1px dashed rgba(0, 0, 0, 0.2)"
+        @click="data.url = ''"
+      />
+      <p>{{ data.url }}</p>
+    </div>
+  </div>
 </template>
 
-<script lang='ts'>
-import {ref, defineComponent, reactive} from "vue"
-import {envs} from '@/utils/env'
-import "@/mock/mockServer"
-import http from "@/utils/http2/index"
+<script>
 
-export default defineComponent({
-  name: "CharacterRecognition",
+// import { getUploadToken } from "@/apis/token";
+import { upload } from "@/api/upload";
+import {ref, defineComponent, reactive, onMounted} from "vue"
+
+export default {
   setup() {
-    const refData = ref(0)
-    const env = ref(envs())
-    const fileList = reactive([
-      {
-        name: 'food.jpeg',
-        url: '@/assets/food.jpeg'
+    let data = reactive({
+      params: {
+        token: ``,
       },
-      {
-        name: 'food2.jpeg',
-        url: '@/assets/food2.jpeg'
-      },
-    ])
-    const handleRemove = (file: any, fileList: any) => {
-      console.log('handleRemove....', file, fileList)
-      //console.log('Proxy.name',Proxy.name)
-    }
-    const handlePreview = (file: any) => {
-      console.log('handlePreview....', file)
-    }
-    const handleSuccess = (res: any, file: any) => {
-      console.log('handleSuccessres', res)
-      console.log('handleSuccessfile', file)
+    });
+    // 上传成功后操作
+    let uploadSuccess = (res) => {
+      data.url = `http://img.gkh0305.top/${res.key}`;
+    };
+    // 获取上传凭证
+    async function getToken() {
+      let res = await getUploadToken();
       if (res) {
-        setTimeout(() => {
-          alert('上传成功')
-        }, 1500);
-
-      } else {
-        alert('视频上传失败，请重新上传！');
+        data.params.token = res.data.token;
       }
     }
-    const handleExceed = (files: any, fileList: any) => {
-      console.log('handleExceed....', files, fileList)
-
-      alert(
-          `The limit is 3, you selected ${
-              files.length
-          } files this time, add up to ${files.length + fileList.length} totally`
-      )
+    // 重写上传程序
+    async function uploadFile(params) {
+      var { file } = params;
+      var formData = new FormData();
+      //formData.append("token", data.params.token);
+      //formData.append("file", file);
+      let res = await upload(formData);
+      if (res) {
+        uploadSuccess(res.data);
+      }
     }
-    const beforeRemove = (file: any, fileList: any) => {
-      console.log('beforeRemove....', file, fileList)
-      //return this.$confirm(`Cancel the transfert of ${file.name} ?`)
-    }
-
-    // 重写文件上传方法
-     const handleHttpRequest =(params:any) => {
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-       http.get('http://127.0.0.1:8000/books/add').then((res:any)=>{
-         console.log(res.data)
-       })
-
-
-     }
-
-    const beforeUpload =()=>{
-      // http.get("http://127.0.0.1:8000/books/getall").then((res: any) => {
-      //   console.log("==这是axios二次封装请求返回的数据==");
-      //   console.log(res.data);
-      // });
-    }
-
-    // const action = () => { //正确
-    //   console.log("==action()==",)
-    //   http.get("/user/info").then((res: any) => {
-    //     console.log("==这是axios二次封装请求返回的数据==");
-    //     console.log(res.data);
-    //   });
-    // }
-
+    onMounted(() => {
+      //getToken();
+    });
     return {
-      fileList,
-      env,
-      handleRemove,
-      handlePreview,
-      handleSuccess,
-      handleExceed,
-      beforeRemove,
-      beforeUpload,
-      handleHttpRequest,
-      refData
+      data,
+      uploadSuccess,
+      uploadFile,
     };
-  }
-});
+  },
+};
 </script>
-<style scoped>
+
+<style lang="scss">
+.app {
+  height: 100vh;
+  text-align: center;
+  color: #5b5b5b;
+  .el-upload {
+    margin-top: 150px;
+  }
+}
 </style>

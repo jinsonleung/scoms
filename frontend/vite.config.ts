@@ -15,11 +15,12 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:8000/books/',
+            '/books': {
+                target: 'http://127.0.0.1:8000', //相当于http://127.0.0.1:8000/books
+                //target: '',
                 changeOrigin: true,
-                rewrite: path => path.replace(/^\/api/, '')
-            }
+                rewrite: path => path.replace(/^\/books/, '')
+            },
         }
     }
 })

@@ -10,8 +10,14 @@ const http = axios.create({
     // @ts-ignore
     //baseURL: process.env.VUE_API_BASE_URL | undefined,
     baseURL: undefined, //url
-    timeout: 5000   //请求超时
+    timeout: 5000,   //请求超时
+    withCredentials: true,   //true:允许跨域
+    headers: {
+        'Content-Type': 'application/json'  // axios发送数 据时使用json格式})
+        // 'Content-Type': 'application/x-www-form-urlencoded'
+    },
 })
+
 
 
 // 2、异常拦截处理器
