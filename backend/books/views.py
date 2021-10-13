@@ -31,7 +31,7 @@ def get_all(request):
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})    # 去除中文乱码
 
 
-# 新增接口，方法一
+# 新增记录接口，方法一,GET
 @require_http_methods(['GET'])
 def add(request):
     response = {}
@@ -49,7 +49,7 @@ def add(request):
     return JsonResponse(response)
 
 
-# 新增接口，方法二
+# 新增记录接口，方法二，POST
 @require_http_methods(['POST'])
 def add_book(request):
     response = {}
@@ -60,6 +60,26 @@ def add_book(request):
         book = Books(
             name=res['name'],
             author=res['author']
+        )
+        book.save()   # 保存
+        response['msg'] = 'success'
+        response['error_num'] = 0
+    except Exception as e:
+        response = {'error', str(e)}
+    return JsonResponse(response)
+
+
+# 新增记录接口，方法二，POST
+@require_http_methods(['POST'])
+def add_book_2(request):
+    response = {}
+    try:
+        res = json.loads(request.body)  # 加载数据
+        print('rest====', res)
+        print('name:', res['name'])
+        book = Books(
+            name='魔方教学指导2',
+            author='刘备2'
         )
         book.save()   # 保存
         response['msg'] = 'success'

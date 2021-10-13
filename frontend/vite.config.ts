@@ -13,16 +13,17 @@ export default defineConfig({
     define: {
         'process.env': {}
     },
-    server: {
-        proxy: {
-            '/books': {
-                target: 'http://127.0.0.1:8000', //相当于http://127.0.0.1:8000/books
-                //target: '',
-                changeOrigin: true,
-                rewrite: path => path.replace(/^\/books/, '')
-            },
-        }
-    }
+    // server: {
+    //     proxy: {
+    //         '/api': {
+    //             // target: 'http://127.0.0.1:8000', //相当于http://127.0.0.1:8000/books
+    //             target: 'https://jsonplaceholder.typicode.com', //相当于http://127.0.0.1:8000/books
+    //             //target: '',
+    //             changeOrigin: true,
+    //             rewrite: path => path.replace(/^\/api/, '')
+    //         },
+    //     }
+    // }
 })
 
 
