@@ -78,8 +78,8 @@ def add_book_2(request):
         print('rest====', res)
         print('name:', res['name'])
         book = Books(
-            name='魔方教学指导2',
-            author='刘备2'
+            name='环球地理杂志1',
+            author='Peter.Yon1'
         )
         book.save()   # 保存
         response['msg'] = 'success'

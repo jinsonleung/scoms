@@ -9,8 +9,8 @@ let loading: { close(): void }
 // 1、创建axios实例
 const http = axios.create({
     // @ts-ignore
-    //baseURL: process.env.VUE_API_BASE_URL | undefined,
-    baseURL: 'http://127.0.0.1:8000', //url
+    baseURL: process.env.VUE_API_BASE_URL | undefined,
+    // baseURL: 'http://127.0.0.1:8000', //url
     timeout: 5000,   //请求超时
     withCredentials: true,   //true:允许跨域
     headers: {
