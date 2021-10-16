@@ -81,6 +81,12 @@ const routes = [
         component: ()=>import('@/views/TestAxios.vue'),
         meta:{title:'testaxios'}
       },
+      { //跨域请求测试
+        path: '/crossdomain',
+        name: 'CrossDomain',
+        component: ()=>import('@/views/crossDomain/index.vue'),
+        meta:{title:'crossdomain'}
+      },
       { //获取环境变量页面
         path: '/env',
         name: 'Env',

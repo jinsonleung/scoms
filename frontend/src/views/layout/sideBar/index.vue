@@ -56,7 +56,10 @@
                 <i class="ri-cactus-fill"></i>
                 <template #title>Aciox测试</template>
             </el-menu-item>
-
+            <el-menu-item index="/crossdomain">
+                <i class="ri-cactus-fill"></i>
+                <template #title>跨域请求</template>
+            </el-menu-item>
             <el-menu-item index="/env">
                 <i class="ri-haze-fill"></i>
                 <template #title>环境变量</template>

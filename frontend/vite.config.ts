@@ -20,6 +20,11 @@ export default defineConfig({
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, '')
           },
+            '/ec': {    //正确
+            target: 'https://e.qq.com', // 后端实际地址
+            changeOrigin: true,
+            // rewrite: path => path.replace(/^\/apiBase/, '')
+        }
         }
     }
 })
