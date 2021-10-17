@@ -15,16 +15,37 @@ export default defineConfig({
     },
     server: {
         proxy: {
-          '/api': {
-            target: 'http://dict.youdao.com',
-            changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, '')
-          },
+            /*
+             将"/api/....“ 开头的请求地址进行代理
+             如实际请求地址为https://imissu.herokuapp.com/api/v1/auth/register，参数为{"name":"aaa","email":"138923@qq.com","password":"232323","password2":"232323","role":"user"}
+             则当系统使用http://localhost:3000/api/v1/auth/register，发起请求时，将/api更头的请求地址将本机地址使用target中的值进行替换，
+             发起请求时使用"http.post('api/v1/auth/register', params).then((res: any) => {...}"即可
+            */
+            '/api': { //正确
+                target: 'https://imissu.herokuapp.com',    //相当于/api = https://imissu.herokuapp.com
+                changeOrigin: true,
+                // rewrite: (path) => path.replace(/^\/api/, '')
+            },
+            '/books': { //正确
+                target: 'http://127.0.0.1:8000',
+                changeOrigin: true,
+                //rewrite: (path) => path.replace(/^\/cc/, '')
+            },
+            '/cc': { //
+                target: 'http://tcc.taobao.com',
+                changeOrigin: true,
+                //rewrite: (path) => path.replace(/^\/cc/, '')
+            },
+            '/abc': { //
+                target: 'http://suggest.taobao.com',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/abc/, '')
+            },
             '/ec': {    //正确
-            target: 'https://e.qq.com', // 后端实际地址
-            changeOrigin: true,
-            // rewrite: path => path.replace(/^\/apiBase/, '')
-        }
+                target: 'https://e.qq.com', // 后端实际地址
+                changeOrigin: true,
+                // rewrite: path => path.replace(/^\/apiBase/, '')
+            }
         }
     }
 })
