@@ -21,6 +21,14 @@
       />
       <p>{{ data.url }}</p>
     </div>
+    <div>
+      <el-image
+        style="width: 100px; height: 100px"
+        :src="dataSet.imgUrl"
+        :fit="fill"
+      ></el-image>
+    </div>
+
   </div>
 </template>
 
@@ -29,9 +37,14 @@
 // import { getUploadToken } from "@/apis/token";
 import { upload } from "@/api/upload";
 import {ref, defineComponent, reactive, onMounted} from "vue"
+import {ElMessage} from "element-plus";
 
 export default {
   setup() {
+    const dataSet = reactive({
+      imgUrl: '',
+      imgCount: 0
+    })
     let data = reactive({
       params: {
         token: ``,
@@ -40,6 +53,7 @@ export default {
     // 上传成功后操作
     let uploadSuccess = (res) => {
       data.url = `http://img.gkh0305.top/${res.key}`;
+      ElMessage.success('上传成功')
     };
     // 获取上传凭证
     async function getToken() {
@@ -49,9 +63,11 @@ export default {
       }
     }
     // 重写上传程序
-    async function uploadFile(params) {
+    async function uploadFile(params,imgUrl) {
       var { file } = params;
       var formData = new FormData();
+      console.log('===file.name===',file)
+      dataSet.imgUrl = file.name
       //formData.append("token", data.params.token);
       //formData.append("file", file);
       let res = await upload(formData);
@@ -66,6 +82,7 @@ export default {
       data,
       uploadSuccess,
       uploadFile,
+      dataSet,
     };
   },
 };

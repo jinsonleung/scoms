@@ -88,7 +88,7 @@ export default defineComponent({
       // 请求地址：https://imissu.herokuapp.com/api/v1/auth/register?name=aa223&email=19839283@qq.com&password=222333&password2=222333&role=user
       let params = {"name":"aaa","email":"afad232fa2@qq.com","password":"232323","password2":"232323","role":"user"}
       http.post('api/v1/auth/register', params).then((res: any) => {
-        console.log('===res.data6==', res.data)  //空
+        console.log('===res.data6==', res.data)  //
         console.log('===res.status===', res.status) //200
         ElMessage.success(res.data.msg)
       }).catch((e: any) => {
