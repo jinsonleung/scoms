@@ -1,100 +1,72 @@
 <template>
-  <div class="app">
-    <!-- 覆盖默认的上传行为 -->
+  <h1>==上传图片==</h1>
+  <div id="app">
     <el-upload
-      class="upload-demo"
-      drag
-      action=""
-      :http-request="uploadFile"
-      v-if="!data.url"
+        action="#"
+        list-type="picture-card"
+        :auto-upload="false"
+        :on-change="handleChange"
+        :file-list="fileList"
     >
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <template #default>
+        <i class="el-icon-plus"></i>
+      </template>
+      <template #file="{ file }">
+        <div>
+          <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url"
+              alt=""
+          />
+          <span class="el-upload-list__item-actions">
+                <span
+                    class="el-upload-list__item-delete"
+                    @click="handleRemove(file)"
+                >
+                  <i class="el-icon-delete"></i>
+                </span>
+              </span>
+        </div>
+      </template>
     </el-upload>
-
-    <div style="margin-top: 150px">
-      <img
-        :src="data.url"
-        alt=""
-        style="width: 500px; border: 1px dashed rgba(0, 0, 0, 0.2)"
-        @click="data.url = ''"
-      />
-      <p>{{ data.url }}</p>
-    </div>
-    <div>
-      <el-image
-        style="width: 100px; height: 100px"
-        :src="dataSet.imgUrl"
-        :fit="fill"
-      ></el-image>
-    </div>
-
   </div>
 </template>
-
 <script>
 
-// import { getUploadToken } from "@/apis/token";
-import { upload } from "@/api/upload";
-import {ref, defineComponent, reactive, onMounted} from "vue"
-import {ElMessage} from "element-plus";
+import {reactive} from "vue";
 
 export default {
   setup() {
     const dataSet = reactive({
       imgUrl: '',
       imgCount: 0
-    })
-    let data = reactive({
-      params: {
-        token: ``,
-      },
     });
-    // 上传成功后操作
-    let uploadSuccess = (res) => {
-      data.url = `http://img.gkh0305.top/${res.key}`;
-      ElMessage.success('上传成功')
+    const handleRemove = (file) => {
+      this.fileList = this.fileList.filter((el) => {
+        return el.fileId != file.fileId;
+      });
+      console.log(this.fileList)
+      this.$forceUpdate();
     };
-    // 获取上传凭证
-    async function getToken() {
-      let res = await getUploadToken();
-      if (res) {
-        data.params.token = res.data.token;
+    const handleChange = (file, fileList) => {
+      var fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
+      if (fileType.indexOf("png") == -1 && fileType.indexOf("jpg") == -1 && fileType.indexOf("jpeg") == -1) {
+        console.log("只能上传图片")
+        var arrList = fileList;
+        this.fileList = arrList.filter((el) => {
+          return el.name != file.name;
+        });
+        // this.$forceUpdate();
+        // console.log(this.fileList)
+        //输入fileList数据正确 但是还是渲染了 同一个不是图片的文件上传两次或者更多 但是第一次有时候是可以刷新页面的 后面再上次就不会刷新页面
       }
-    }
-    // 重写上传程序
-    async function uploadFile(params,imgUrl) {
-      var { file } = params;
-      var formData = new FormData();
-      console.log('===file.name===',file)
-      dataSet.imgUrl = file.name
-      //formData.append("token", data.params.token);
-      //formData.append("file", file);
-      let res = await upload(formData);
-      if (res) {
-        uploadSuccess(res.data);
-      }
-    }
-    onMounted(() => {
-      //getToken();
-    });
+    };
     return {
-      data,
-      uploadSuccess,
-      uploadFile,
+      handleRemove,
+      handleChange,
       dataSet,
     };
-  },
-};
-</script>
 
-<style lang="scss">
-.app {
-  height: 100vh;
-  text-align: center;
-  color: #5b5b5b;
-  .el-upload {
-    margin-top: 150px;
   }
 }
-</style>
+</script>

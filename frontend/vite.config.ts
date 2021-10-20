@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [vue()],
     resolve: {
         alias: {  //映射别名
-            '@': resolve(__dirname, 'src'), //@替代src目录，使用方法是 ‘@/views/layout/index.vue’，需要在tsconfig.ts中配置baseUrl和paths两个映射别名才能生效
+            '@': resolve(__dirname, 'src'), //@替代src目录，使用方法是 ‘@/views/layout/index1.vue’，需要在tsconfig.ts中配置baseUrl和paths两个映射别名才能生效
         }
     },
     define: {
@@ -62,7 +62,7 @@ export default defineConfig({
 //   plugins: [vue()],
 //   resolve: {
 //     alias: {  //映射别名
-//         '@': resolve(__dirname, './src'), //@替代src目录，使用方法是 ‘@/views/layout/index.vue’
+//         '@': resolve(__dirname, './src'), //@替代src目录，使用方法是 ‘@/views/layout/index1.vue’
 //     }
 //   },
 //   hostname: '127.0.0.1',

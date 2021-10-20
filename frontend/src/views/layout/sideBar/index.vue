@@ -4,7 +4,7 @@
  * @LastEditors: Jinson.Liang
  * @LastEditTime: 2021-08-24 17:42:19
  * @Description: 左邊菜單欄
- * @FilePath: \vue3-vite-ssis\src\views\layout\sideBar\index.vue
+ * @FilePath: \vue3-vite-ssis\src\views\layout\sideBar\index1.vue
 -->
 
 <template>

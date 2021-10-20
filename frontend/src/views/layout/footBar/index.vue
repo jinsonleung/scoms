@@ -4,7 +4,7 @@
  * @LastEditors: JinsonLiang
  * @LastEditTime: 2021-08-28 11:10:56
  * @Description: file content
- * @FilePath: \vue3-vite-ssis\src\views\layout\footBar\index.vue
+ * @FilePath: \vue3-vite-ssis\src\views\layout\footBar\index1.vue
 -->
 
 <template>

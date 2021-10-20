@@ -4,7 +4,7 @@
  * @LastEditors: JinsonLiang
  * @LastEditTime: 2021-08-14 17:47:36
  * @Description: 显示环境变量
- * @FilePath: \vue3-vite-ssis\src\views\env\index.vue
+ * @FilePath: \vue3-vite-ssis\src\views\env\index1.vue
 -->
 
 <template>
