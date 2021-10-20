@@ -99,6 +99,12 @@ const routes = [
         component: ()=>import('@/views/characterRecognition/index.vue'),
         meta:{title:'character recognition'}
       },
+      { //图片上传
+        path: '/imageUpload',
+        name: 'ImageUpload',
+        component: ()=>import('@/views/uploadImage/index.vue'),
+        meta:{title:'Image upload'}
+      },
     ]
   },
   { //登录页面

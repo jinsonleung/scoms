@@ -77,6 +77,10 @@
                 <i class="ri-shopping-bag-2-fill"></i>
                 <template #title>文字识别</template>
             </el-menu-item>
+            <el-menu-item index="/imageUpload">
+                <i class="ri-shopping-bag-2-fill"></i>
+                <template #title>图片上传</template>
+            </el-menu-item>
         </el-menu>
     </div>
 </template>
