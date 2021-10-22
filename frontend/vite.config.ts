@@ -31,6 +31,11 @@ export default defineConfig({
                 changeOrigin: true,
                 //rewrite: (path) => path.replace(/^\/cc/, '')
             },
+            // '/post': { // 前端URL=/post/
+            //     target: 'https://jsonplaceholder.typicode.com',
+            //     changeOrigin: true,
+            //     //rewrite: (path) => path.replace(/^\/cc/, '')
+            // },
             '/cc': { //
                 target: 'http://tcc.taobao.com',
                 changeOrigin: true,

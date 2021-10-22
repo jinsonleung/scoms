@@ -18,5 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('books/', include('books.urls')),    # url: api/books/xxx
+    path('books/', include('books.urls')),    # url: books/xxx
+    path('ocr/', include('ocr.urls')),    # url: ocr/xxx，文字识别接口
+
 ]

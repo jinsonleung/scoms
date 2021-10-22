@@ -1,72 +1,71 @@
 <template>
-  <h1>==上传图片==</h1>
-  <div id="app">
+  <h2>==上传图片==</h2>
+  <div class="right">
     <el-upload
-        action="#"
-        list-type="picture-card"
-        :auto-upload="false"
-        :on-change="handleChange"
-        :file-list="fileList"
-    >
-      <template #default>
-        <i class="el-icon-plus"></i>
-      </template>
-      <template #file="{ file }">
-        <div>
-          <img
-              class="el-upload-list__item-thumbnail"
-              :src="file.url"
-              alt=""
-          />
-          <span class="el-upload-list__item-actions">
-                <span
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-        </div>
-      </template>
+        class="upload-poster"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-change="imgPreview"
+        :auto-upload="false">
+      <img v-if="formMovie.posterURL" :src="formMovie.posterURL" class="avatar" alt="头像">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
   </div>
 </template>
-<script>
 
-import {reactive} from "vue";
+<script lang='ts'>
+import {defineComponent, reactive} from "vue";
+import {ElMessage} from "element-plus";
 
-export default {
+export default defineComponent({
+  name: "SecuritySetting",
   setup() {
-    const dataSet = reactive({
-      imgUrl: '',
-      imgCount: 0
-    });
-    const handleRemove = (file) => {
-      this.fileList = this.fileList.filter((el) => {
-        return el.fileId != file.fileId;
-      });
-      console.log(this.fileList)
-      this.$forceUpdate();
-    };
-    const handleChange = (file, fileList) => {
-      var fileType = file.name.substring(file.name.lastIndexOf(".") + 1);
-      if (fileType.indexOf("png") == -1 && fileType.indexOf("jpg") == -1 && fileType.indexOf("jpeg") == -1) {
-        console.log("只能上传图片")
-        var arrList = fileList;
-        this.fileList = arrList.filter((el) => {
-          return el.name != file.name;
+    const formMovie = reactive({
+      posterURL: ''
+    })
+    //文件上传之前的钩子
+    const beforeUploadFile = (file: any) => {
+      let FileExt = file.name.replace(/.+\./, "");
+      if (["xls", "xlsx"].indexOf(FileExt.toLowerCase()) === -1) {
+        ElMessage.success({
+          type: "warning",
+          message: "请上传后缀名为xls、xlsx的附件！"
         });
-        // this.$forceUpdate();
-        // console.log(this.fileList)
-        //输入fileList数据正确 但是还是渲染了 同一个不是图片的文件上传两次或者更多 但是第一次有时候是可以刷新页面的 后面再上次就不会刷新页面
+        return false;
+      }
+    };
+
+    //文件超出个数时的钩子
+    const exceedFile = (files: any, fileList: any) => {
+      console.log("文件超出个数：", files)
+      ElMessage.warning('选多了')
+    };
+
+    let uploadSuccess = (file: any) => {
+      ElMessage.success('上传成功')
+    };
+
+    const imgPreview = (file: any, fileList: any) => {
+      let fileName = file.name;
+      console.log('==file==', file)
+      let regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
+      if (regex.test(fileName.toLowerCase())) {
+        formMovie.posterURL = URL.createObjectURL(file.raw)
+        console.log('==formMovie.posterURL==', formMovie.posterURL)
+        ElMessage.success('上传成功！');
+      } else {
+        ElMessage.error('请选择图片文件');
       }
     };
     return {
-      handleRemove,
-      handleChange,
-      dataSet,
+      formMovie,
+      imgPreview,
+      beforeUploadFile,
+      exceedFile,
+      uploadSuccess
     };
-
   }
-}
+});
 </script>
+<style scoped>
+</style>

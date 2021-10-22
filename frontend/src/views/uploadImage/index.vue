@@ -1,80 +1,68 @@
-<!--
- * @Author: Jinson.Liang
- * @Date: 2021-08-24 15:35:52
- * @LastEditors: Jinson.Liang
- * @LastEditTime: 2021-08-24 15:37:49
- * @Description:
- * @FilePath: \vue3-vite-ssis\src\views\security\SecurityAccident.vue
--->
 <template>
-    <div class="app-container">
-      <h1>==图片上传==</h1>
+  <h2>==上传图片==</h2>
+  <div class="right">
+    <el-upload
+        class="upload-poster"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        :show-file-list="false"
+        :on-change="handleOnChange"
+        :auto-upload="false">
+      <img v-if="formMovie.posterURL" :src="formMovie.posterURL" class="avatar" alt="头像">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
   </div>
-  <el-upload action="#" list-type="picture-card" :auto-upload="false">
-    <template #default>
-      <i class="el-icon-plus"></i>
-    </template>
-    <template #file="{ file }">
-      <div>
-        <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-        <span class="el-upload-list__item-actions">
-          <span
-            class="el-upload-list__item-preview"
-            @click="handlePictureCardPreview(file)"
-          >
-            <i class="el-icon-zoom-in"></i>
-          </span>
-          <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="handleDownload(file)"
-          >
-            <i class="el-icon-download"></i>
-          </span>
-          <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="handleRemove(file)"
-          >
-            <i class="el-icon-delete"></i>
-          </span>
-        </span>
-      </div>
-    </template>
-  </el-upload>
-  <el-dialog v-model="dialogVisible">
-    <img width="100%" :src="dialogImageUrl" alt="" />
-  </el-dialog>
 </template>
 
 <script lang='ts'>
-import {ref, defineComponent, reactive} from "vue";
+import {defineComponent, reactive} from "vue";
+import {ElMessage} from "element-plus";
+
 export default defineComponent({
   name: "SecuritySetting",
   setup() {
-    const refData = ref(0);
-    const state = reactive({
-      dialogImageUrl:'',
-      dialogVisible: false,
-      disabled: false,
+    const formMovie = reactive({
+      posterURL: ''
     })
+    //文件上传之前的钩子
+    const beforeUploadFile = (file: any) => {
+      let FileExt = file.name.replace(/.+\./, "");
+      if (["xls", "xlsx"].indexOf(FileExt.toLowerCase()) === -1) {
+        ElMessage.success({
+          type: "warning",
+          message: "请上传后缀名为xls、xlsx的附件！"
+        });
+        return false;
+      }
+    };
 
-    const handleRemove =(file:any) => {
-      console.log(file)
-    };
-    const handlePictureCardPreview = (file:any)=> {
-      state.dialogImageUrl = file.url
-      state.dialogVisible = true
-    };
-    const handleDownload = (file:any) => {
-      console.log(file)
+    //文件超出个数时的钩子
+    const exceedFile = (files: any, fileList: any) => {
+      console.log("文件超出个数：", files)
+      ElMessage.warning('选多了')
     };
 
+    let uploadSuccess = (file: any) => {
+      ElMessage.success('上传成功......')
+    };
+
+    const handleOnChange = (file: any, fileList: any) => {
+      let fileName = file.name;
+      console.log('==file==', file)
+      let regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
+      if (regex.test(fileName.toLowerCase())) {
+        formMovie.posterURL = URL.createObjectURL(file.raw)
+        console.log('==formMovie.posterURL==', formMovie.posterURL)
+        // ElMessage.success('上传成功！');
+      } else {
+        ElMessage.error('请选择图片文件');
+      }
+    };
     return {
-      refData,
-      handleRemove,
-      handlePictureCardPreview,
-      handleDownload
+      formMovie,
+      handleOnChange,
+      beforeUploadFile,
+      exceedFile,
+      uploadSuccess
     };
   }
 });

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',  # rest framework
     'corsheaders',  # 允许跨域
     'books',  # fro test
+    'ocr',  # OCR文字识别app
 
 ]
 
