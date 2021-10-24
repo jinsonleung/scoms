@@ -50,6 +50,11 @@ export default defineConfig({
                 target: 'https://e.qq.com', // 后端实际地址
                 changeOrigin: true,
                 // rewrite: path => path.replace(/^\/apiBase/, '')
+            },
+            '/ocr': {    // 正确
+                target: 'http://127.0.0.1:8000', // 后端实际地址为http://127.0.0.1:8000/ocr/accurateocr，前端url为/ocr/accurateocr
+                changeOrigin: true,
+                // rewrite: path => path.replace(/^\/apiBase/, '')
             }
         }
     }

@@ -1,5 +1,5 @@
 <template>
-  <h2>==上传图片==</h2>
+  <h2>==上传图片(正确)==</h2>
   <div class="right">
     <el-upload
         class="upload-poster"
@@ -15,7 +15,8 @@
 
 <script lang='ts'>
 import {defineComponent, reactive} from "vue";
-import {ElMessage} from "element-plus";
+import {ElMessage} from "element-plus"
+import http from '@/utils/http2/index'
 
 export default defineComponent({
   name: "SecuritySetting",
@@ -42,7 +43,7 @@ export default defineComponent({
     };
 
     let uploadSuccess = (file: any) => {
-      ElMessage.success('上传成功......')
+      // ElMessage.success('上传成功......')
     };
 
     const handleOnChange = (file: any, fileList: any) => {
@@ -50,9 +51,17 @@ export default defineComponent({
       console.log('==file==', file)
       let regex = /(.jpg|.jpeg|.gif|.png|.bmp)$/;
       if (regex.test(fileName.toLowerCase())) {
-        formMovie.posterURL = URL.createObjectURL(file.raw)
+        let img_url = URL.createObjectURL(file.raw)
+        formMovie.posterURL = img_url
         console.log('==formMovie.posterURL==', formMovie.posterURL)
-        // ElMessage.success('上传成功！');
+        // ElMessage.success('上传成功！')
+        http.post('/ocr/accurateocr',{'img_url':img_url}).then((res:any)=>{
+          console.log(res)
+        })
+
+
+
+
       } else {
         ElMessage.error('请选择图片文件');
       }

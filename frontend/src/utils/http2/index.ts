@@ -11,7 +11,7 @@ const http = axios.create({
     // @ts-ignore
     baseURL: process.env.VUE_API_BASE_URL | undefined,
     // baseURL: 'http://127.0.0.1:8000', //url
-    timeout: 10000,   //请求超时
+    timeout: 5000,   //请求超时
     withCredentials: true,   //true:允许跨域
     headers: {
         'Content-Type': 'application/json'  // axios发送数 据时使用json格式})

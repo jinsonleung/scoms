@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -104,9 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -124,9 +124,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ===========自行添加============================
+# ===================自行配置====================
 
-# 跨域增加忽略
+# 1、跨域增加忽略
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True    # 允许所有跨域请求，否则会出现OPTIONS请求
 CORS_ORIGIN_WHITELIST = (   # 请求白名单
@@ -155,3 +155,6 @@ CORS_ORIGIN_WHITELIST = (   # 请求白名单
 #     'x-csrftoken',
 #     'x-requested-with',
 # )
+
+# 2、保存图片路径
+IMG_UPLOAD = os.path.join(BASE_DIR, 'static/uploads')
