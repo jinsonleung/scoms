@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', include('books.urls')),    # url: books/xxx
     path('ocr/', include('ocr.urls')),    # url: ocr/xxx，文字识别接口
+    path('station/', include('station.urls')),    # url: station/xxx，场站信息接口
 
 ]

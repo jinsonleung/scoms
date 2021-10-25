@@ -16,7 +16,6 @@
 import {defineComponent, reactive, ref} from "vue";
 import {ElMessage} from "element-plus"
 import http from '@/utils/http2/index'
-
 export default defineComponent({
   name: "SecuritySetting",
   setup() {
@@ -33,10 +32,7 @@ export default defineComponent({
       let fd = new FormData()
       fd.append('templateFile', state.mode)
       console.log('==fd==', fd)
-
     }
-
-
     return {
       state,
       modeUpload,

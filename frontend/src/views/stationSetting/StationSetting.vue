@@ -1,55 +1,73 @@
-<!--
- * @Author: Jinson.Liang
- * @Date: 2021-08-24 15:33:15
- * @LastEditors: Jinson.Liang
- * @LastEditTime: 2021-08-24 16:26:19
- * @Description: 場站設置
- * @FilePath: \vue3-vite-ssis\src\views\stationSetting\StationSetting.vue
--->
-
 <template>
-  <div class="app-container">
-    <h1>==场站设置==</h1>
-    <el-row :gutter="20">
-        <el-col :span="8"><div class="grid-content"><el-input v-model="state.num1"/></div></el-col>
-        <el-col :span="8"><div class="grid-content"><el-input v-model="state.num2"/></div></el-col>
-        <el-col :span="8"><div class="grid-content"><el-input v-model="state.total"/></div></el-col>
-    </el-row>
-    <el-row :gutter="20">
-        <el-col :span="4"><div class="grid-content">{{isActives}}</div></el-col>
-        <el-col :span="4"> <el-button @click="handleClick">{{state.text}}</el-button></el-col>
-        <el-col :span="4"></el-col>
-        <el-col :span="4"></el-col>
-        <el-col :span="4"></el-col>
-        <el-col :span="4"></el-col>
-    </el-row>
-  </div>
+<div class="box">
+  <el-form :model="ruleForm" :rules="rules" ref="ruleFormsss" label-width="100px">
+    <el-form-item label="场站代码" prop="station_code">
+      <el-input v-model="ruleForm.station_code"></el-input>
+    </el-form-item>
+    <el-form-item label="场站名称" prop="station_name">
+      <el-input v-model="ruleForm.station_name"></el-input>
+    </el-form-item>
+    <el-form-item label="场站地址" prop="station_address">
+      <el-input v-model="ruleForm.station_address"></el-input>
+    </el-form-item>
+    <el-form-item label="设备代码" prop="facility_code">
+      <el-input v-model="ruleForm.facility_code"></el-input>
+    </el-form-item>
+    <el-form-item label="场站人数" prop="employees">
+      <el-input v-model="ruleForm.employees"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" size="medium" @click="submitForm">添加</el-button>
+    </el-form-item>
+  </el-form>
+</div>
 </template>
 
-<script lang='ts'>
-import { ref, reactive, defineComponent, computed } from "vue";
-export default defineComponent({
-  name: "StationSetting",
-  setup() {
-    const isActives = ref(false)
-    const state:any = reactive({
-        msg: '哈哈哈~~',
-        num1: '',
-        num2: '',
-        total: computed(()=>{
-             return parseInt(state.num1) + parseInt(state.num2)
-        })
+<script>
+import {reactive,ref,unref } from 'vue'
+export default {
+  setup(props) {
+    const ruleFormsss = ref(null);
+    // 定义变量
+    const ruleForm = reactive({
+      station_code: '',
+      station_name: '',
+      station_address: '',
+      facility_code: '',
+      employees: '',
     })
-    const handleClick = ()=>{
-        console.log("state.msg", state.msg)
+
+    const rules = {
+      station_code: [
+        { required: true, message: '请输入站场代码', trigger: 'blur' },
+      ],
+      station_name: [
+        { required: true, message: '请输入站场名称', trigger: 'blur' },
+      ],
+      facility_code: [
+        { required: true, message: '请输入设备代码', trigger: 'blur' }
+      ]
+    }
+
+    const submitForm = async () => {
+      const form = unref(ruleFormsss);
+      if (!form) return
+      try {
+        await form.validate()
+        const { station_code, station_name, facility_code } = ruleForm
+        console.log(station_code, station_name, facility_code)
+      } catch (error) {
+      }
     }
     return {
-      isActives,
-      state,
-      handleClick,
-    };
+      ruleForm,
+      rules,
+      submitForm,
+      ruleFormsss
+    }
   }
-});
+}
 </script>
-<style scoped>
+
+<style lang="less">
 </style>
