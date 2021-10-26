@@ -1,6 +1,6 @@
 <template>
 <div class="box">
-  <el-form :model="ruleForm" :rules="rules" ref="ruleFormsss" label-width="100px">
+  <el-form :model="ruleForm" :rules="rules" ref="ruleFormRef" label-width="100px">
     <el-form-item label="场站代码" prop="station_code">
       <el-input v-model="ruleForm.station_code"></el-input>
     </el-form-item>
@@ -27,7 +27,7 @@
 import {reactive,ref,unref } from 'vue'
 export default {
   setup(props) {
-    const ruleFormsss = ref(null);
+    const ruleFormRef = ref(null);
     // 定义变量
     const ruleForm = reactive({
       station_code: '',
@@ -50,7 +50,7 @@ export default {
     }
 
     const submitForm = async () => {
-      const form = unref(ruleFormsss);
+      const form = unref(ruleFormRef);
       if (!form) return
       try {
         await form.validate()
@@ -63,7 +63,7 @@ export default {
       ruleForm,
       rules,
       submitForm,
-      ruleFormsss
+      ruleFormRef
     }
   }
 }
