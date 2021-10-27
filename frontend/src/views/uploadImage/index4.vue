@@ -6,14 +6,14 @@
         <el-form-item label="图标" label-width="7.5rem">
           <!-- :data="upLoadData" -->
           <el-upload class="avatar-uploader"
-                     action="111"
+                     action="https://jsonplaceholder.typicode.com/posts/"
                      :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
             <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <el-form-item label="分类名" label-width="7.5rem">
-        </el-form-item>
+          </el-form-item>
         <el-form-item label="中文" label-width="7.5rem">
           <el-input v-model="form.chinese" autocomplete="off"></el-input>
         </el-form-item>
@@ -43,14 +43,23 @@ export default defineComponent({
       chinese: ''
     })
 
-    const beforeAvatarUpload = () => {
-
+    const beforeAvatarUpload = (file:any) => {
+     	let api = '/ocr/accurateocr';
+      let fd = new FormData();
+      fd.append('file',file);//传文件
+      // fd.append('srid',this.upLoadData.srid);//传其他参数
+      http.post(api,fd).then((res:any)=>{
+              console.log('成功');
+      })
+      return false//屏蔽了action的默认上传
     }
-    const handleAvatarSuccess = () => {
-
+    const handleAvatarSuccess = (res:any,file:any) => {
+      form.imageUrl = URL.createObjectURL(file.raw)
     }
     const sureFormSubmit = () => {
-
+       let _this = this;
+      let api = '';
+      axios.post(api,{}).then((res:any)=>{console.log(res)});
     }
 
     return {

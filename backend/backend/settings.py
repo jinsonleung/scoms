@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',  # rest framework
     'corsheaders',  # 允许跨域
-    'books',  # fro test
+    'books',  # for test
     'ocr',  # OCR文字识别app
     'station',  # 场站设置
+    'goods',  # for test
 
 ]
 
@@ -159,3 +160,10 @@ CORS_ORIGIN_WHITELIST = (   # 请求白名单
 
 # 2、保存图片路径
 IMG_UPLOAD = os.path.join(BASE_DIR, 'static/uploads')
+
+# 3、保存商品图片路径
+MEDIA_URL = '/media/'
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, 'book_shop/media')
+)
+

@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+# from . import views
 
 urlpatterns = [
+    # re_path(r'^media/(?P<path>.*)$', views.year_archive),
     path('admin/', admin.site.urls),
     path('books/', include('books.urls')),    # url: books/xxx
     path('ocr/', include('ocr.urls')),    # url: ocr/xxx，文字识别接口

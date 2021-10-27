@@ -5,5 +5,6 @@ from ocr import views
 urlpatterns = [
     path('temp', views.temp),   # for test
     path('accurateocr', views.accurate_ocr),    # 文字识别
+    path('addNewGoods', views.addNewGoods),
 ]
 
