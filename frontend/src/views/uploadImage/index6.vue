@@ -1,5 +1,5 @@
 <template>
-  <h1>==上传图片测试(正确)==</h1>
+  <h1>==上传图片测试(测试中)==</h1>
   <div class="container">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="商品">

@@ -162,8 +162,8 @@ CORS_ORIGIN_WHITELIST = (   # 请求白名单
 IMG_UPLOAD = os.path.join(BASE_DIR, 'static/uploads')
 
 # 3、保存商品图片路径
-MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'   # 保存文件时将放在这个目录下，以app名开始，如/media/goods/pic5-1.jpg
 MEDIA_ROOT = (
-    os.path.join(BASE_DIR, 'book_shop/media')
+    os.path.join(BASE_DIR, 'book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
 )
 
