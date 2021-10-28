@@ -1,5 +1,5 @@
 <template>
-  <h1>==上传图片测试==</h1>
+  <h1>==上传图片测试(正确)==</h1>
   <h7>参考：https://blog.csdn.net/qq_43964958/article/details/113665626</h7>
   <div class="container">
     <el-form ref="form" :model="form" label-width="80px">
@@ -35,10 +35,10 @@ export default defineComponent({
     const formTitle = ref('编辑')
     const dialogFormVisible = ref(false)
     const form = reactive({
-      goods_title: 'aa',
-      goods_price: '22',
+      goods_title: 'bb',
+      goods_price: '289.0',
       goods_image: '',
-      goods_kind: 'sdf',
+      goods_kind: '电子数码',
     })
 
     const getImageFile = (e: any) => {
@@ -51,7 +51,7 @@ export default defineComponent({
       formData.append('goods_price', form.goods_price);
       formData.append('goods_kind', form.goods_kind);
       formData.append('goods_image', form.goods_image);
-      http.post('ocr/addNewGoods', formData).then((res: any) => {
+      http.post('goods/addNewGoods', formData).then((res: any) => {
         console.log(res);
       }).catch((err: any) => {
         console.log(err);
