@@ -59,9 +59,6 @@ export default defineComponent({
           console.log(res)
         })
 
-
-
-
       } else {
         ElMessage.error('请选择图片文件');
       }

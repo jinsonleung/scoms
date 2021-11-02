@@ -34,10 +34,10 @@ export default defineComponent({
     const formTitle = ref('编辑')
     const dialogFormVisible = ref(false)
     const form = reactive({
-      goods_title: 'bb',
-      goods_price: '289.0',
+      goods_title: '女式皮鞋',
+      goods_price: '529',
       goods_image: '',
-      goods_kind: '电子数码',
+      goods_kind: '鞋帽',
     })
 
     const getImageFile = (e: any) => {

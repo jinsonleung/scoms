@@ -102,7 +102,7 @@ const routes = [
       { //图片上传
         path: '/imageUpload',
         name: 'ImageUpload',
-        component: ()=>import('@/views/uploadImage/index5.vue'),
+        component: ()=>import('@/views/uploadImage/index6.vue'),
         meta:{title:'Image upload'}
       },
     ]
