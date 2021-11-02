@@ -96,7 +96,7 @@ const routes = [
       { //文字识别
         path: '/characterRecognition',
         name: 'CharacterRecognition',
-        component: ()=>import('@/views/characterRecognition/index.vue'),
+        component: ()=>import('@/views/characterRecognition/index2.vue'),
         meta:{title:'character recognition'}
       },
       { //图片上传

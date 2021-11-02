@@ -2,15 +2,6 @@
   <h1>==OCR识别测试(测试中...)==</h1>
   <div class="container">
     <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="商品">
-        <el-input v-model="form.goods_title" placeholder="请输入名称"></el-input>
-      </el-form-item>
-      <el-form-item label="价格">
-        <el-input v-model="form.goods_price" placeholder="请输入价格"></el-input>
-      </el-form-item>
-      <el-form-item label="分类">
-        <el-input v-model="form.goods_kind" placeholder="请输入分类"></el-input>
-      </el-form-item>
       <el-form-item label="图片">
         <el-upload
             class="upload-demo"
