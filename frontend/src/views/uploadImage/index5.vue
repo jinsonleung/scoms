@@ -42,6 +42,7 @@ export default defineComponent({
 
     const getImageFile = (e: any) => {
       let file = e.target.files[0];
+      console.log("getImangeFile->file", file)
       form.goods_image = file;
     }
     const onSubmit = () => {
