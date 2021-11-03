@@ -1,11 +1,11 @@
 import random
-
+import base64
 from goods.models import Goods
 from django.http import JsonResponse
 import os
 import time
 from django.conf import settings
-
+import requests
 
 def add_new_goods(request):
     print('==request.FILES==', request.FILES)
@@ -39,7 +39,7 @@ def save_file(request):
     with open(img_path, 'ab') as fp:
         for chunk in img.chunks():  # 如果上传的图片非常大， 那么通过 img对象的 chunks() 方法 分割成多个片段来上传
             fp.write(chunk)
-    ocr(img_path)
+    ocr_old(img_path)
     response['msg'] = '添加成功'
     response['error_num'] = 0
     return JsonResponse(response)
@@ -48,8 +48,21 @@ def save_file(request):
 """
 图片文字识别
 """
-def ocr(file_path):
+def ocr_old(file_path):
     print("===ocr===", file_path)
+    request_url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
+    # 二进制方式打开图片文件
+    f = open(file_path, 'rb')
+    img = base64.b64encode(f.read())
+    params = {"image": img}
+    # access_token = '[调用鉴权接口获取的token]'
+    access_token = '24.ffc04550c78b415a3940baae92f05e04.2592000.1638514710.282335-24861375'
+    request_url = request_url + "?access_token=" + access_token
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    response = requests.post(request_url, data=params, headers=headers)
+    if response:
+        print('==response.json()==', response.json())
+
 
 
 
