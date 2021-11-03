@@ -1,5 +1,5 @@
 <template>
-  <h1>==上传图片测试(正确...)==</h1>
+  <h1>==上传图片测试(正确...,测试一个测试中....)</h1>
   <div class="container">
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="商品">
@@ -57,7 +57,8 @@ export default defineComponent({
       formData.append('goods_price', form.goods_price);
       formData.append('goods_kind', form.goods_kind);
       formData.append('goods_image', form.goods_image);
-      http.post('goods/addNewGoods', formData).then((res: any) => {
+      // http.post('goods/addNewGoods', formData).then((res: any) => {
+      http.post('goods/savefile', formData).then((res: any) => {
         console.log(res);
       }).catch((err: any) => {
         console.log(err);
