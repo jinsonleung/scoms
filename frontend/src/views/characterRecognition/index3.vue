@@ -57,8 +57,8 @@ export default defineComponent({
 
     const onSubmit = () => {
       let formData = new FormData();
-      formData.append('goods_image', form.goods_image);
-      http.post('goods/savefile', formData).then((res: any) => {
+      formData.append('image_url', form.image_url);
+      http.post('ocr/accurateocr', formData).then((res: any) => {
         console.log(res);
       }).catch((err: any) => {
         console.log(err);

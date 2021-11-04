@@ -8,6 +8,8 @@ from django.http import JsonResponse
 import json
 from django.conf import settings
 import random
+import xlwings as xw    # excel库
+
 
 # 获取所有
 @require_http_methods(['GET'])
@@ -156,34 +158,57 @@ def ocr_old(file_path):
         print('==response.json()==', response.json())
     return JsonResponse(response)
 
-
-def save_file(file_abs_path):
-    response = {}
-    file_folder = os.path.dirname(file_abs_path)
-    file_name = os.path.split(file_abs_path)[-1]
-    print('file_folder===', file_folder)
-    print('file_name===', file_name)
-    response['msg'] = '添加成功'
-    response['error_num'] = 0
-    return JsonResponse(response)
-
 """
-图片文字识别
+保存图片文件
 """
-def ocr(request):
+def save_file(img):
     response = {}
-    img = request.FILES.get('goods_image')  # 获取上传的图片
-    date_str = time.strftime('%Y%m%d', time.localtime(time.time()))  # 年月日格式，如20210823
+    print('==save_file->img==',img)
+    date_str = time.strftime('%Y%m%d', time.localtime(time.time()))   # 年月日格式，如20210823
     datetime_str = time.strftime('%y%m%d%H%M%S', time.localtime(time.time()))  # 年月日格式时间,如210823104552
     img_ext = os.path.splitext(img.name)[1]  # 取图片文件扩展名,如".jpg“
     img_name = 'Img' + datetime_str + str(random.randint(10, 100)) + img_ext   # 拼接图片文件名，文件名='Img'+年(2位)月日格式时间+两位随机整数+'.'+后缀,如Img21110314000277.jpg
     img_path_dir = os.path.join(settings.IMG_UPLOAD + '/' + date_str)   # 文件目录
-    img_abs_path = os.path.join(img_path_dir, img_name)  # 拼接图片存放路径
+    if not os.path.exists(img_path_dir):    # 判断文件目录是否存在，若不存在则创建
+        os.makedirs(img_path_dir)   # 创建文件目录
+    img_full_path = os.path.join(img_path_dir, img_name)  # 拼接图片存放的全路径
+    with open(img_full_path, 'ab') as fp:
+        for chunk in img.chunks():  # 如果上传的图片非常大， 那么通过 img对象的 chunks() 方法 分割成多个片段来上传
+            fp.write(chunk)
+    response['code'] = '200'
+    response['msg'] = '保存图片（文件）成功'
+    response['file_full_path'] = img_full_path  # 文件全路径
+    return response
+    #return JsonResponse(response)
 
-    save_file(img_abs_path)
 
+"""
+图片文字识别
+"""
+def accurate_ocr(request):
+    resp = {}
+    img = request.FILES.get('image_url')  # 获取上传的图片
+    print('==accurate_ocr->img==', img)
+    result = save_file(img)
+    img_full_path = result["file_full_path"]
+    print('==result==', img_full_path)
 
-    return JsonResponse(response)
+    request_url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic" # 百度aip接口URL
+    # 二进制方式打开图片文件
+    f = open(img_full_path, 'rb')
+    img = base64.b64encode(f.read())
+    params = {"image": img}
+    # access_token = '[调用鉴权接口获取的token]'
+    access_token = '24.ffc04550c78b415a3940baae92f05e04.2592000.1638514710.282335-24861375'
+    request_url = request_url + "?access_token=" + access_token
+    headers = {'content-type': 'application/x-www-form-urlencoded'}
+    response = requests.post(request_url, data=params, headers=headers)
+    # if response:
+    #     print('==response.json()==', response.json())
+    print('==response.json()==', response.json())
+    resp['msg'] = '添加成功'
+    resp['error_num'] = 0
+    return JsonResponse(resp)
 
 # =============================2021.11.03更新 结束==================================
 
