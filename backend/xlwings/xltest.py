@@ -87,12 +87,4 @@ def sheet1():
     app.quit()
 
 
-def main():
-    # xw_wirte()  # 读文件
-    # xw_read()  # 写文件
-    sheet1()  # 体温数据写入示例
-    print('===add successfully===')
 
-
-if __name__ == "__main__":
-    main()
