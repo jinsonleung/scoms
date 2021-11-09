@@ -105,6 +105,12 @@ const routes = [
         component: ()=>import('@/views/uploadImage/index6.vue'),
         meta:{title:'Image upload'}
       },
+      { //分页
+        path: '/pagination',
+        name: 'Pagination',
+        component: ()=>import('@/views/pagination/index.vue'),
+        meta:{title:'分页'}
+      },
     ]
   },
   { //登录页面

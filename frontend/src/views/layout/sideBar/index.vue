@@ -81,6 +81,10 @@
                 <i class="ri-shopping-bag-2-fill"></i>
                 <template #title>图片上传</template>
             </el-menu-item>
+            <el-menu-item index="/pagination">
+                <i class="ri-shopping-bag-2-fill"></i>
+                <template #title>分页</template>
+            </el-menu-item>
         </el-menu>
     </div>
 </template>
