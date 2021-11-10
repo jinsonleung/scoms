@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ocr',  # OCR文字识别app
     'station',  # 场站设置
     'goods',  # for test
+    'customer', # for test
 
 ]
 
@@ -114,7 +115,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -167,3 +168,5 @@ MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
 )
 
+# 4、日期输入格式
+DATE_INPUT_FORMATS = ['%d/%m/%Y']

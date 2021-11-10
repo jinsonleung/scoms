@@ -11,5 +11,6 @@ urlpatterns = [
     path('ocr/', include('ocr.urls')),    # url: ocr/xxx，文字识别接口
     path('station/', include('station.urls')),    # url: station/xxx，场站信息接口
     path('goods/', include('goods.urls')),    # url: goods/xxx，场站信息接口
+    path('customer/', include('customer.urls')),  # url: customer/xxx
 
 ]
