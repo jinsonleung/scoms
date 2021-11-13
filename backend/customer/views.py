@@ -20,11 +20,11 @@ def get_all(request):
     req = request.body
     print("==request.body==", req)
     response = {}
-    # customers = Customer.objects.filter()  # 获取所有人员列表
-    # print('==customers==', customers)
+    customers = Customer.objects.filter()  # 获取所有人员列表
+    print('==customers.count==', customers)
     try:
         # customers = Customer.objects.filter()   # 获取所有人员列表
-        customers = Customer.objects.values('registration_date').first()   # 获取所有人员列表
+        # customers = Customer.objects.values('registration_date').first()   # 获取所有人员列表
         print('==customers==', customers)
         response['list'] = serializers.serialize('python', customers, ensure_ascii=False)    # 对象序列化
         response['msg'] = 'success'

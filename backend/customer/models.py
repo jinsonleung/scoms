@@ -32,3 +32,6 @@ class Customer(models.Model):
         verbose_name = '客户类'  # 详细名称
         verbose_name_plural = verbose_name  # 详细名称
         ordering = ['company_account']  # 排序字段
+
+    def __str__(self):
+        return self.company_name

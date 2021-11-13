@@ -80,9 +80,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    # 'default': {  # 配置SQLITE数据库
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+    'default': {  # 配置mysql数据库
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        'NAME': 'scomsdb',  # 数据库名，自己本地创建
+        'USER': 'root',  # 数据库用户名
+        'PASSWORD': 'China123',  # 数据库密码
+        'HOST': '127.0.0.1',  # MySQL服务所在主机IP
+        'PORT': '3306',  # MySQL服务端口
     }
 }
 

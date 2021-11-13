@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:D:\Jinson\WorkSpace\PythonProject\scoms\backend\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="scomsdb" uuid="7498412e-524a-4e3d-94f8-fdf42ea739c9">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
