@@ -6,6 +6,7 @@
 	  @current-change="handlePageChange"
 	  :page-sizes="[10, 30, 100]"
 	  :page-size="pagesize"
+     :current-page="currentpage"
 	  :layout="layout"
 	  :total="total">
 	</el-pagination>
@@ -28,11 +29,13 @@
 		setup(props,context) {
 			// 分页导航
 			const handlePageChange = (val)=>{
+        console.log('==page==',val)
 				props.options.page = val;
 				props.render();
 			}
 			//切换分页条数
 			const handleSizeChange = (val) =>{
+        console.log('==size==',val)
 				props.options.limit = val;
 				props.render();
 			}
