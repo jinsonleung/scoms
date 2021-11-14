@@ -10,7 +10,7 @@ import Mock from "mockjs";
 import {pageHeaderEmits} from "element-plus";
 
 function createCustomerList() {
-    const count = 53;
+    const count = 279;
     let customerList: any = [];
     for (let i = 0; i < count; i++) {
         customerList.push(
@@ -21,7 +21,7 @@ function createCustomerList() {
                 "company_abbreviation_name": "@ctitle(3,6)",
                 "company_address": "@county(true)",
                 "city": "@city(true)",
-                "license_no": "@id",
+                "license_no": '@integer(10000000,99999999)'+'@string("upper", 3, 3)'+'@integer(100000,999999)',
                 "license_image": " ",
                 "registration_capital": '@float(50, 10000, 2, 2)',
                 "registration_date": '@date(yyyy-MM-dd hh:mm:ss)',
@@ -67,14 +67,15 @@ function getPageCustomer(res:any) {
     let params = params_str.split("&")
     let pagesize = params[0].split("=")[1] // 页长
     let offet = params[1].split("=")[1] // 偏移量
-    console.log("==getPageCustomer->limit:",offet)
+    console.log("==getPageCustomer->offet/pagesize:",offet,pagesize)
     let customers = createCustomerList();
-    console.log('==customer==',customers)
-    let customerList = customers.slice(offet,pagesize)
+    // console.log('==customer==',customers)
+    let customerList = customers.slice(offet*pagesize,(offet+1)*pagesize)
 
     return {
         code: 200,
-        customerList: customerList,
+        customerList: customerList, //分页数据
+        length: customers.length,   //总记录数
         msg: "后端返回的提示信息！",
     };
 }

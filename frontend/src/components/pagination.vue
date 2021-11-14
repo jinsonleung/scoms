@@ -18,7 +18,7 @@
 		 props: {
 		  pagesize: [Number, String],//一页多少条
 		  currentpage: [Number, String],//当前页
-		  total:[Number, String],//总页数
+		  total:[Number, String],//总条目数
 		  options: [Object],  // 分页发生变化赋值给options
 		  render: [Function], // 跳转触发的请求
 		  layout: {

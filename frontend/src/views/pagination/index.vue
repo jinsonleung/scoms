@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" height="600" style="width: 100%">
+  <el-table :data="table_data" height="600" style="width: 100%">
     <el-table-column prop="id" label="id" width="80"/>
     <el-table-column prop="company_account" label="公司账号" width="180"/>
     <el-table-column prop="company_name" label="公司名称" width="180"/>
@@ -27,13 +27,13 @@
   </el-table>
   <v-pagination
       :pagesize="query.limit"
-      :total="pageTotal"
+      :total="total_counts"
       :options="query"
-      :render="getData">
+      :render="getPageData">
   </v-pagination>
 </template>
 <script>
-import {ref, reactive, getCurrentInstance} from "vue"
+import {ref, reactive, getCurrentInstance, onMounted} from "vue"
 import vPagination from '@/components/pagination.vue'
 import http from '@/utils/http2/index'
 import '@/mock/mockServer'
@@ -44,45 +44,42 @@ export default {
     vPagination,
   },
   setup() {
-    const tableData = ref([]),//表格数据
-        pageTotal = ref(0),//总条数
+    const table_data = ref([]),//表格数据列表
+        total_counts = ref(0),//总条目数，总记录数
         query = reactive({//配置对应的查询参数
           appTimeStart: 'tt',
           appTimeEnd: 'aaaa',
           page: 1,
           limit: 10,//page第几页,limit是一页几个
         });
-    // 获取表格数据
-    const getData = () => {
-      console.log('==query.page==', query.page)  //当前页
-      console.log('==query.limit==', query.limit)  //分页页长
-      let params = {
-        page_limit: query.limit, // 页长
-        offset: (query.page-1)  // 偏移量
-      }
-      console.log('==params==',params)
-
-      http.get('/mockcustomer/getpage?limit='+query.limit + '&offset='+(query.page-1)).then(res => {  // 正确，分页带参请求
-        console.log('==res==', res.data.customerList)
+    onMounted(() => { //页面挂载钩子函数
+      getPageData();
+    })
+    // 获取分页表格数据
+    const getPageData = () => {
+      http.get('/mockcustomer/getpage?limit=' + query.limit + '&offset=' + (query.page - 1)).then(res => {  // 正确，分页带参请求
+        // console.log('==res==', res.data.length)
+        total_counts.value = res.data.length  //总记录条数
         let customer_list = res.data.customerList
-        tableData.value = customer_list // 记录集
+        table_data.value = customer_list // 分页数据列表
       })
-
-      // http.get('/mockcustomer/getall').then(res => {  // 正确
-      //   console.log('==res==', res.data.data.customerList)
-      //   let customer_list = res.data.data.customerList
-      //   console.log('==customer_list.length==', customer_list.length)
-      //   tableData.value = customer_list // 记录集
-      //   pageTotal.value = customer_list.length  // 记录总条数
-      // })
     }
-    getData();
+    const getPageData1 = () => {  // 获取全部记录
+      http.get('/mockcustomer/getall').then(res => {  // 正确
+        console.log('==res==', res.data.data.customerList)
+        let customer_list = res.data.data.customerList
+        console.log('==customer_list.length==', customer_list.length)
+        total_counts.value = customer_list.length  // 总记录条数
+        table_data.value = customer_list // 分页数据列表
+      })
+    }
+
     return {
       query,
       // shortcuts,
-      tableData,
-      pageTotal,
-      getData
+      table_data,
+      total_counts,
+      getPageData
     };
   }
 }
