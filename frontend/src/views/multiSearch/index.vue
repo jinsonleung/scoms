@@ -88,6 +88,11 @@
   <el-button :icon="expandMore ?'el-icon-arrow-up':'el-icon-arrow-down'" type="text" @click="expandMore =!expandMore">
     {{ expandMore ? '收起' : '展开' }}
   </el-button>
+  <el-button-group>
+    <el-button type="primary" round>上一页</el-button>
+    <el-button type="">当前页</el-button>
+    <el-button type="primary" round>下一页</el-button>
+  </el-button-group>
 
 
 </template>
