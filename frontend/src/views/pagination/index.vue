@@ -1,4 +1,5 @@
 <template>
+  <h3>==分页，正确==</h3>
   <el-table :data="table_data" height="600" style="width: 100%">
     <el-table-column prop="id" label="id" width="80"/>
     <el-table-column prop="company_account" label="公司账号" width="180"/>
@@ -55,16 +56,30 @@ export default {
     onMounted(() => { //页面挂载钩子函数
       getPageData();
     })
-    // 获取分页表格数据
+    // 获取MYSQL分页表格数据
     const getPageData = () => {
+      http.get('customer/getpagelist?limit=' + query.limit + '&offset=' + (query.page - 1)).then(res => {  // 正确，分页带参请求
+        console.log('==res==', res)
+        total_counts.value = res.data.length  //总记录条数
+
+        let customer_list = res.data.customerList
+        console.log("===customer_list==>>>>>>>", customer_list)
+        table_data.value = customer_list // 分页数据列表
+      })
+    }
+
+    // 获取MOCKJS分页表格数据
+    const getPageData333 = () => {
       http.get('/mockcustomer/getpage?limit=' + query.limit + '&offset=' + (query.page - 1)).then(res => {  // 正确，分页带参请求
         // console.log('==res==', res.data.length)
+        console.log('==res.data.customerList==', res.data.customerList)
         total_counts.value = res.data.length  //总记录条数
         let customer_list = res.data.customerList
         table_data.value = customer_list // 分页数据列表
       })
     }
-    const getPageData1 = () => {  // 获取全部记录
+    // 获取MOCKJS分页表格数据
+    const getPageData2 = () => {  // 获取MOCKJS全部记录
       http.get('/mockcustomer/getall').then(res => {  // 正确
         console.log('==res==', res.data.data.customerList)
         let customer_list = res.data.data.customerList

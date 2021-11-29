@@ -1,4 +1,4 @@
-pifrom django.db import models
+from django.db import models
 from django.conf import settings
 
 
@@ -34,4 +34,4 @@ class Customer(models.Model):
         ordering = ['company_account']  # 排序字段
 
     def __str__(self):
-        return self.company_name
+        return self.company_account

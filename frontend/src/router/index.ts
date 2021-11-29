@@ -111,6 +111,12 @@ const routes = [
         component: ()=>import('@/views/pagination/index.vue'),
         meta:{title:'分页'}
       },
+      { //多条件查询
+        path: '/multisearch',
+        name: 'MultiQuery',
+        component: ()=>import('@/views/multiSearch/index.vue'),
+        meta:{title:'多条件查询'}
+      },
     ]
   },
   { //登录页面

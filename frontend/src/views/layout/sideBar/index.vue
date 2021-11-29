@@ -85,6 +85,10 @@
                 <i class="ri-shopping-bag-2-fill"></i>
                 <template #title>分页</template>
             </el-menu-item>
+            <el-menu-item index="/multisearch">
+                <i class="ri-search-2-fill"></i>
+                <template #title>多条件查询</template>
+            </el-menu-item>
         </el-menu>
     </div>
 </template>

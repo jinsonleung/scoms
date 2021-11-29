@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'ocr',  # OCR文字识别app
     'station',  # 场站设置
     'goods',  # for test
-    'customer', # for test
+    'customer',  # for test
 
 ]
 
