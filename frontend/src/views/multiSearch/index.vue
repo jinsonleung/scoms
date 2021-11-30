@@ -4,7 +4,7 @@
   <h4>https://www.cnblogs.com/wuhuacong/p/14035302.html</h4>
   <!--  查询条件区域-->
   <el-form ref="searchForm" :model="searchForm" label-width="80" :inline="true">
-    <el-select v-model="value" clearable placeholder='请选择' @change="changeHandle">
+    <el-select v-model="value" clearable placeholder='请选择' style="width: 120px" @change="changeHandle">
       <el-option
           v-for="item in options"
           :key="item.value"
@@ -13,11 +13,11 @@
       >
       </el-option>
     </el-select>
-    <el-input v-model="searchValue" :placeholder=searchItem style="width: 180px">
+    <el-input v-model="searchValue" :placeholder=searchItem style="width: 180px" ref="search_content_input">
     </el-input>
 
 
-    <el-button-group>
+    <el-button-group style="margin-left: 20px">
       <el-button type="primary" icon="el-icons-reset" round>查询</el-button>
       <el-button type="warning" icon="el-icons-reset">重置</el-button>
       <el-button type="primary" icon="el-icons-search" round>高级查询</el-button>
@@ -64,11 +64,15 @@ export default {
     ])
     const searchItem = ref('')
     const searchValue = ref('')
+    const proxy = getCurrentInstance()
     const searchForm = reactive([])
     const changeHandle = ()=>{
       searchItem.value = '请输入' + value.value
-      // console.log(value.value)
+       console.log(proxy)
     }
+
+
+
 
     return {
       value,

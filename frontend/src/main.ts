@@ -1,10 +1,3 @@
-// import { createApp } from 'vue'
-// import App from './App.vue'
-//
-// createApp(App).mount('#app')
-
-
-
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -20,5 +13,7 @@ const app = createApp(App);
 //全局axios
 // app.config.globalProperties.$axios = axios;
 
-app.use(router).use(ElementPlus).use(store);
+app.use(router).use(store);
+// ElementPlus全局配置https://element-plus.gitee.io/zh-CN/guide/quickstart.html#%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE
+app.use(ElementPlus, {size: 'small', zIndex:3000})  // ElementPlus组件全局配置为small样式
 app.mount('#app');
