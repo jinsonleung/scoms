@@ -1,5 +1,6 @@
 <template>
   <h3>==分页，正确==</h3>
+  <h3>==获取MYSQL分页表格数据==</h3>
   <el-table :data="table_data" height="600" style="width: 100%">
     <el-table-column prop="id" label="id" width="80"/>
     <el-table-column prop="company_account" label="公司账号" width="180"/>
