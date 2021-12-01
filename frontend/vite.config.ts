@@ -64,7 +64,7 @@ export default defineConfig({
                 // rewrite: path => path.replace(/^\/apiBase/, '')
             },
             '/customer': {    // 正确
-                target: 'http://127.0.0.1:8010', // 后端实际地址为http://127.0.0.1:8000/ocr/accurateocr，前端url为goods/accurateocr
+                target: 'http://127.0.0.1:8000', // 后端实际地址为http://127.0.0.1:8000/ocr/accurateocr，前端url为goods/accurateocr
                 changeOrigin: true,
                 // rewrite: path => path.replace(/^\/apiBase/, '')
             }
