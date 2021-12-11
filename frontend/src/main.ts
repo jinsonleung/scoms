@@ -5,9 +5,12 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import store from './store'
 import axios from "axios" //引入axios
-import '@/styles/index.scss'    //引入scss
-import '@/styles/fonts/remixicon.css' //引入icon
+// import '@/styles/index.scss'    //引入全局CSS样式
+// import '@/styles/fonts/remixicon.css' //引入icon
 
+import "@/assets/css/main.css"  //引入全局CSS样式
+// import "@/assets/css/color-dark.css"
+// import '@/assets/css/icon.css'
 
 const app = createApp(App);
 //全局axios

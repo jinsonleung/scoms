@@ -1,188 +1,181 @@
 <template>
-  <h3>==多条件查询==</h3>
-  <h4>https://www.cnblogs.com/jyk/p/14841929.html</h4>
-  <h4>https://www.cnblogs.com/wuhuacong/p/14035302.html</h4>
-  <!--查询条件区域-->
-  <el-form ref="searchForm" :model="searchForm" label-width="80" :inline="true" class="searchForm">
-    <el-form-item>
-      <el-select v-model="optionKey" clearable placeholder='请选择' style="width: 120px;" @change="changeHandle">
-        <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <el-input v-model="searchValue" :placeholder=searchItemPlaceholder style="width: 180px"
-                ref="search_content_input" class="itemInput">
-      </el-input>
-    </el-form-item>
-    <!--展开/收起-->
-    <el-button :icon="expandMore ?'el-icon-arrow-up':'el-icon-arrow-down'" type="text" @click="expandMore =!expandMore">
-      {{ expandMore ? '收起' : '展开' }}
-    </el-button>
-    <!--展开更多条件-->
-    <div ref="searchMoreForm" v-if="expandMore">
-      <el-form-item label="所在城市">
-        <el-input class="itemInput" v-model="city"></el-input>
-      </el-form-item>
-      <el-form-item label="是否生效">
-        <el-select v-model="isActivateValue" placeholder="请选择">
-          <el-option
-              v-for="item in isActivateOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="服务类别">
-        <el-select v-model="serviceLevelValue" placeholder="请选择">
-          <el-option
-              v-for="item in serviceLevelOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
+  <div>
+    <div class="container">
+      <div class="searFormBox">
+        <el-form ref="searchFormRef" :rules="searchFormRules" :model="searchForm" label-width="80px">
+          <el-form-item label="质量标准" prop="quantity">
+            <el-input v-model="searchForm.quantity" style="width: 180px"
+                      ref="search_content_input" class="itemInput">
+            </el-input>
+          </el-form-item>
+
+          <el-form-item label="快速查找" prop="quickSearchItemName">
+            <el-select v-model="searchForm.quickSearchOptionValue" clearable placeholder='请选择' style="width: 120px;"
+                       @change="changeHandle">
+              <el-option
+                  v-for="item in quickSearchOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              >
+              </el-option>
+            </el-select>
+            <el-input v-model="searchForm.searchValue" placeholder="请输入" style="width: 180px"
+                      ref="search_content_input" class="itemInput">
+            </el-input>
+          </el-form-item>
+
+
+          <el-form-item label="选择器" prop="region">
+            <el-select v-model="searchForm.region" placeholder="请选择">
+              <el-option key="bbk" label="步步高" value="bbk"></el-option>
+              <el-option key="xtc" label="小天才" value="xtc"></el-option>
+              <el-option key="imoo" label="imoo" value="imoo"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="日期时间">
+            <el-col :span="11">
+              <el-form-item prop="date1">
+                <el-date-picker type="date" placeholder="选择日期" v-model="searchForm.date1"
+                                style="width: 100%;"></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="date2">
+                <el-time-picker placeholder="选择时间" v-model="searchForm.date2" style="width: 100%;">
+                </el-time-picker>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="选择开关" prop="delivery">
+            <el-switch v-model="searchForm.delivery"></el-switch>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">表单提交</el-button>
+            <el-button @click="onReset">重置表单</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
-
-
-    <!--查询按钮-->
-    <el-button-group style="margin-left: 20px">
-      <el-button type="primary" icon="el-icons-reset" round @click="searchHandle">查询</el-button>
-      <el-button type="warning" icon="el-icons-reset" @click="resetHandle">重置</el-button>
-      <el-button type="primary" icon="el-icons-search" round @click="advanceSearchHandle">高级查询</el-button>
-    </el-button-group>
-
-  </el-form>
+  </div>
 </template>
-<script lang="ts">
-import {ref, reactive, getCurrentInstance, onMounted, toRefs} from "vue"
-import vPagination from '@/components/pagination.vue'
-import {Search, Edit, ArrowLeft} from '@element-plus/icons'
 
+<script>
+import {reactive, ref} from "vue";
+import {ElMessage} from "element-plus";
 
 export default {
-  components: {
-    vPagination,
-    Search,
-    Edit,
-  },
+  name: "baseform",
   setup() {
-    const expandMore = ref(false)
-    const optionKey = ref('')
-    const city = ref('')
-    const options = ref([
+    const options = [
       {
-        value: '公司账号',
+        value: "guangdong",
+        label: "广东省",
+        children: [
+          {
+            value: "guangzhou",
+            label: "广州市",
+            children: [
+              {
+                value: "tianhe",
+                label: "天河区",
+              },
+              {
+                value: "haizhu",
+                label: "海珠区",
+              },
+            ],
+          },
+          {
+            value: "dongguan",
+            label: "东莞市",
+            children: [
+              {
+                value: "changan",
+                label: "长安镇",
+              },
+              {
+                value: "humen",
+                label: "虎门镇",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        value: "hunan",
+        label: "湖南省",
+        children: [
+          {
+            value: "changsha",
+            label: "长沙市",
+            children: [
+              {
+                value: "yuelu",
+                label: "岳麓区",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    const searchFormRef = ref(null);
+    const searchForm = reactive({
+      name: '',
+      region: '',
+      quantity,
+      quickSearchOptionValue: '',
+      searchValue: '',
+    })
+    const quickSearchOptions = ref([
+      {
+        value: 'companyAccount',
         label: '公司账号',
       },
       {
-        value: '公司名称',
+        value: 'companyName',
         label: '公司名称',
       },
       {
-        value: '服务类别',
+        value: 'serverLevel',
         label: '服务类别',
       },
       {
-        value: '是否生效',
+        value: 'isActivate',
         label: '是否生效',
       },
       {
-        value: '有效期',
+        value: 'EffectiveDate',
         label: '有效期',
-      },
-    ])
-    const isActivateOptions = ref([
-      {
-        value: '是',
-        label: '是',
-      },
-      {
-        value: '否',
-        label: '否',
-      },
-    ])
-    const serviceLevelOptions = ref([
-      {
-        value: '1',
-        label: '1',
-      },
-      {
-        value: '2',
-        label: '2',
-      },
-      {
-        value: '3',
-        label: '3',
-      },
-      {
-        value: '4',
-        label: '4',
-      },
-      {
-        value: '5',
-        label: '5',
-      },
-    ])
-
-    const searchItemPlaceholder = ref('')
-    const searchValue = ref('')
-    const isActivateValue = ref('')
-    const serviceLevelValue = ref('')
-    const proxy = getCurrentInstance()
-    const searchForm = reactive([])
+      }])
+    const searchFormRules = {};
 
     const changeHandle = () => {
-      searchItemPlaceholder.value = '请输入' + optionKey.value
-      searchValue.value = ''
-      console.log(proxy)
+      // searchItemPlaceholder.value = '请输入' + searchForm.quickSearchOptionValue
+      // // searchForm.searchValue = ''
+      // console.log(searchForm)
     }
+    // 提交
+    const onSubmit = () => {
 
+    };
+    // 重置
+    const onReset = () => {
 
-    const searchHandle = () => {
-      if (!optionKey.value || !searchValue.value) return
-      console.log('==search.key & searchvalue==', optionKey.value, searchValue.value)
-    }
-    const resetHandle = () => {
-      optionKey.value = ''
-      searchValue.value = ''
-      searchItemPlaceholder.value = ''
-    }
-    const advanceSearchHandle = () => {
-
-    }
-
+      searchFormRef.value.resetFields()
+    };
 
     return {
-      expandMore,
-      optionKey,
       options,
-      city,
-      isActivateOptions,
-      serviceLevelOptions,
-      isActivateValue,
-      serviceLevelValue,
-      searchItemPlaceholder,
-      searchValue,
-      changeHandle,
+      searchFormRules,
+      searchFormRef,
       searchForm,
-      searchHandle,
-      resetHandle,
-      advanceSearchHandle,
+      quickSearchOptions,
+      changeHandle,
+      onSubmit,
+      onReset,
     };
-  }
-}
+  },
+};
 </script>
-
-<style>
-.itemInput {
-  width: 150px;
-}
-</style>

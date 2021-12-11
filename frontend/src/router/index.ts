@@ -117,6 +117,12 @@ const routes = [
         component: ()=>import('@/views/multiSearch/index.vue'),
         meta:{title:'多条件查询'}
       },
+     { //基本表单
+        path: '/baseform',
+        name: 'BaseForm',
+        component: ()=>import('@/views/Test/BaseForm.vue'),
+        meta:{title:'基本表单'}
+      },
     ]
   },
   { //登录页面
