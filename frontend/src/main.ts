@@ -4,6 +4,7 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import store from './store'
+import './utils/directive.js'
 import axios from "axios" //引入axios
 // import '@/styles/index.scss'    //引入全局CSS样式
 // import '@/styles/fonts/remixicon.css' //引入icon
