@@ -118,7 +118,7 @@ const routes = [
         meta:{title:'多条件查询'}
       },
      { //基本表单
-        path: '/dialogform',
+        path: '/baseform',
         name: 'BaseForm',
         component: ()=>import('@/views/Test/dialogForm.vue'),
         meta:{title:'Dialog表单'}

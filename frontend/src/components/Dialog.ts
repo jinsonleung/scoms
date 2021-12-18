@@ -11,7 +11,7 @@ import { ElDialog } from 'element-plus';
 import dialogDrag from '@/utils/directives/dialogDrag';
 import { h, withDirectives } from 'vue';
 
-const Dialog = (__props, context) => {
+const Dialog = (__props:any, context:any) => {
   return withDirectives(
     h(
       'div',

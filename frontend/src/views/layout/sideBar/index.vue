@@ -89,7 +89,7 @@
         <i class="ri-search-2-fill"></i>
         <template #title>多条件查询</template>
       </el-menu-item>
-      <el-menu-item index="/dialogform">
+      <el-menu-item index="/baseform">
         <i class="ri-search-2-fill"></i>
         <template #title>基本表单</template>
       </el-menu-item>
