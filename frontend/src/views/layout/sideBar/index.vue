@@ -17,6 +17,14 @@
         default-active="$route.path"
         router
       >
+        <el-menu-item index="/">
+          <el-icon><home-filled/></el-icon>
+          <span>首页</span>
+        </el-menu-item>
+        <el-menu-item index="/dashboard">
+          <el-icon><icon-menu/></el-icon>
+          <span>仪表盘</span>
+        </el-menu-item>
         <!--1.检系统-->
         <el-sub-menu index="1">
           <template #title>
@@ -28,7 +36,7 @@
             <el-icon><location /></el-icon>
             <span>场站管理</span>
             </template>
-            <el-menu-item index="/1-1-1">场站信息配置</el-menu-item>
+            <el-menu-item index="/stationsetting">场站信息配置</el-menu-item>
             <el-menu-item index="1-1-2">场站权配置</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="1-2">
@@ -36,7 +44,7 @@
             <el-icon><location /></el-icon>
             <span>供应商管理</span>
             </template>
-            <el-menu-item index="1-2-1">供应商采购</el-menu-item>
+            <el-menu-item index="/vendorsetting">供应商采购</el-menu-item>
             <el-menu-item index="1-2-2">供应商服务</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="1-3">
@@ -44,8 +52,8 @@
             <el-icon><location /></el-icon>
             <span>安全监控</span>
             </template>
-            <el-menu-item index="1-3-1">安全标准配置</el-menu-item>
-            <el-menu-item index="1-3-2">安全事项</el-menu-item>
+            <el-menu-item index="/security">安全标准配置</el-menu-item>
+            <el-menu-item index="/securityaccident">安全事项</el-menu-item>
           </el-sub-menu>
           <el-menu-item-group title="设备测试">
             <el-menu-item index="1-4">设备使用</el-menu-item>
@@ -76,43 +84,30 @@
             <el-icon><location /></el-icon>
             <span>跨域请求</span>
             </template>
-            <el-menu-item index="2-1-1">Aciox测试</el-menu-item>
-            <el-menu-item index="2-1-2">跨域请求</el-menu-item>
+            <el-menu-item index="/testaxios">Aciox测试</el-menu-item>
+            <el-menu-item index="/crossdomain">跨域请求</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="2-2">
             <template #title>
             <el-icon><location /></el-icon>
-            <span>表单</span>
+            <span>表单测试</span>
             </template>
             <el-menu-item index="/baseform">基本表单</el-menu-item>
             <el-menu-item index="/dialogform">对话弹窗</el-menu-item>
           </el-sub-menu>
 
-          <el-menu-item index="2-3">
-            <el-icon><bell /></el-icon>
-            <span>简介页面</span>
-          </el-menu-item>
-          <el-menu-item index="2-4">
-            <el-icon><bell /></el-icon>
-            <span>商品维护</span>
-          </el-menu-item>
-          <el-menu-item index="2-5">
-            <el-icon><bell /></el-icon>
-            <span>文字识别</span>
-          </el-menu-item>
-          <el-menu-item index="2-6">
-            <el-icon><bell /></el-icon>
-            <span>图片上传</span>
-          </el-menu-item>
-          <el-menu-item index="2-7">
-            <el-icon><bell /></el-icon>
-            <span>分页</span>
-          </el-menu-item>
-          <el-menu-item index="2-8">
-            <el-icon><bell /></el-icon>
-            <span>多条件查询</span>
-          </el-menu-item>
-
+          <el-sub-menu index="2-3">
+            <template #title>
+            <el-icon><location /></el-icon>
+            <span>其他组件</span>
+            </template>
+            <el-menu-item index="/introduce">简介页面</el-menu-item>
+            <el-menu-item index="/goodlist">商品维护</el-menu-item>
+            <el-menu-item index="/characterRecognition">文字识别</el-menu-item>
+            <el-menu-item index="/imageUpload">图片上传</el-menu-item>
+            <el-menu-item index="/pagination">分页</el-menu-item>
+            <el-menu-item index="/multisearch">多条件查询</el-menu-item>
+          </el-sub-menu>
         </el-sub-menu>
 
         <!--3.赛诚运营系统-->
@@ -131,13 +126,15 @@
 import { defineComponent,reactive,computed,ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {useStore, mapGetters, mapActions} from 'vuex'
-import logoSrc from '@/assets/img/vueLogo.png'
+// import logoSrc from '@/assets/img/vueLogo.png'
+import logoSrc from '@/assets/img/logo2.png'
 import {
   Bell,
   Location,
   Document,
   Menu as IconMenu,
   Setting,
+  HomeFilled,
 } from '@element-plus/icons'
 
 
@@ -148,6 +145,7 @@ export default defineComponent({
     Document,
     Setting,
     IconMenu,
+    HomeFilled,
   },
   computed: {
       ...mapGetters(['isCollapse'])
@@ -208,39 +206,28 @@ export default defineComponent({
 
 .logo {
   //position: absolute;
-  //top: 0;
-  //display: flex;
-  //width: 100%;
-  //height: 50px;
-  //overflow: hidden;
-  //text-align: center;
-  //cursor: pointer;
-  //background-color: #2b2f3a;
-  //justify-content: center;
-  //align-items: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    //justify-content: left;
     height: 50px;
     background-color: #222832;
   .logo-img {
     width: 32px;
     height: 32px;
+    margin-left: 20px;
   }
 
   .logo-text {
     display: inline-block;
     height: 50px;
     margin-left: 12px;
-    font-size: 14px;
+    font-size: 20px;
     line-height: 50px;
-    color: red;
+    color: white;
   }
 
 }
   .line {
-    //border-top: 0.5px solid hsla(0,0%,100%,.05);
-    //border-bottom: 0.5px solid rgba(0,0,0,.2);
-    border-bottom: 0.5px solid #5b5b5b;
+    border-bottom: 0.5px solid #242f42;
   }
 </style>

@@ -17,8 +17,8 @@ import Env from "@/views/env/index.vue"
 const routes = [
   { //默认页面
     path: '/',
-    redirect: '/dashboard',
-    name:'Dashboard',
+    redirect: '/home',
+    name:'Home',
     component: ()=>import ('@/views/layout/index.vue'),
     children:[
       {
