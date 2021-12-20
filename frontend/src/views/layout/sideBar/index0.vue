@@ -9,6 +9,8 @@
 
 <template>
   <div class="sidebar-container" :class="{'collapse-width': isCollapse}">
+
+
     <el-menu
         :default-active="$route.path"
         class="el-menu-vertical-demo"
@@ -150,5 +152,32 @@ export default {
 
 }
 
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+
+.head > div {
+  display: flex;
+  align-items: center;
+}
+
+.head img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.head span {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.line {
+  border-top: 1px solid hsla(0, 0%, 100%, .05);
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+}
 
 </style>

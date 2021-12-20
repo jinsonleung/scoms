@@ -1,219 +1,246 @@
-<!--
- * @Author: Jinson.Liang
- * @Date: 2021-08-21 14:38:45
- * @LastEditors: Jinson.Liang
- * @LastEditTime: 2021-08-24 17:42:19
- * @Description: 左邊菜單欄
- * @FilePath: \vue3-vite-ssis\src\views\layout\sideBar\index1.vue
--->
 <template>
-  <div class="layout">
-    <el-container v-if="state.showMenu" class="container">
-      <el-aside class="aside">
-        <div class="head">
-          <div>
-            <img src="https://s.weituibao.com/1582958061265/mlogo.png" alt="logo">
-            <span>vue3 admin</span>
-          </div>
-        </div>
-        <div class="line" />
-        <el-menu
-          :default-openeds="state.defaultOpen"
-          background-color="#222832"
-          text-color="#fff"
-          :router="true"
-          :default-active='state.currentPath'
-        >
-          <el-submenu index="1">
+  <div class="sidebar-container" :class="{'collapse-width': isCollapse}">
+    <!--企业Logo-->
+    <div class="logo" @click="$router.push('/')">
+      <img class="logo-img" :src="logoSrc" alt="logo" />
+      <transition name="el-zoom-in-center">
+        <h1 v-show="opened" class="logo-text">SCOMS</h1>
+      </transition>
+    </div>
+    <div class="line"/>
+      <!--左边菜单-->
+      <el-menu
+        class="el-menu-vertical-demo"
+        active-text-color="red"
+        background-color="#222832"
+        text-color="#fff"
+        default-active="$route.path"
+        router
+      >
+        <!--1.检系统-->
+        <el-sub-menu index="1">
+          <template #title>
+            <el-icon><IconMenu /></el-icon>
+            <span>安检系统</span>
+          </template>
+          <el-sub-menu index="1-1">
+            <template #title>
             <el-icon><location /></el-icon>
-            <template #title>
-              <span>aaaaaaa</span>
+            <span>场站管理</span>
             </template>
-            <el-menu-item-group>
-              <el-menu-item index="/introduce"><i class="el-icon-data-line" />系统介绍</el-menu-item>
-              <el-menu-item index="/dashboard"><i class="el-icon-odometer" />Dashboard</el-menu-item>
-              <el-menu-item index="/add"><i class="el-icon-plus" />添加商品</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="2">
+            <el-menu-item index="/1-1-1">场站信息配置</el-menu-item>
+            <el-menu-item index="1-1-2">场站权配置</el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="1-2">
             <template #title>
-              <span>首页配置bbbb</span>
+            <el-icon><location /></el-icon>
+            <span>供应商管理</span>
             </template>
-            <el-menu-item-group>
-              <el-menu-item index="/swiper"><i class="el-icon-picture" />轮播图配置</el-menu-item>
-              <el-menu-item index="/hot"><i class="el-icon-star-on" />热销商品配置</el-menu-item>
-              <el-menu-item index="/new"><i class="el-icon-sell" />新品上线配置</el-menu-item>
-              <el-menu-item index="/recommend"><i class="el-icon-thumb" />为你推荐配置</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="3">
+            <el-menu-item index="1-2-1">供应商采购</el-menu-item>
+            <el-menu-item index="1-2-2">供应商服务</el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="1-3">
             <template #title>
-              <span>模块管理</span>
+            <el-icon><location /></el-icon>
+            <span>安全监控</span>
             </template>
-            <el-menu-item-group>
-              <el-menu-item index="/category"><i class="el-icon-menu" />分类管理</el-menu-item>
-              <el-menu-item index="/good"><i class="el-icon-s-goods" />商品管理</el-menu-item>
-              <el-menu-item index="/guest"><i class="el-icon-user-solid" />会员管理</el-menu-item>
-              <el-menu-item index="/order"><i class="el-icon-s-order" />订单管理</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-submenu index="4">
+            <el-menu-item index="1-3-1">安全标准配置</el-menu-item>
+            <el-menu-item index="1-3-2">安全事项</el-menu-item>
+          </el-sub-menu>
+          <el-menu-item-group title="设备测试">
+            <el-menu-item index="1-4">设备使用</el-menu-item>
+            <el-menu-item index="1-5">设备测试</el-menu-item>
+          </el-menu-item-group>
+          <el-sub-menu index="1-6" disabled> <!--不可使用-->
             <template #title>
-              <span>系统管理</span>
+            <el-icon><location /></el-icon>
+            <span>人员管理</span>
             </template>
-            <el-menu-item-group>
-              <el-menu-item index="/account"><i class="el-icon-lock" />修改密码</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-        </el-menu>
-      </el-aside>
-      <el-container class="content">
-      </el-container>
-    </el-container>
+            <el-menu-item index="1-6-1">外出管理</el-menu-item>
+            <el-menu-item index="1-6-2">差旅管理</el-menu-item>
+          </el-sub-menu>
+          <el-menu-item index="4">
+          <el-icon><setting /></el-icon>
+          <span>权限配置</span>
+          </el-menu-item>
+        </el-sub-menu>
+
+        <!--2.测试系统-->
+        <el-sub-menu index="2">
+          <template #title>
+            <el-icon><IconMenu /></el-icon>
+            <span>测试系统</span>
+          </template>
+          <el-sub-menu index="2-1">
+            <template #title>
+            <el-icon><location /></el-icon>
+            <span>跨域请求</span>
+            </template>
+            <el-menu-item index="2-1-1">Aciox测试</el-menu-item>
+            <el-menu-item index="2-1-2">跨域请求</el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="2-2">
+            <template #title>
+            <el-icon><location /></el-icon>
+            <span>表单</span>
+            </template>
+            <el-menu-item index="/baseform">基本表单</el-menu-item>
+            <el-menu-item index="/dialogform">对话弹窗</el-menu-item>
+          </el-sub-menu>
+
+          <el-menu-item index="2-3">
+            <el-icon><bell /></el-icon>
+            <span>简介页面</span>
+          </el-menu-item>
+          <el-menu-item index="2-4">
+            <el-icon><bell /></el-icon>
+            <span>商品维护</span>
+          </el-menu-item>
+          <el-menu-item index="2-5">
+            <el-icon><bell /></el-icon>
+            <span>文字识别</span>
+          </el-menu-item>
+          <el-menu-item index="2-6">
+            <el-icon><bell /></el-icon>
+            <span>图片上传</span>
+          </el-menu-item>
+          <el-menu-item index="2-7">
+            <el-icon><bell /></el-icon>
+            <span>分页</span>
+          </el-menu-item>
+          <el-menu-item index="2-8">
+            <el-icon><bell /></el-icon>
+            <span>多条件查询</span>
+          </el-menu-item>
+
+        </el-sub-menu>
+
+        <!--3.赛诚运营系统-->
+        <el-sub-menu index="3">
+          <template #title>
+            <el-icon><IconMenu /></el-icon>
+            <span>运营系统</span>
+          </template>
+        </el-sub-menu>
+
+      </el-menu>
   </div>
 </template>
 
-<script>
-import { onUnmounted, reactive } from 'vue'
+<script lang="ts">
+import { defineComponent,reactive,computed,ref } from 'vue'
 import { useRouter } from 'vue-router'
+import {useStore, mapGetters, mapActions} from 'vuex'
+import logoSrc from '@/assets/img/vueLogo.png'
+import {
+  Bell,
+  Location,
+  Document,
+  Menu as IconMenu,
+  Setting,
+} from '@element-plus/icons'
 
-export default {
-  name: 'App',
+
+export default defineComponent({
   components: {
+    Bell,
+    Location,
+    Document,
+    Setting,
+    IconMenu,
   },
+  computed: {
+      ...mapGetters(['isCollapse'])
+    },
   setup() {
-    const noMenu = ['/login']
     const router = useRouter()
-    const state = reactive({
-      defaultOpen: ['1', '2', '3', '4'],
-      showMenu: true,
-      currentPath: '/dashboard',
-      count: {
-        number: 1
-      }
-    })
-    // 监听浏览器原生回退事件
-    if (window.history && window.history.pushState) {
-      history.pushState(null, null, document.URL);
-      window.addEventListener('popstate', () => {
-        if (!localGet('token')) {
-          state.showMenu = false
-        }
-      }, false);
-    }
-    const unwatch = router.beforeEach((to, from, next) => {
-      if (to.path == '/login') {
-        // 如果路径是 /login 则正常执行
-        next()
-      } else {
-        // 如果不是 /login，判断是否有 token
-        if (!localGet('token')) {
-          // 如果没有，则跳至登录页面
-          next({ path: '/login' })
-        } else {
-          // 否则继续执行
-          next()
-        }
-      }
-      state.showMenu = !noMenu.includes(to.path)
-      state.currentPath = to.path
-      document.title = pathMap[to.name]
-    })
-
-    onUnmounted(() => {
-      unwatch()
-    })
-
+    const opened = ref(true)
     return {
-      state
+      opened,
+      logoSrc,
+      // handleOpen,
+      // handleClose,
     }
-  }
-}
+  },
+})
 </script>
 
-<style scoped>
-  .layout {
-    min-height: 100vh;
-    background-color: #ffffff;
+
+<style lang="scss" scoped>
+.collapse-width {
+  width: 64px !important;
+
+}
+
+.sidebar-container {
+  width: 210px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s;
+  z-index: 1001;
+  overflow: hidden;
+
+  .el-menu-vertical:not(.el-menu--collapse) {
+    width: 210px;
   }
-  .container {
-    height: 100vh;
-  }
-  .aside {
-    width: 200px!important;
-    background-color: #222832;
-    overflow: hidden;
+
+  .el-menu {
+    border: none;
+    height: 100%;
+    width: 100% !important;
     overflow-y: auto;
-    -ms-overflow-style: none;
-    overflow: -moz-scrollbars-none;
   }
-  .aside::-webkit-scrollbar {
-    display: none;
-  }
-  .head {
+}
+
+.el-menu-item, .el-submenu {
+  text-align: left;
+}
+
+.el-menu-item i, .el-submenu__title i {
+  color: inherit;
+  font-size: 16px;
+  margin-right: 5px;
+
+}
+
+.logo {
+  //position: absolute;
+  //top: 0;
+  //display: flex;
+  //width: 100%;
+  //height: 50px;
+  //overflow: hidden;
+  //text-align: center;
+  //cursor: pointer;
+  //background-color: #2b2f3a;
+  //justify-content: center;
+  //align-items: center;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 50px;
-  }
-  .head > div {
-    display: flex;
-    align-items: center;
+    background-color: #222832;
+  .logo-img {
+    width: 32px;
+    height: 32px;
   }
 
-  .head img {
-    width: 50px;
+  .logo-text {
+    display: inline-block;
     height: 50px;
-    margin-right: 10px;
+    margin-left: 12px;
+    font-size: 14px;
+    line-height: 50px;
+    color: red;
   }
-  .head span {
-    font-size: 20px;
-    color: #ffffff;
-  }
+
+}
   .line {
-    border-top: 1px solid hsla(0,0%,100%,.05);
-    border-bottom: 1px solid rgba(0,0,0,.2);
-  }
-  .content {
-    display: flex;
-    flex-direction: column;
-    max-height: 100vh;
-    overflow: hidden;
-  }
-  .main {
-    height: calc(100vh - 100px);
-    overflow: auto;
-    padding: 10px;
-  }
-</style>
-<style>
-  body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-  .el-menu {
-    border-right: none!important;
-  }
-  .el-submenu {
-    border-top: 1px solid hsla(0, 0%, 100%, .05);
-    border-bottom: 1px solid rgba(0, 0, 0, .2);
-  }
-  .el-submenu:first-child {
-    border-top: none;
-  }
-  .el-submenu [class^="el-icon-"] {
-    vertical-align: -1px!important;
-  }
-  a {
-    color: #409eff;
-    text-decoration: none;
-  }
-  .el-pagination {
-    text-align: center;
-    margin-top: 20px;
-  }
-  .el-popper__arrow {
-    display: none;
+    //border-top: 0.5px solid hsla(0,0%,100%,.05);
+    //border-bottom: 0.5px solid rgba(0,0,0,.2);
+    border-bottom: 0.5px solid #5b5b5b;
   }
 </style>

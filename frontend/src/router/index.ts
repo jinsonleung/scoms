@@ -120,8 +120,14 @@ const routes = [
      { //基本表单
         path: '/baseform',
         name: 'BaseForm',
+        component: ()=>import('@/views/Test/BaseForm.vue'),
+        meta:{title:'基本表单'}
+      },
+     { //对话弹窗
+        path: '/dialogform',
+        name: 'DialogForm',
         component: ()=>import('@/views/Test/dialogForm.vue'),
-        meta:{title:'Dialog表单'}
+        meta:{title:'Dialog对话框'}
       },
     ]
   },
