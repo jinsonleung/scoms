@@ -7,8 +7,10 @@
         <h1 v-show="opened" class="logo-text">SCOMS</h1>
       </transition>
     </div>
+    <!--横线-->
     <div class="line"/>
-      <!--左边菜单-->
+    <!--左边菜单-->
+    <el-scrollbar style="height: 100%; background-color: #222832">
       <el-menu
         class="el-menu-vertical-demo"
         active-text-color="red"
@@ -77,7 +79,7 @@
         <el-sub-menu index="2">
           <template #title>
             <el-icon><IconMenu /></el-icon>
-            <span>测试系统</span>
+            <span>组件测试</span>
           </template>
           <el-sub-menu index="2-1">
             <template #title>
@@ -119,6 +121,7 @@
         </el-sub-menu>
 
       </el-menu>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -167,7 +170,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .collapse-width {
   width: 64px !important;
-
 }
 
 .sidebar-container {
@@ -180,11 +182,6 @@ export default defineComponent({
   transition: width 0.3s;
   z-index: 1001;
   overflow: hidden;
-
-  .el-menu-vertical:not(.el-menu--collapse) {
-    width: 210px;
-  }
-
   .el-menu {
     border: none;
     height: 100%;
@@ -196,12 +193,11 @@ export default defineComponent({
 .el-menu-item, .el-submenu {
   text-align: left;
 }
-
-.el-menu-item i, .el-submenu__title i {
+//调整图标与菜单名的间隔
+.el-menu-item i, .el-sub-menu__title i {
   color: inherit;
   font-size: 16px;
   margin-right: 5px;
-
 }
 
 .logo {

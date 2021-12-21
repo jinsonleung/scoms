@@ -8,3 +8,7 @@ sc operations management system
 
 ## 2021.12.18
 + https://naturefw.gitee.io/nf-rollup-ui-controller/nf-button
+
+## 2021.12.20
++ element plus左边菜单框有Y滚动条，需要去掉
++ 
