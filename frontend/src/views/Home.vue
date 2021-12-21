@@ -6,20 +6,41 @@
  * @Description: 
  * @FilePath: \vue3-vite-ssis\src\views\Home.vue
 -->
+
 <template>
-  <div>==HOME PAGE==</div>
+  <div class="home-view">
+    <el-empty description="首页"/>
+    <h2 class="title">{{ msg }}</h2>
+  </div>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue";
+import {ref, defineComponent, reactive, onMounted} from "vue";
+
 export default defineComponent({
-  name: "App",
+  name: "Home",
   setup() {
-    const refData = ref(0);
+    const refData = ref(0)
+    const msg = ref('Welcome to the management system！')
+    const h2Style = reactive({
+      color: '#435448'
+    })
     return {
       refData,
+      msg,
+      h2Style
     };
   },
 });
+
+
 </script>
-<style></style>
+
+<style lang="scss" scoped>
+.home-view {
+  .title {
+    color: #3e36ff;
+    text-align: center;
+  }
+}
+</style>

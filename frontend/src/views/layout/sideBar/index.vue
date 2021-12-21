@@ -4,7 +4,7 @@
     <div class="logo" @click="$router.push('/')">
       <img class="logo-img" :src="logoSrc" alt="logo" />
       <transition name="el-zoom-in-center">
-        <h1 v-show="opened" class="logo-text">SCOMS</h1>
+        <h1 v-show="opened" class="logo-text">{{systemTitle}}</h1>
       </transition>
     </div>
     <!--横线-->
@@ -12,12 +12,13 @@
     <!--左边菜单-->
     <el-scrollbar style="height: 100%; background-color: #222832">
       <el-menu
-        class="el-menu-vertical-demo"
-        active-text-color="red"
+        class="el-menu-vertical"
+        active-text-color="yellow"
         background-color="#222832"
         text-color="#fff"
         default-active="$route.path"
         router
+        :collapse="isCollapse"
       >
         <el-menu-item index="/">
           <el-icon><home-filled/></el-icon>
@@ -27,8 +28,8 @@
           <el-icon><icon-menu/></el-icon>
           <span>仪表盘</span>
         </el-menu-item>
-        <!--1.检系统-->
-        <el-sub-menu index="1">
+        <!--1.安检系统-->
+        <el-sub-menu index="1" disabled>
           <template #title>
             <el-icon><IconMenu /></el-icon>
             <span>安检系统</span>
@@ -128,10 +129,10 @@
 <script lang="ts">
 import { defineComponent,reactive,computed,ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {useStore, mapGetters, mapActions} from 'vuex'
-// import logoSrc from '@/assets/img/vueLogo.png'
-import logoSrc from '@/assets/img/logo2.png'
+import { useStore, mapGetters, mapActions} from 'vuex'
+import logoSrc from '@/assets/img/logo2.png'  //Logo图片
 import {
+  Expand,
   Bell,
   Location,
   Document,
@@ -143,6 +144,7 @@ import {
 
 export default defineComponent({
   components: {
+    Expand,
     Bell,
     Location,
     Document,
@@ -150,17 +152,17 @@ export default defineComponent({
     IconMenu,
     HomeFilled,
   },
-  computed: {
+  computed: { // Vuex全局状态
       ...mapGetters(['isCollapse'])
     },
   setup() {
     const router = useRouter()
-    const opened = ref(true)
+    const systemTitle = ref('SCOMS') //系统名称
+    const opened = ref(true)  // true:显示系统名称
     return {
+      systemTitle,
       opened,
       logoSrc,
-      // handleOpen,
-      // handleClose,
     }
   },
 })
@@ -217,9 +219,9 @@ export default defineComponent({
     display: inline-block;
     height: 50px;
     margin-left: 12px;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 50px;
-    color: white;
+    color: navajowhite;
   }
 
 }

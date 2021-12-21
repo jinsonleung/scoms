@@ -9,10 +9,6 @@
 
 <template>
   <div>
-    <!-- <side-bar></side-bar>
-    <top-bar></top-bar>
-    <app-main></app-main>
-    <foot-bar></foot-bar> -->
      <side-bar></side-bar>
     <div class="right-container" :class="{'collapse-ml': isCollapse}">
         <top-bar></top-bar>
