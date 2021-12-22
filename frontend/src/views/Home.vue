@@ -9,13 +9,15 @@
 
 <template>
   <div class="home-view">
-    <el-empty description="首页"/>
-    <h2 class="title">{{ msg }}</h2>
+<!--    <el-empty description="首页"/>-->
+    <img class="aircraft-image" :src= "aircraftImage" />
+<!--    <h2 class="title">{{ msg }}</h2>-->
   </div>
 </template>
 
 <script lang="ts">
-import {ref, defineComponent, reactive, onMounted} from "vue";
+import {ref, defineComponent, reactive, onMounted} from "vue"
+import aircraftImage from '@/assets/img/aircraft-6.png'
 
 export default defineComponent({
   name: "Home",
@@ -27,6 +29,7 @@ export default defineComponent({
     })
     return {
       refData,
+      aircraftImage,
       msg,
       h2Style
     };
@@ -41,6 +44,12 @@ export default defineComponent({
   .title {
     color: #3e36ff;
     text-align: center;
+  }
+  .aircraft-image
+  {
+    margin-top: 100px;
+    height: 300px;
+    width: 100%;
   }
 }
 </style>

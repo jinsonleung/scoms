@@ -7,20 +7,12 @@
  * @FilePath: \vue3-vite-ssis\src\views\layout\topBar\index1.vue
 -->
 <template>
-  <div class="topbar-container">
-    <div :class="toggle-btn" @click="toggleSidebar">
-      <el-icon class="el-avatar--icon" >
-        <fold />
-      </el-icon>
-    </div>
-
+  <div class="top-bar-container">
     <div class="header">
-      <div class="toggle-btn" @click="toggleSidebar">
-        <i class="expand"
-           :class="{ 'expand': isCollapse }"
-        ></i>
+      <div class="toggle-button" @click="toggleSidebar">
+        <!--切换折叠/展开-->
+        <Icon class="collapse-icon" :icon="isCollapse?'Expand':'Fold'"></Icon>
       </div>
-
     </div>
   </div>
 </template>
@@ -28,36 +20,20 @@
 <script lang="ts">
 import {ref, reactive, computed} from "vue";
 import {useStore, mapGetters, mapActions} from "vuex";
-import {
-  Expand,
-  Fold,
-
-} from '@element-plus/icons'
 
 export default {
   name: "index",
-  components: {Expand,Fold,},
   computed: {
     ...mapGetters(["isCollapse"]), // 语法糖
   },
-  setup(props, context) {
-    const state = reactive({
-      title: "场站安全系统",
-    });
-    const iconName = ref('fold')
+  setup(props: any, context: any) {
     const store = useStore()
-    const isCollapse = computed(() => store.getters.isCollapse); //getters
-    const toggleSidebar = () => store.dispatch("toggleSidebar", state.title); //actions
-
-    const handleClick = () => {
-      store.state.app.isCollapse = !store.state.app.isCollapse;
-      console.log(store.state.app.isCollapse);
-    };
+    // const isCollapse = computed(() => store.getters.isCollapse); //getters
+    const toggleSidebar = () => { //isCollapse状态
+      store.dispatch("toggleSidebar", '折叠/展开') //actions, 第2个参数可以是随便字符串
+      // iconName.value = isCollapse.value? 'Expand': 'Fold' //切换折叠/展开图标
+    }
     return {
-      iconName,
-      state,
-      handleClick,
-      isCollapse,
       toggleSidebar,
       // ...mapActions(['toggleSidebar']) // 语法糖
     };
@@ -66,30 +42,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.topbar-container {
+.top-bar-container {
   width: 100%;
   height: 50px;
-  //background-color: #fff;
-  background-color: red;
-
+  background-color: #fff;
   .header {
     height: 50px;
     line-height: 50px;
     box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
     position: relative;
-
-    .toggle-btn {
+    .toggle-button {
       line-height: 50px;
       height: 100%;
       float: left;
       cursor: pointer;
       transition: background 0.3s;
-
+      align-content: center;
       :hover {
         background: rgba(0, 0, 0, 0.025);
         display: inline-block;
       }
     }
+  }
+  .collapse-icon {
+    margin-left: 5px;
+    height: 20px;
+    width: 20px;
   }
 
   .is-active {
