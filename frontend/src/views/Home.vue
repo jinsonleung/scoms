@@ -47,8 +47,8 @@ export default defineComponent({
   }
   .aircraft-image
   {
-    margin-top: 100px;
-    height: 300px;
+    margin-top: 150px;
+    height: 250px;
     width: 100%;
   }
 }

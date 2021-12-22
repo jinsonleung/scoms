@@ -8,11 +8,12 @@
 -->
 
 <template>
-  <div class=footer-container>
-    <div class = "footer">
-      <h5 style="color:gray">Copyright @2021 </h5>
+  <div class="footer">
+    <div class="left">Copyright © 2019-2021 十三. All rights reserved.</div>
+    <div class="right">
+      <a target="_blank" href="https://github.com/newbee-ltd/vue3-admin">vue3-admin Version 3.0.0</a>
     </div>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -28,30 +29,12 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-  .footer-container {
-    width: 100%;
-    height: 50px;
-    background-color: #fff;
-    //background-color: rgb(219, 211, 211);
-    .footer {
-      height: 50px;
-      line-height: 50px;
-      box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
-      position: relative;
-      .toggle-btn {
-        line-height: 50px;
-        height: 100%;
-        float: left;
-        cursor: pointer;
-        transition: background 0.3s;
-        :hover {
-          background: rgba(0, 0, 0, 0.025);
-          display: inline-block;
-        }
-      }
-    }
-    .is-active {
-      transform: rotate(180deg);
-    }
+  .footer {
+    height: 30px;
+    border-top: 1px solid #e9e9e9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
   }
-  </style>
+</style>

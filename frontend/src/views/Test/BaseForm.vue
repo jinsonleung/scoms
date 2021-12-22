@@ -59,6 +59,15 @@
                     <el-form-item label="文本框" prop="desc">
                         <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
                     </el-form-item>
+
+                    <el-form-item label="文本框" prop="desc">
+                        <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="文本框" prop="desc">
+                        <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
+                    </el-form-item>
+
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">表单提交</el-button>
                         <el-button @click="onReset">重置表单</el-button>
