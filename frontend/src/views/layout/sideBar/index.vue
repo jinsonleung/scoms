@@ -130,7 +130,8 @@
 import { defineComponent,reactive,computed,ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore, mapGetters, mapActions} from 'vuex'
-import logoSrc from '@/assets/img/logo2.png'  //Logo图片
+import logoSrc from '@/assets/img/logo2.png'  //商业logo图片
+// import logoSrc from '@/assets/img/saicheng-logo-1.png'  //saicheng logo图片
 
 import {
   Expand,
@@ -158,7 +159,7 @@ export default defineComponent({
     },
   setup() {
     const router = useRouter()
-    const systemTitle = ref('SCOMS') //系统名称
+    const systemTitle = ref('OMS') //系统名称
     const opened = ref(true)  // true:显示系统名称
     return {
       systemTitle,
