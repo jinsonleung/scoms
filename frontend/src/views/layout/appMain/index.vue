@@ -27,10 +27,10 @@ export default defineComponent({
 });
 </script>
 <style scoped>
-    .app-main {
-        /*50 = navbar  */
-        min-height: calc(100vh - 50px);
-        width: 100%;
-        position: relative;
-    }
+  .app-main {
+    height: calc(100vh - 120px);
+    overflow: auto;
+    padding: 10px;
+    /*background-color: #F0F0F0;*/
+  }
 </style>

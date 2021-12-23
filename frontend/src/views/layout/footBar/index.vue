@@ -1,8 +1,8 @@
 <template>
   <div class="footer">
-    <div class="left">Copyright © 2019-2021 十三. All rights reserved.</div>
+    <div class="left">Copyright © 2020-2021. All rights reserved.</div>
     <div class="right">
-      <a target="_blank" href="https://github.com/newbee-ltd/vue3-admin">vue3-admin Version 3.0.0</a>
+      <a target="_blank" href="#">OMS V3.0.0</a>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default defineComponent ({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .footer {
     height: 50px;
     border-top: 1px solid #e9e9e9;
@@ -23,5 +23,9 @@ export default defineComponent ({
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    background-color: #f0f0f0;
+    .left {
+      color: #97a8be;
+    }
   }
 </style>
