@@ -10,11 +10,15 @@
   <div class="top-bar-container">
     <div class="header">
       <!--切换折叠/展开-->
-      <div class="left">
+      <div class="header-left">
         <Icon class="collapse-icon" :icon="isCollapse?'Expand':'Fold'" @click="toggleSidebar"></Icon>
       </div>
-      <div class="right">
+      <div class="header-right">
         <div class="header-user-con">
+          <!--全屏/正常屏切换图标-->
+          <span class="body-top-btn" @click="screenFullToggle">
+            <Icon icon="FullScreen"></Icon>
+          </span>
           <!-- 消息中心 -->
           <div class="btn-bell">
             <el-tooltip
@@ -32,8 +36,8 @@
             />
           </div>
           <!-- 用户头像 -->
-          <div class="user-avator" style="height: 16px; width: 16px; overflow: auto" >
-             <img :src="avator">
+          <div class="user-avator" style="height: 16px; width: 16px; overflow: auto">
+            <img :src="avator">
           </div>
           <!-- 用户名下拉菜单 -->
           <el-dropdown
@@ -70,9 +74,13 @@
 </template>
 
 <script lang="ts">
-import {ref, toRefs, reactive, computed, defineComponent} from "vue";
-import {useStore, mapGetters, mapActions} from "vuex";
+import {ref, toRefs, reactive, computed, defineComponent} from "vue"
+import {useStore, mapGetters, mapActions} from "vuex"
+import ScreenFull from 'screenfull' //全屏切换
+
 import avator from '/favicon.ico'
+import {ElMessage} from "element-plus"; //头像
+
 
 export default defineComponent({
   name: "index",
@@ -88,11 +96,24 @@ export default defineComponent({
       message: 2,
     })
 
-    const userInfo =reactive({
+    const userInfo = reactive({
       headimg: avator,
       nickName: 'Jinson'
     })
 
+    // 全屏/非全屏切换
+    const screenFullToggle = () => {
+      ScreenFull.toggle()
+          .then(() => {
+          })
+          .catch(() => {
+            ElMessage ({
+              showClose: true,
+              message: "你的浏览器不支持全屏！",
+              type: "warning"
+            });
+          });
+    }
     const store = useStore()
     // const isCollapse = computed(() => store.getters.isCollapse); //getters
     const toggleSidebar = () => { //isCollapse状态
@@ -110,16 +131,17 @@ export default defineComponent({
       // router.back()
     }
 
-    const handleCommand = async (command:any) => {
-			// if (command === 'loginout') {
-			// 	const res = await store.dispatch('user/logout', {})
-			// 	if (res){
-			// 		router.push('/login');
-			// 	}
-			// }
-		}
+    const handleCommand = async (command: any) => {
+      // if (command === 'loginout') {
+      // 	const res = await store.dispatch('user/logout', {})
+      // 	if (res){
+      // 		router.push('/login');
+      // 	}
+      // }
+    }
     return {
       avator,
+      screenFullToggle,
       ...toRefs(state),
       toggleSidebar,
       userInfo,
@@ -154,42 +176,52 @@ export default defineComponent({
   margin-right: 10px;
 }
 
-.left .collapse-icon {
+.header-left .collapse-icon {
   height: 20px;
   width: 20px;
 }
 
-.right > div > .icon {
+.header-right > div > .icon {
   font-size: 18px;
   margin-right: 6px;
 }
 
 .header-user-con {
   display: flex;
-  height: 70px;
-  align-items: center;
+  /*height: 70px;*/
+  /*align-content: center;*/
+  text-align:center;
+  /*align-items: center;*/
 }
 
 .user-avator {
-    margin-left: 20px;
-	margin-right: 5px;
+  margin-left: 20px;
+  margin-right: 5px;
 }
 
 .btn-bell
-
 .btn-bell .el-icon-bell {
-    color: #fff;
+  color: #fff;
+}
+
+
+.body-top-btn {
+  /*display: inline-block;*/
+  /*text-align: center;*/
+  cursor: pointer;
+  /*padding: 0 14px;*/
+  /*color: #fff;*/
 }
 
 .btn-bell-badge {
-    position: absolute;
-    right: 0;
-    top: -2px;
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    background: #f56c6c;
-    color: #fff;
+  position: absolute;
+  right: 0;
+  top: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #f56c6c;
+  color: #fff;
 }
 
 

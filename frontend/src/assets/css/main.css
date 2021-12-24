@@ -71,7 +71,7 @@ a {
     margin-bottom: 20px;
 }
 
-.el-button+.el-tooltip {
+.el-button + .el-tooltip {
     margin-left: 10px;
 }
 
@@ -175,4 +175,10 @@ a {
 
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
+}
+
+/*element-plus icon样式 <Icon icon="Edit"></Icon>*/
+svg {
+    height: 16px;
+    width: 16px;
 }

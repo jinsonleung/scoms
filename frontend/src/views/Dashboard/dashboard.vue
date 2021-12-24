@@ -9,6 +9,7 @@
 
 <template>
   <div class="app-container">Dashboard</div>
+  <Icon icon="Edit"></Icon>
 </template>
 
 <script lang='ts'>
