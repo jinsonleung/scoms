@@ -2,13 +2,13 @@
   <div class="footer">
     <div class="left">Copyright © 2020-2021. All rights reserved.</div>
     <div class="right">
-      <a target="_blank" href="#">OMS V3.0.0</a>
+      <a target="_blank" href="#">OMS V1.0.1</a>
     </div>
   </div>
 </template>
 
 <script>
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent ({
   name: 'Footer'
@@ -26,6 +26,9 @@ export default defineComponent ({
     background-color: #f0f0f0;
     .left {
       color: #97a8be;
+    }
+    .right a {
+      color: #999999;
     }
   }
 </style>

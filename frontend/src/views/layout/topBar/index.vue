@@ -1,58 +1,55 @@
-<!--
- * @Author: Jinson.Liang
- * @Date: 2021-08-21 14:38:38
- * @LastEditors: JinsonLiang
- * @LastEditTime: 2021-08-28 11:05:07
- * @Description:
- * @FilePath: \vue3-vite-ssis\src\views\layout\topBar\index1.vue
--->
 <template>
   <div class="top-bar-container">
     <div class="header">
       <!--切换折叠/展开-->
-      <div class="header-left">
-        <Icon class="collapse-icon" :icon="isCollapse?'Expand':'Fold'" @click="toggleSidebar"></Icon>
+      <div class="header-left" @click="toggleSidebar">
+        <Icon class="header-icon" :icon="isCollapse?'Expand':'Fold'"></Icon>
       </div>
       <div class="header-right">
-        <div class="header-user-con">
+        <div class="header-right-user">
           <!--全屏/正常屏切换图标-->
-          <span class="body-top-btn" @click="screenFullToggle">
+          <el-tooltip
+              effect="light"
+              content="全屏/非全屏"
+              placement="bottom"
+          >
+          <span class="header-icon" @click="screenFullToggle">
             <Icon icon="FullScreen"></Icon>
           </span>
-          <!-- 消息中心 -->
-          <div class="btn-bell">
+          </el-tooltip>
+          <!--消息中心图标-->
+          <el-badge :value="messageCount" class="item">
             <el-tooltip
-                effect="dark"
-                :content="message?`有${message}条未读消息`:`消息中心`"
+                effect="light"
+                :content="messageCount?`有${messageCount}条未读消息`:`消息中心`"
                 placement="bottom"
             >
-              <router-link to="/">
-                <i class="el-icon-bell"/>
+              <router-link to="/dashboard">
+                <Icon icon="Bell" style="width: 20px; height: 20px; margin-left: 20px"></Icon>
               </router-link>
             </el-tooltip>
-            <span
-                v-if="message"
-                class="btn-bell-badge"
-            />
-          </div>
+          </el-badge>
           <!-- 用户头像 -->
-          <div class="user-avator" style="height: 16px; width: 16px; overflow: auto">
-            <img :src="avator">
-          </div>
+          <el-avatar
+              class="user-avator"
+              :src="avatar"
+              size="small"
+              style="margin-left: 20px; overflow: auto"
+          ></el-avatar>
           <!-- 用户名下拉菜单 -->
           <el-dropdown
               class="user-name"
               trigger="click"
               @command="handleCommand"
           >
-					<span class="el-dropdown-link">
-						{{ userInfo.nickName }}
-						<i class="el-icon-caret-bottom"/>
-					</span>
+            <span class="header-left" @click="">
+              {{ userInfo.nickName }}
+              <Icon class="" icon="CaretBottom"></Icon>
+            </span>
             <template #dropdown>
               <el-dropdown-menu>
                 <a
-                    href="https://github.com/lss5270/vue-manage-system-plus"
+                    href="#"
                     target="_blank"
                 >
                   <el-dropdown-item>项目仓库</el-dropdown-item>
@@ -67,7 +64,6 @@
             </template>
           </el-dropdown>
         </div>
-
       </div>
     </div>
   </div>
@@ -78,8 +74,9 @@ import {ref, toRefs, reactive, computed, defineComponent} from "vue"
 import {useStore, mapGetters, mapActions} from "vuex"
 import ScreenFull from 'screenfull' //全屏切换
 
-import avator from '/favicon.ico'
-import {ElMessage} from "element-plus"; //头像
+//import avator from '/favicon.ico'
+import {ElMessage} from "element-plus"; //信息
+import avatar from '@/assets/img/avatar-1.jpeg'
 
 
 export default defineComponent({
@@ -93,11 +90,11 @@ export default defineComponent({
       userInfo: null,
       hasBack: false,
       fullscreen: false,
-      message: 2,
+      messageCount: 2,
     })
 
     const userInfo = reactive({
-      headimg: avator,
+      headimg: avatar,
       nickName: 'Jinson'
     })
 
@@ -140,21 +137,29 @@ export default defineComponent({
       // }
     }
     return {
-      avator,
+      avatar,
       screenFullToggle,
       ...toRefs(state),
       toggleSidebar,
       userInfo,
-      // ...mapActions(['toggleSidebar']) // 语法糖
       logout,
       back,
       handleCommand,
     };
   },
 });
+
+
+
+
+
+
+
+
+
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .top-bar-container {
 
 }
@@ -166,86 +171,35 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 0 10px;
-  /*background-color: #d8ffec;*/
+
+  .header-icon {
+    cursor: pointer;
+  }
 }
 
-.el-icon-back {
-  border: 1px solid #e9e9e9;
-  padding: 4px;
-  border-radius: 50px;
-  margin-right: 10px;
-}
-
-.header-left .collapse-icon {
-  height: 20px;
-  width: 20px;
-}
-
-.header-right > div > .icon {
-  font-size: 18px;
-  margin-right: 6px;
-}
-
-.header-user-con {
+.header-left {
   display: flex;
-  /*height: 70px;*/
-  /*align-content: center;*/
-  text-align:center;
-  /*align-items: center;*/
+  height: 100%;
+  align-items: center;
+  .header-icon {
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+  }
 }
 
-.user-avator {
-  margin-left: 20px;
-  margin-right: 5px;
+.header-right {
+  display: flex;
+  height: 100%;
+
+  .header-right-user {
+    display: flex;
+    align-items: center;
+
+    .user-avator {
+      margin: 0px 20px;
+    }
+  }
 }
 
-.btn-bell
-.btn-bell .el-icon-bell {
-  color: #fff;
-}
-
-
-.body-top-btn {
-  /*display: inline-block;*/
-  /*text-align: center;*/
-  cursor: pointer;
-  /*padding: 0 14px;*/
-  /*color: #fff;*/
-}
-
-.btn-bell-badge {
-  position: absolute;
-  right: 0;
-  top: -2px;
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  background: #f56c6c;
-  color: #fff;
-}
-
-
-.author {
-  margin-left: 10px;
-  cursor: pointer;
-}
-</style>
-<style>
-.popper-user-box {
-  background: url('https://s.yezgea02.com/lingling-h5/static/account-banner-bg.png') 50% 50% no-repeat !important;
-  background-size: cover !important;
-  border-radius: 0 !important;
-}
-
-.popper-user-box .nickname {
-  position: relative;
-  color: #ffffff;
-}
-
-.popper-user-box .nickname .logout {
-  position: absolute;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-}
 </style>
