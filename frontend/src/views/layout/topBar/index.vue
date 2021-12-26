@@ -187,7 +187,7 @@ export default defineComponent({
 .header-right {
   display: flex;
   height: 100%;
-  padding-right: 30px;
+  padding-right: 0px;
   .header-right-wrap {
     align-items: center;
     display: flex;
