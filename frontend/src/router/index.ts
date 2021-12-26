@@ -24,110 +24,110 @@ const routes = [
       {
         path:'/home',
         name: 'Home',
+        meta:{title:'首页'},
         component:()=>import('@/views/Home.vue'),
-        meta:{title:'home'}
       },
       {
         path:'/dashboard',
         name: 'Dashboard',
+        meta:{title:'仪表盘'},
         component:()=>import('@/views/Dashboard/dashboard.vue'),
-        meta:{title:'dashboard'}
       },
       {
         path:'/helloworld',
         name: 'HelloWorld',
+        meta:{title:'世界你好'},
         component:()=>import('@/views/helloWorld/HelloWorld.vue'),
-        meta:{title:'helloworld'}
       },
       {
         path:'/security',
         name: 'Security',
+        meta:{title:'安全'},
         component:()=>import('@/views/helloWorld/Security.vue'),
-        meta:{title:'security'}
       },
       {
         path:'/stationsetting',
         name: 'StationSetting',
+        meta:{title:'安全配置'},
         component:()=>import('@/views/stationSetting/StationSetting.vue'),
-        meta:{title:'stationsetting'}
       },
       {
         path:'/securityaccident',
         name: 'SecurityAccident',
+        meta:{title:'安全事故'},
         component:()=>import('@/views/security/SecurityAccident.vue'),
-        meta:{title:'securityaccident'}
       },
       {
         path:'/vendorsetting',
         name: 'VendorSetting',
+        meta:{title:'供应商配置'},
         component:()=>import('@/views/vendor/VendorSetting.vue'),
-        meta:{title:'vendorsetting'}
       },
       { //简介页面
         path: '/introduce',
         name: 'Introduce',
+        meta:{title:'简介页面'},
         component: ()=>import('@/views/Introduce.vue'),
-        meta:{title:'introduce'}
       },
       { //商品页面
         path: '/goodlist',
         name: 'GoodList',
+        meta:{title:'商品页面'},
         component: ()=>import('@/views/GoodList.vue'),
-        meta:{title:'goodlist'}
       },
       { //axios测试页面
         path: '/testaxios',
         name: 'Testaxios',
+        meta:{title:'axios测试页面'},
         component: ()=>import('@/views/TestAxios.vue'),
-        meta:{title:'testaxios'}
       },
       { //跨域请求测试
         path: '/crossdomain',
         name: 'CrossDomain',
+        meta:{title:'跨域请求测试'},
         component: ()=>import('@/views/crossDomain/index.vue'),
-        meta:{title:'crossdomain'}
       },
       { //获取环境变量页面
         path: '/env',
         name: 'Env',
+        meta:{title:'环境变量'},
         component: ()=>import('@/views/env/index.vue'),
-        meta:{title:'env'}
       },
       { //文字识别
         path: '/characterRecognition',
         name: 'CharacterRecognition',
+        meta:{title:'文字识别'},
         component: ()=>import('@/views/characterRecognition/index3.vue'),
-        meta:{title:'character recognition'}
       },
       { //图片上传
         path: '/imageUpload',
         name: 'ImageUpload',
+        meta:{title:'图片上传'},
         component: ()=>import('@/views/uploadImage/index6.vue'),
-        meta:{title:'Image upload'}
       },
       { //分页
         path: '/pagination',
         name: 'Pagination',
+        meta:{title:'分页'},
         component: ()=>import('@/views/pagination/index.vue'),
-        meta:{title:'分页'}
       },
       { //多条件查询
         path: '/multisearch',
         name: 'MultiQuery',
+        meta:{title:'多条件查询'},
         component: ()=>import('@/views/multiSearch/index.vue'),
-        meta:{title:'多条件查询'}
       },
      { //基本表单
         path: '/baseform',
         name: 'BaseForm',
+        meta:{title:'基本表单'},
         component: ()=>import('@/views/Test/BaseForm.vue'),
-        meta:{title:'基本表单'}
       },
      { //对话弹窗
         path: '/dialogform',
         name: 'DialogForm',
+        meta:{title:'对话弹窗'},
         component: ()=>import('@/views/Test/dialogForm.vue'),
-        meta:{title:'Dialog对话框'}
       },
     ]
   },

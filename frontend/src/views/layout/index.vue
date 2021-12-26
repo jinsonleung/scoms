@@ -6,23 +6,25 @@
       <!--折叠/展开状态-->
       <div class="right-container" :class="{'collapse-ml': isCollapse}">
         <top-bar></top-bar>
+        <top-tags></top-tags>
         <app-main></app-main>
         <foot-bar></foot-bar>
       </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {ref, defineComponent} from "vue"
 import {mapGetters} from 'vuex'
 import SideBar from "@/views/layout/sideBar/index.vue"
 import TopBar from "@/views/layout/topBar/index.vue"
+import TopTags from "@/views/layout/topTags/index.vue"
 import AppMain from "@/views/layout/appMain/index.vue"
 import FootBar from '@/views/layout/footBar/index.vue'
 
 export default defineComponent({
   name: "Layout",
-  components: {SideBar, TopBar, AppMain, FootBar},
+  components: {SideBar, TopBar, TopTags, AppMain, FootBar},
   computed: {
     ...mapGetters(['isCollapse'])
   },

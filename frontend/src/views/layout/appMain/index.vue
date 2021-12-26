@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 <style scoped>
   .app-main {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 150px); /* 调内容框的高度，可以显示完成footbar栏（50px）*/
     overflow: auto;
     padding: 10px;
     /*background-color: #F0F0F0;*/

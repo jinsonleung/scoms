@@ -8,10 +8,13 @@
  */
 import {createStore} from "vuex"
 import app from '@/store/modules/app'
+import topTags from '@/store/modules/topTags'
+
 // Create a new store instance.
 const store = createStore({
     modules: {
       app,
+      topTags,  //顶部菜单标签栏
     },
     // 单独模块引入，每个模块都有单独的state，getters，actions， mutations
     // state,  共同维护的一个状态，state里面可以是很多个全局状态
