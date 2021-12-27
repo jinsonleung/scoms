@@ -27,7 +27,7 @@
                   placement="bottom"
               >
               <div class="bell-btn">
-              <el-badge :value="messageCount" class="badge-wrap">
+              <el-badge :value="messageCount" class="badge-wrap" >
                 <router-link to="/dashboard">
                   <Icon icon="Bell"></Icon>
                 </router-link>
@@ -188,11 +188,17 @@ export default defineComponent({
   display: flex;
   height: 100%;
   padding-right: 0px;
+
   .header-right-wrap {
     align-items: center;
     display: flex;
     height: 50px;
     align-items: center;
+
+    svg {
+      height: 20px;
+      width: 20px;
+    }
   }
 }
 .fullscreen-btn, .bell-btn, .avatar-wrap, .user-info-wrap {

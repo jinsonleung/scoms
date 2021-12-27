@@ -2,9 +2,9 @@
   <div class="sidebar-container" :class="{'collapse-width': isCollapse}">
     <!--企业Logo-->
     <div class="logo" @click="$router.push('/')">
-      <img class="logo-img" :src="logoSrc" alt="logo" />
+      <img class="logo-img" :src="logoSrc" alt="logo"/>
       <transition name="el-zoom-in-center">
-        <h1 v-show="opened" class="logo-text">{{systemTitle}}</h1>
+        <h1 v-show="opened" class="logo-text">{{ systemTitle }}</h1>
       </transition>
     </div>
     <!--横线-->
@@ -12,48 +12,48 @@
     <!--左边菜单-->
     <el-scrollbar style="height: 100%; background-color: #222832">
       <el-menu
-        class="el-menu-vertical"
-        active-text-color="yellow"
-        background-color="#222832"
-        text-color="#fff"
-        default-active="$route.path"
-        router
-        :collapse="isCollapse"
+          class="el-menu-vertical"
+          active-text-color="yellow"
+          background-color="#222832"
+          text-color="#fff"
+          default-active="$route.path"
+          router
+          :collapse="isCollapse"
       >
         <el-menu-item index="/">
-          <el-icon><home-filled/></el-icon>
+          <Icon icon="HomeFilled"></Icon>
           <span>首页</span>
         </el-menu-item>
         <el-menu-item index="/dashboard">
-          <el-icon><icon-menu/></el-icon>
+          <Icon icon="Odometer"></Icon>
           <span>仪表盘</span>
         </el-menu-item>
         <!--1.安检系统-->
         <el-sub-menu index="1" disabled>
           <template #title>
-            <el-icon><IconMenu /></el-icon>
+            <Icon icon="VideoCameraFilled"></Icon>
             <span>安检系统</span>
           </template>
           <el-sub-menu index="1-1">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>场站管理</span>
+              <Icon icon="OfficeBuilding"></Icon>
+              <span>场站管理</span>
             </template>
             <el-menu-item index="/stationsetting">场站信息配置</el-menu-item>
             <el-menu-item index="1-1-2">场站权配置</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="1-2">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>供应商管理</span>
+              <Icon icon="Phone"></Icon>
+              <span>供应商管理</span>
             </template>
             <el-menu-item index="/vendorsetting">供应商采购</el-menu-item>
             <el-menu-item index="1-2-2">供应商服务</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="1-3">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>安全监控</span>
+              <Icon icon="Mug"></Icon>
+              <span>安全监控</span>
             </template>
             <el-menu-item index="/security">安全标准配置</el-menu-item>
             <el-menu-item index="/securityaccident">安全事项</el-menu-item>
@@ -64,36 +64,36 @@
           </el-menu-item-group>
           <el-sub-menu index="1-6" disabled> <!--不可使用-->
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>人员管理</span>
+              <Icon icon="Avatar"></Icon>
+              <span>人员管理</span>
             </template>
             <el-menu-item index="1-6-1">外出管理</el-menu-item>
             <el-menu-item index="1-6-2">差旅管理</el-menu-item>
           </el-sub-menu>
           <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
-          <span>权限配置</span>
+            <Icon icon="Setting"></Icon>
+            <span>权限配置</span>
           </el-menu-item>
         </el-sub-menu>
 
         <!--2.测试系统-->
         <el-sub-menu index="2">
           <template #title>
-            <el-icon><IconMenu /></el-icon>
+            <Icon icon="MessageBox"></Icon>
             <span>组件测试</span>
           </template>
           <el-sub-menu index="2-1">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>跨域请求</span>
+              <Icon icon="Connection"></Icon>
+              <span>跨域请求</span>
             </template>
             <el-menu-item index="/testaxios">Aciox测试</el-menu-item>
             <el-menu-item index="/crossdomain">跨域请求</el-menu-item>
           </el-sub-menu>
           <el-sub-menu index="2-2">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>表单测试</span>
+              <Icon icon="DataLine"></Icon>
+              <span>表单测试</span>
             </template>
             <el-menu-item index="/baseform">基本表单</el-menu-item>
             <el-menu-item index="/dialogform">对话弹窗</el-menu-item>
@@ -101,8 +101,8 @@
 
           <el-sub-menu index="2-3">
             <template #title>
-            <el-icon><location /></el-icon>
-            <span>其他组件</span>
+              <Icon icon="Grid"></Icon>
+              <span>其他组件</span>
             </template>
             <el-menu-item index="/introduce">简介页面</el-menu-item>
             <el-menu-item index="/goodlist">商品维护</el-menu-item>
@@ -116,7 +116,7 @@
         <!--3.赛诚运营系统-->
         <el-sub-menu index="3">
           <template #title>
-            <el-icon><IconMenu /></el-icon>
+            <Icon icon="Menu"></Icon>
             <span>运营系统</span>
           </template>
         </el-sub-menu>
@@ -127,9 +127,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,reactive,computed,ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore, mapGetters, mapActions} from 'vuex'
+import {defineComponent, reactive, computed, ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {useStore, mapGetters, mapActions} from 'vuex'
 import logoSrc from '@/assets/img/logo2.png'  //商业logo图片
 // import logoSrc from '@/assets/img/saicheng-logo-1.png'  //saicheng logo图片
 
@@ -155,8 +155,8 @@ export default defineComponent({
     HomeFilled,
   },
   computed: { // Vuex全局状态
-      ...mapGetters(['isCollapse'])
-    },
+    ...mapGetters(['isCollapse'])
+  },
   setup() {
     const router = useRouter()
     const systemTitle = ref('OMS') //系统名称
@@ -186,6 +186,7 @@ export default defineComponent({
   transition: width 0.3s;
   z-index: 1001;
   overflow: hidden;
+
   .el-menu {
     border: none;
     height: 100%;
@@ -197,20 +198,21 @@ export default defineComponent({
 .el-menu-item, .el-submenu {
   text-align: left;
 }
-//调整图标与菜单名的间隔
-.el-menu-item i, .el-sub-menu__title i {
-  color: inherit;
-  font-size: 16px;
-  margin-right: 5px;
+
+//图标与菜单项的间隔
+.el-menu-vertical span {
+  margin-left: 10px;
 }
+
 
 .logo {
   //position: absolute;
-    display: flex;
-    align-items: center;
-    //justify-content: left;
-    height: 50px;
-    background-color: #222832;
+  display: flex;
+  align-items: center;
+  //justify-content: left;
+  height: 50px;
+  background-color: #222832;
+
   .logo-img {
     width: 32px;
     height: 32px;
@@ -225,9 +227,16 @@ export default defineComponent({
     line-height: 50px;
     color: navajowhite;
   }
-
 }
-  .line {
-    border-bottom: 0.5px solid #242f42;
+
+.line {
+  border-bottom: 0.5px solid #242f42;
+}
+
+//菜单选中时图标的颜色
+.el-menu-item.is-active{
+  svg {
+    color: yellow;
   }
+}
 </style>
