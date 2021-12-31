@@ -1,5 +1,9 @@
 <template>
-
+<!--  <SvgIcon-->
+<!--      :name="fontIconPrefix === '' ? prepend : fontIconPrefix"-->
+<!--      class="font14"-->
+<!--      v-if="fontIconPrefix === '' ? prepend?.indexOf('element') > -1 : fontIconPrefix?.indexOf('element') > -1"-->
+<!--  />-->
 </template>
 
 <script lang="ts">

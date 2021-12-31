@@ -3,23 +3,23 @@ const topTags = {
         tagsList: [],
     },
     mutations: {
-        delTagsItem(state, data) {
+        delTagsItem(state:any, data:any) {
             state
                 .tagsList
                 .splice(data.index, 1);
         },
-        setTagsItem(state, data) {
+        setTagsItem(state:any, data:any) {
             state
                 .tagsList
                 .push(data)
         },
-        clearTags(state) {
+        clearTags(state:any) {
             state.tagsList = []
         },
-        closeTagsOther(state, data) {
+        closeTagsOther(state:any, data:any) {
             state.tagsList = data;
         },
-        closeCurrentTag(state, data) {
+        closeCurrentTag(state:any, data:any) {
             for (let i = 0, len = state.tagsList.length; i < len; i++) {
                 const item = state.tagsList[i];
                 if (item.path === data.$route.fullPath) {

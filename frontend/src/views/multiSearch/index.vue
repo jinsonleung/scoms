@@ -65,7 +65,7 @@
 <script lang="ts">
 import {ref, reactive, getCurrentInstance, onMounted, toRefs} from "vue"
 import vPagination from '@/components/pagination.vue'
-import {Search, Edit, ArrowLeft} from '@element-plus/icons'
+// import {Search, Edit, ArrowLeft} from '@element-plus/icons'
 import {ElMessage} from "element-plus";
 
 

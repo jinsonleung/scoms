@@ -133,26 +133,26 @@ import {useStore, mapGetters, mapActions} from 'vuex'
 import logoSrc from '@/assets/img/logo2.png'  //商业logo图片
 // import logoSrc from '@/assets/img/saicheng-logo-1.png'  //saicheng logo图片
 
-import {
-  Expand,
-  Bell,
-  Location,
-  Document,
-  Menu as IconMenu,
-  Setting,
-  HomeFilled,
-} from '@element-plus/icons'
+// import {
+//   Expand,
+//   Bell,
+//   Location,
+//   Document,
+//   Menu as IconMenu,
+//   Setting,
+//   HomeFilled,
+// } from '@element-plus/icons'
 
 
 export default defineComponent({
   components: {
-    Expand,
-    Bell,
-    Location,
-    Document,
-    Setting,
-    IconMenu,
-    HomeFilled,
+    // Expand,
+    // Bell,
+    // Location,
+    // Document,
+    // Setting,
+    // IconMenu,
+    // HomeFilled,
   },
   computed: { // Vuex全局状态
     ...mapGetters(['isCollapse'])

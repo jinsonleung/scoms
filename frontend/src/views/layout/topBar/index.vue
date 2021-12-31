@@ -120,7 +120,7 @@ export default defineComponent({
     // const isCollapse = computed(() => store.getters.isCollapse); //getters
     const toggleSidebar = () => { //isCollapse状态
       store.dispatch("toggleSidebar", '折叠/展开') //actions, 第2个参数可以是随便字符串
-      // iconName.value = isCollapse.value? 'Expand': 'Fold' //切换折叠/展开图标
+      console.log('==collapse==', store.state.system.collapse)
     }
 
     const logout = () => {
