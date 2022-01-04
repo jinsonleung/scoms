@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import {ref, computed, defineComponent, watch} from "vue"
+import {ref, computed, defineComponent, watch, onBeforeMount,} from "vue"
 import {useStore} from "vuex"
 import {onBeforeRouteUpdate, useRoute, useRouter} from "vue-router"
 
@@ -35,46 +35,52 @@ export default defineComponent({
   name: "TopTags",
   setup(props,context) {
     const route = useRoute()
-    const router = useRouter()
     const store = useStore()
-    const isActive = (path:any) => {
-      return path === route.fullPath;
-    }
-    //获取tagsList
+    // 当前路由全称，如'/home'
+    const isActive = (path:any) => { return path === route.fullPath }
+    // ====计算属性，返回响应式对象===
+    // tagsList：获取标签栏列表信息
     const tagsList = computed(()=>{
       return store.state.system.tagsList
-      // return store.state.topTags.tagsList
     })
-    //tagsList是否为空
+    //showTags：判断tagsList是否为空
     const showTags = computed(()=>{
-      console.log('==tagList==', store.state.system.tagsList.map(item=>item.name))
-      return store.state.system.tagsList>0
-      // return store.state.topTags.tagsList>0
+      console.log('==store.state.system.tagsList.length==', store.state.system.tagsList.length)
+      return store.state.system.tagsList.length>0
     })
 
-    //监听路由变化
+    // ===监听路由变化===
     onBeforeRouteUpdate((to)=>{
-      setTags(to)
+      //setTags(to)
+      console.log('==onBeforeRouteUpdate==', to)
     })
 
-    //定义方法
-    const setTags = (route:any)=>{
-			const isExist = this.tagsList.some(item => {
-				return item.path === route.fullPath;
-			});
-			if (!isExist) {
-				// 后续优化改成滚动条模式
-				if (this.tagsList.length >= 10) {
-					this.$store.commit('system/delTagsItem', { index: 0 });
-				}
-				this.$store.commit('system/setTagsItem', {
-					name: route.name,
-					title: route.meta.title,
-					path: route.fullPath
-				});
-			}
-    }
+    //===onBeforeMount：hooks函数，创建实例后被立即调用===
+    onBeforeMount(()=>{
+      console.log('==topTags/index.vue onBeforeMount==', route.name,route.fullPath)
+      setTags(route) // route.fullPath是返回当前路由对象
+    })
 
+
+    // ===方法===
+    // setTags: 保存路由到状态中
+    const setTags = (route:any)=>{
+      // tagsList是否存在当前路由
+      const isExistFullPath =  tagsList.value.some((item:any)=>{ return item.fullPath === route.fullPath })
+      if(!isExistFullPath) {
+        //当前路由超过10个时，将删除第1个路由，第0个路由为首页路由不删除
+        if (tagsList.value.length>=10) {
+          //删除tagsList中的第1个路由
+          store.commit('system/delTagsItem',{index:1})
+        }
+        //保存当前路由
+        // store.state.system.commit('system/setTagsItem', {
+        //   name: route.name,
+        //   fullPath: route.fullPath,
+        //   title: route.meta.title,
+        // })
+      }
+    }
 
 
 

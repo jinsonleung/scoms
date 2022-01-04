@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-container" :class="{'collapse-width': isCollapse}">
+  <div class="sidebar-container" :class="{'collapse-width': collapse}">
     <!--企业Logo-->
     <div class="logo" @click="$router.push('/')">
       <img class="logo-img" :src="logoSrc" alt="logo"/>
@@ -18,7 +18,7 @@
           text-color="#fff"
           default-active="$route.path"
           router
-          :collapse="isCollapse"
+          :collapse="collapse"
       >
         <el-menu-item index="/">
           <Icon icon="HomeFilled"></Icon>
@@ -155,7 +155,7 @@ export default defineComponent({
     // HomeFilled,
   },
   computed: { // Vuex全局状态
-    ...mapGetters(['isCollapse'])
+    ...mapGetters(['collapse'])
   },
   setup() {
     const router = useRouter()

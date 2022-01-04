@@ -1,4 +1,7 @@
-const topTags = {
+import { Module } from 'vuex'
+import  { UserInfosState, RootStateTypes } from "@/store/interface/index"
+
+const topTags:Module<UserInfosState, RootStateTypes> = {
     state: {
         tagsList: [],
     },

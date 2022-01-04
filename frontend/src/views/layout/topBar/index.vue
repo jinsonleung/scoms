@@ -3,7 +3,7 @@
     <div class="header">
       <!--折叠/展开按钮-->
       <div class="header-left">
-        <Icon class="collapse-btn" :icon="isCollapse?'Expand':'Fold'" @click="toggleSidebar"></Icon>
+        <Icon class="collapse-btn" :icon="collapse?'Expand':'Fold'" @click="toggleSidebar"></Icon>
       </div>
       <div class="header-right">
         <div class="header-right-wrap">
@@ -87,7 +87,7 @@ import avatar from '@/assets/img/avatar-2.jpg'
 export default defineComponent({
   name: "index",
   computed: {
-    ...mapGetters(["isCollapse"]), // 语法糖
+    ...mapGetters(["collapse"]), // 语法糖,通过计算属性获得store中的状态
   },
   setup(props: any, context: any) {
     const state = reactive({
@@ -117,10 +117,9 @@ export default defineComponent({
           });
     }
     const store = useStore()
-    // const isCollapse = computed(() => store.getters.isCollapse); //getters
-    const toggleSidebar = () => { //isCollapse状态
-      store.dispatch("toggleSidebar", '折叠/展开') //actions, 第2个参数可以是随便字符串
-      console.log('==collapse==', store.state.system.collapse)
+    const toggleSidebar = () => { //collapse展开/折叠状态
+      store.dispatch("toggleSidebar", '展开/折叠') //actions, 第2个参数可以是随便字符串
+      // console.log('==collapse==', store.state.system.collapse)
     }
 
     const logout = () => {

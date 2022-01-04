@@ -4,7 +4,7 @@
     <side-bar></side-bar>
     <!--2）右边内容栏（包括头部、内容部及脚部）-->
       <!--折叠/展开状态-->
-      <div class="right-container" :class="{'collapse-ml': isCollapse}">
+      <div class="right-container" :class="{'collapse-ml': collapse}">
         <top-bar></top-bar>
         <top-tags></top-tags>
         <app-main></app-main>
@@ -26,7 +26,7 @@ export default defineComponent({
   name: "Layout",
   components: {SideBar, TopBar, TopTags, AppMain, FootBar},
   computed: {
-    ...mapGetters(['isCollapse'])
+    ...mapGetters(['collapse'])
   },
   setup() {
     const refData = ref(0);
