@@ -24,3 +24,7 @@ echarts是baidu出的绘图库，不管有没有用前端框架都能用,vue-ech
 ## 2022.1.3
 + store/index.ts中的获取每个模块的中的状态，失败
 
+## 2022.1.5
++ RuoYi-Vue-master Demo中数据库设置
++ 
+
