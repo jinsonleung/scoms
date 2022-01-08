@@ -1,22 +1,30 @@
-import { createApp, createVNode } from 'vue'
-import App from './App.vue'
-import router from './router'
-import { store, key } from './store'
-import "@/assets/css/main.css"  //引入全局CSS样式
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-import dialogDrag from "@/utils/directives/dialogDrag"  //引入二将封装的可拖拽dialog组件
-import * as Icons from '@element-plus/icons-vue'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import { store, key } from './store';
+import { directive } from '/@/utils/directive';
+import { i18n } from '/@/i18n/index';
+import other from '/@/utils/other';
 
-// 创建Icon组件
-const Icon = (props: { icon: string }) => {
-  const { icon } = props
-  return createVNode(Icons[icon as keyof typeof Icons])
-}
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+import '/@/theme/index.scss';
+import mitt from 'mitt';
+import screenShort from 'vue-web-screen-shot';
+import VueGridLayout from 'vue-grid-layout';
 
 const app = createApp(App);
-app.component('Icon', Icon) //注册Icon组件
-app.use(router).use(store);
-app.use(ElementPlus, {size: 'mini', zIndex:3000})  // ElementPlus组件全局配置为small样式
-app.use(dialogDrag) //注册自定义可拖拽dialog组件
-app.mount('#app');
+
+directive(app);
+other.elSvg(app);
+
+app
+	.use(router)
+	.use(store, key)
+	.use(ElementPlus, { i18n: i18n.global.t, size: other.globalComponentSize })
+	.use(i18n)
+	.use(screenShort, { enableWebRtc: false })
+	.use(VueGridLayout)
+	.mount('#app');
+
+app.config.globalProperties.mittBus = mitt();
