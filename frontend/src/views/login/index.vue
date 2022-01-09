@@ -1,11 +1,11 @@
 <template>
 	<div class="login-container">
 		<div class="login-logo">
-			<span>{{ getThemeConfig.globalViceTitle }}</span>
+			<span>LOGO: {{ getThemeConfig.globalViceTitle }}</span>
 		</div>
 		<div class="login-content">
 			<div class="login-content-main">
-				<h4 class="login-content-title">{{ getThemeConfig.globalTitle }}后台模板</h4>
+				<h4 class="login-content-title">{{ getThemeConfig.globalTitle }} AA后台系统</h4>
 				<div v-if="!isScan">
 					<el-tabs v-model="tabsActiveName">
 						<el-tab-pane :label="$t('message.label.one1')" name="account">
@@ -35,7 +35,7 @@ import { toRefs, reactive, computed } from 'vue';
 import Account from '/@/views/login/component/account.vue';
 import Mobile from '/@/views/login/component/mobile.vue';
 import Scan from '/@/views/login/component/scan.vue';
-import { useStore } from '/@/store/index';
+import { useStore } from '/@/store';
 export default {
 	name: 'loginIndex',
 	components: { Account, Mobile, Scan },
@@ -48,6 +48,7 @@ export default {
 		});
 		// 获取布局配置信息
 		const getThemeConfig = computed(() => {
+      console.log('==store.state.themeConfig.themeConfig==', store.state.themeConfig.themeConfig.globalTitle)
 			return store.state.themeConfig.themeConfig;
 		});
 		return {
@@ -62,7 +63,8 @@ export default {
 .login-container {
 	width: 100%;
 	height: 100%;
-	background: url('https://gitee.com/lyt-top/vue-next-admin-images/raw/master/login/bg-login.png') no-repeat;
+	//登录页背影图片
+  //background: url('https://gitee.com/lyt-top/vue-next-admin-images/raw/master/login/bg-login.png') no-repeat;
 	background-size: 100% 100%;
 	.login-logo {
 		position: absolute;

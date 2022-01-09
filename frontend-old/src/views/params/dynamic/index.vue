@@ -43,7 +43,8 @@ export default defineComponent({
 			router.push({
 				name: 'paramsDynamicDetails',
 				params: {
-					t: 'vue-next-admin',
+					// t: 'vue-next-admin',
+					t: 'SCOMS',
 					id: state.value,
 				},
 			});
