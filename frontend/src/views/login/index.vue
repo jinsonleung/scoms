@@ -1,11 +1,13 @@
 <template>
 	<div class="login-container">
 		<div class="login-logo">
-			<span>LOGO: {{ getThemeConfig.globalViceTitle }}</span>
+      <!--网站副标题（登录页顶部文字）-->
+			<span>{{ getThemeConfig.globalViceTitle }}</span>
 		</div>
 		<div class="login-content">
 			<div class="login-content-main">
-				<h4 class="login-content-title">{{ getThemeConfig.globalTitle }} AA后台系统</h4>
+        <!--网站主标题（菜单导航、浏览器当前网页标题）-->
+				<h4 class="login-content-title">{{ getThemeConfig.globalTitle }}ABC系统</h4>
 				<div v-if="!isScan">
 					<el-tabs v-model="tabsActiveName">
 						<el-tab-pane :label="$t('message.label.one1')" name="account">
@@ -48,7 +50,6 @@ export default {
 		});
 		// 获取布局配置信息
 		const getThemeConfig = computed(() => {
-      console.log('==store.state.themeConfig.themeConfig==', store.state.themeConfig.themeConfig.globalTitle)
 			return store.state.themeConfig.themeConfig;
 		});
 		return {

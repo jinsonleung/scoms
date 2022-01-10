@@ -7,6 +7,7 @@
 <script lang="ts">
 import { toRefs, reactive, defineComponent, onMounted, getCurrentInstance } from 'vue';
 import QRCode from 'qrcodejs2-fixes';
+
 export default defineComponent({
 	name: 'loginScan',
 	setup() {
@@ -16,7 +17,7 @@ export default defineComponent({
 		const initQrcode = () => {
 			proxy.$refs.qrcodeRef.innerHTML = '';
 			new QRCode(proxy.$refs.qrcodeRef, {
-				text: `https://qm.qq.com/cgi-bin/qm/qr?k=RdUY97Vx0T0vZ_1OOu-X1yFNkWgDwbjC&jump_from=webapi`,
+				text: `https://www.baidu.com/`,
 				width: 260,
 				height: 260,
 				colorDark: '#000000',

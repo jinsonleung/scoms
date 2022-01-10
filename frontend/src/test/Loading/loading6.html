@@ -1,0 +1,257 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>四方块</title>
+</head>
+<body onload="__pauseAnimations();">
+<div class="box">
+<div class="thing"></div>
+<div class="thing"></div>
+<div class="thing"></div>
+<div class="thing"></div>
+</div>
+
+</body>
+</html>
+<!--<script src="/assets/js/prefixfree.min.js"></script>-->
+<script>
+    // We really want to disable
+    window.open    = function() {};
+    window.alert   = function() {};
+    window.print   = function() {};
+    window.prompt  = function() {};
+    window.confirm = function() {};
+  </script>
+<script>
+  // #killanim is only being used in lab full view, maybe we could
+  // use it everywhere :D
+//if (window !== window.top && window.top.__stop_animations !== false) {
+if (window !== window.top && location.hash !== '#dontkillanim') {
+  window.is_webkit = /(webkit)[ \/]([\w.]+)/.exec(window.navigator.userAgent.toLowerCase())
+
+  window.max_timer = window.is_webkit ? 2000 : 20
+
+  var pauseCSSAnimations = function() {
+
+    var stopCSSAnimations = function() {
+      // Get the Body Element
+      var body = document.getElementsByTagName('body')[0];
+
+      body.addEventListener('webkitAnimationStart', stopAnimation, false);
+      body.addEventListener('webkitAnimationIteration', stopAnimation, false);
+      body.addEventListener('animationstart', stopAnimation, false);
+      body.addEventListener('animationiteration', stopAnimation, false);
+    };
+
+    // e is the event object bro ;)
+    var stopAnimation = function(e) {
+      // e.srcElement? lulz...
+      var target_el = e.target;
+      var e_type = e.type.toLowerCase();
+
+      if (e_type.indexOf('animationstart') !== -1 || e_type.indexOf('animationiteration') !== -1) {
+        // LOL, we need to stop the animation now!
+        // setInterval? lulz...
+
+        setTimeout(false, function() {
+
+          if (target_el.style.webkitAnimationPlayState !== 'paused')
+            target_el.style.webkitAnimationPlayState = 'paused';
+
+          if (target_el.style.MozAnimationPlayState !== 'paused')
+            target_el.style.MozAnimationPlayState = 'paused';
+
+          if (target_el.style.animationPlayState !== 'paused')
+            target_el.style.animationPlayState = 'paused';
+
+        }, window.max_timer);
+      }
+    }
+
+    stopCSSAnimations();
+
+  };
+
+  // Next we need to pause/stop JS Animations
+  var pauseJSAnimations = function() {
+    window.setInterval = (function(oldSetInterval) {
+      var registered = [];
+      var f = function() {
+        var id;
+        var $this = this;
+        // setInterval accepts n no. of args
+        var args = arguments;
+        if (typeof args[0] !== 'function' && args[0] === false) {
+          args = Array.prototype.slice.call(arguments);
+          args = args.slice(1);
+
+          id = oldSetInterval.apply($this, args)
+        }
+        else {
+          id = oldSetInterval.apply($this, args);
+          registered.push(id);
+        }
+        return id;
+      };
+
+      f.clearAll = function() {
+        var r;
+        while (r = registered.pop()) {
+          clearInterval(r);
+        }
+      };
+
+      return f;
+    })(window.setInterval);
+
+    window.setTimeout = (function(oldSetTimeout) {
+      var registered = [];
+
+      var f = function() {
+        var id;
+        // .. this!
+        var $this = this;
+        var args = arguments;
+        if (typeof args[0] !== 'function' && args[0] === false) {
+          args = Array.prototype.slice.call(arguments);
+          args = args.slice(1);
+
+          id = oldSetTimeout.apply($this, args)
+        }
+        else {
+          id = oldSetTimeout.apply($this, args);
+          registered.push(id);
+        }
+        return id;
+      };
+
+      f.clearAll = function() {
+        var r;
+        while (r = registered.pop()) {
+          clearTimeout(r);
+        }
+      };
+
+      return f;
+    })(window.setTimeout);
+
+    setTimeout(false, function() {
+      setTimeout.clearAll();
+      setInterval.clearAll();
+    }, window.max_timer);
+    window.__requestAnimFrame = window.requestAnimationFrame || undefined;
+    window.__cancelAnimFrame = window.cancelAnimationFrame || undefined;
+    window.__vendors = ['webkit', 'moz', 'ms', 'o'];
+    window.__registered_rafs = [];
+    window.__requestFrame = function(cb) {
+      if (!window.__requestAnimFrame) return;
+
+      var req_id = window.__requestAnimFrame(cb);
+      __registered_rafs.push(req_id);
+
+      return req_id;
+    };
+
+    // Determine the proper VendorPrefixedFunctionName
+    if (!window.__requestAnimFrame) {
+      for (var x = 0; x < window.__vendors.length; x++) {
+          if (!window.__requestAnimFrame) {
+            window.__requestAnimFrame = window[window.__vendors[x]+'RequestAnimationFrame'];
+            window[window.__vendors[x]+'RequestAnimationFrame'] = __requestFrame;
+          }
+
+          if(!window.__cancelAnimFrame) {
+            window.__cancelAnimFrame = window[window.__vendors[x]+'CancelAnimationFrame'] ||
+                                        window[window.__vendors[x]+'CancelRequestAnimationFrame'];
+          }
+      }
+    }
+
+    setTimeout(false, function() {
+      if (!window.__requestAnimFrame) return;
+
+      var r;
+      while (r = window.__registered_rafs.pop()) {
+        window.__cancelAnimFrame(r);
+      }
+    }, window.max_timer);
+
+  };
+  if (window !== window.top)
+    pauseJSAnimations();
+
+  var __pauseAnimations = function() {
+    if (window !== window.top)
+      pauseCSSAnimations();
+  };
+}
+else {
+  __pauseAnimations = function() {};
+}
+  </script>
+<style>
+html, body {
+  /*background-color: #1d1f20;*/
+    background-color: white;
+  margin: 0;
+  height: 100%; }
+
+.box {
+  height: 100px;
+  width: 100px;
+  position: relative;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  perspective: 1000px; }
+
+.thing {
+  height: 50px;
+  width: 50px;
+  background-color: #E87722;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0; }
+
+.thing:nth-of-type(1) {
+  animation: bounce 0.5s ease-in-out infinite alternate, move 4s -1s infinite; }
+
+.thing:nth-of-type(2) {
+  animation: bounce 0.5s ease-in-out infinite alternate, move 4s -2s infinite; }
+
+.thing:nth-of-type(3) {
+  animation: bounce 0.5s ease-in-out infinite alternate, move 4s -3s infinite; }
+
+.thing:nth-of-type(4) {
+  animation: bounce 0.5s ease-in-out infinite alternate, move 4s -4s infinite; }
+
+@keyframes bounce {
+  from {
+    transform: scale(1); }
+
+  to {
+    transform: scale(0.8); } }
+
+@keyframes move {
+  0% {
+    top: 0;
+    left: 0;
+    background-color: #E87722; }
+
+  25% {
+    top: 0;
+    left: 50%;
+    background-color: #A4D65E; }
+
+  50% {
+    top: 50%;
+    left: 50%;
+    background-color: #69B3E7; }
+
+  75% {
+    top: 50%;
+    left: 0;
+    background-color: #FFC845; } }
+	</style>
