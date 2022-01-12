@@ -1,0 +1,23 @@
+2022.01.12
+setIconfont.ts:17 
+        
+       GET http://at.alicdn.com/t/ont_2298093_y6u00apwst.css net::ERR_INTERNET_DISCONNECTED
+
+setIconfont.ts:17 
+
+       GET https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css net::ERR_INTERNET_DISCONNECTED       
+
+
+                     let link = document.createElement('link');
+              link.rel = 'stylesheet';
+              link.href = v;
+              link.crossOrigin = 'anonymous';
+              document.getElementsByTagName('head')[0].appendChild(link);
+
+
+
+
+
+GET https://api.map.baidu.com/api?v=3.0&ak=wsijQt8sLXrCW71YesmispvYHitfG9gv&s=1 
+
+[Intervention]Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: http://at.alicdn.com/t/font_2298093_y6u00apwst.woff2?t=1627014681704

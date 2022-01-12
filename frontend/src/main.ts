@@ -13,6 +13,8 @@ import mitt from 'mitt';
 import screenShort from 'vue-web-screen-shot';
 import VueGridLayout from 'vue-grid-layout';
 
+import dialogDrag from "/@/utils/directives/dialogDrag"  //引入二将封装的可拖拽dialog组件
+
 const app = createApp(App);
 
 directive(app);
@@ -25,6 +27,7 @@ app
 	.use(i18n)
 	.use(screenShort, { enableWebRtc: false })
 	.use(VueGridLayout)
+	.use(dialogDrag) //注册自定义可拖拽dialog组件
 	.mount('#app');
 
 app.config.globalProperties.mittBus = mitt();

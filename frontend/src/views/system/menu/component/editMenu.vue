@@ -1,5 +1,6 @@
 <template>
 	<div class="system-edit-menu-container">
+    <div v-dialogdrag>
 		<el-dialog title="修改菜单" v-model="isShowDialog" width="769px">
 			<el-form :model="ruleForm" size="small" label-width="80px">
 				<el-row :gutter="35">
@@ -142,7 +143,8 @@
 				</span>
 			</template>
 		</el-dialog>
-	</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
