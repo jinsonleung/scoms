@@ -1,16 +1,22 @@
 <template>
+  <!--侧边顶部Logo栏-->
 	<div class="layout-logo" v-if="setShowLogo" @click="onThemeConfigChange">
-		<img src="https://gitee.com/lyt-top/vue-next-admin-images/raw/master/logo/logo-mini.svg" class="layout-logo-medium-img" />
+    <!--公司logo图标（经典布局默认显示）-->
+    <img :src="logoImg" class="layout-logo-medium-img" />
+    <!--系统抬头-->
 		<span>{{ getThemeConfig.globalTitle }}</span>
 	</div>
 	<div class="layout-logo-size" v-else @click="onThemeConfigChange">
-		<img src="https://gitee.com/lyt-top/vue-next-admin-images/raw/master/logo/logo-mini.svg" class="layout-logo-size-img" />
+    <!--公司logo图标（小尺寸布局显示）-->
+    <img :src="logoImg" class="layout-logo-size-img" />
 	</div>
 </template>
 
 <script lang="ts">
 import { computed, getCurrentInstance } from 'vue';
-import { useStore } from '/@/store/index';
+import { useStore } from '/@/store';
+import logoImg from '/company-logo.ico';
+
 export default {
 	name: 'layoutLogo',
 	setup() {
@@ -32,6 +38,7 @@ export default {
 			store.state.themeConfig.themeConfig.isCollapse = !store.state.themeConfig.themeConfig.isCollapse;
 		};
 		return {
+      logoImg,
 			setShowLogo,
 			getThemeConfig,
 			onThemeConfigChange,

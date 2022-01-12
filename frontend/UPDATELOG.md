@@ -14,6 +14,8 @@
       export default require('qrcodejs2-fixes')
     }
     ```
+`2022.01.11`
+- 🎯 优化 添加了Logo
 
 
 

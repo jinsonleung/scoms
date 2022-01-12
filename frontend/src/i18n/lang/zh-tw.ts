@@ -72,6 +72,7 @@ export default {
 		tools: '工具類集合',
 		layoutLinkView: '外鏈',
 		layoutIfameView: '内嵌 iframe',
+		layoutIfameView2: '内嵌 iframe2',
 	},
 	staticRoutes: {
 		signIn: '登入',

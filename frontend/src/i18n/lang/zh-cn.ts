@@ -72,13 +72,14 @@ export default {
 		tools: '工具类集合',
 		layoutLinkView: '外链',
 		layoutIfameView: '内嵌 iframe',
+		layoutIfameView2: '内嵌 iframe2',
 	},
-	staticRoutes: {
+	staticRoutes: {	// 静态路由
 		signIn: '登录',
 		notFound: '找不到此页面',
 		noPower: '没有权限',
 	},
-	user: {
+	user: {	// 用户自定义开关
 		title0: '组件大小',
 		title1: '语言切换',
 		title2: '菜单搜索',
@@ -108,7 +109,7 @@ export default {
 		logOutExit: '退出中',
 		logOutSuccess: '安全退出成功！',
 	},
-	tagsView: {
+	tagsView: {	// tags栏开关
 		refresh: '刷新',
 		close: '关闭',
 		closeOther: '关闭其它',
@@ -116,17 +117,17 @@ export default {
 		fullscreen: '当前页全屏',
 		closeFullscreen: '关闭全屏',
 	},
-	notFound: {
+	notFound: {	// 找不到信息提示
 		foundTitle: '地址输入错误，请重新输入地址~',
 		foundMsg: '您可以先检查网址，然后重新输入或给我们反馈问题。',
 		foundBtn: '返回首页',
 	},
-	noAccess: {
+	noAccess: {	// 无法访问信息提示
 		accessTitle: '您未被授权，没有操作权限~',
 		accessMsg: '联系方式：加QQ群探讨 665452019',
 		accessBtn: '重新授权',
 	},
-	layout: {
+	layout: { // 布局开关
 		configTitle: '布局配置',
 		oneTitle: '全局主题',
 		twoTitle: '菜单 / 顶栏',
