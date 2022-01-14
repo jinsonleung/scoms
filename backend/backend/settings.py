@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'station',  # 场站设置
     'goods',  # for test
     'customer',  # for test
-
+    'department',  # 部门
 ]
 
 MIDDLEWARE = [
