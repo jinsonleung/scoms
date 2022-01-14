@@ -64,7 +64,7 @@ export default {
 		const editDeptRef = ref();
 		const state = reactive({
 			tableData: {
-				data: [],
+				data: [] as Array<any>,
 				total: 0,
 				loading: false,
 				param: {
@@ -76,15 +76,15 @@ export default {
 		// 初始化表格数据
 		const initTableData = () => {
 			state.tableData.data.push({
-				deptName: 'vueNextAdmin',
+				deptName: '赛诚国际物流有限公司',
 				createTime: new Date().toLocaleString(),
 				status: true,
-				sort: Number.parseInt(Math.random()),
+				sort: 0,
 				describe: '顶级部门',
 				id: Math.random(),
 				children: [
 					{
-						deptName: 'IT外包服务',
+						deptName: '赛诚国际物流有限公司',
 						createTime: new Date().toLocaleString(),
 						status: true,
 						sort: Number.parseInt(Math.random()),
@@ -92,11 +92,19 @@ export default {
 						id: Math.random(),
 					},
 					{
-						deptName: '资本控股',
+						deptName: '深圳前海赛诚物流有限公司',
 						createTime: new Date().toLocaleString(),
 						status: true,
 						sort: Number.parseInt(Math.random()),
-						describe: '分部',
+						describe: '子公司',
+						id: Math.random(),
+					},
+					{
+						deptName: '广州赛赛诚物流有限公司',
+						createTime: new Date().toLocaleString(),
+						status: true,
+						sort: Number.parseInt(Math.random()),
+						describe: '子公司',
 						id: Math.random(),
 					},
 				],

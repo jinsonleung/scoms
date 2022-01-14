@@ -1,3 +1,11 @@
+/*
+ * @Author: Jinosn.Liang
+ * @Date: 2021-12-23 19:50:33
+ * @LastEditors: Jinson.Liang
+ * @LastEditTime: 2022-01-14 21:51:36
+ * @Description: vite 配置文件
+ * @FilePath: /frontend/vite.config.ts
+ */
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import type { UserConfig } from 'vite';

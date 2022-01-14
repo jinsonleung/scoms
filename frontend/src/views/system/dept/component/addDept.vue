@@ -1,74 +1,77 @@
 <template>
 	<div class="system-add-dept-container">
-		<el-dialog title="新增部门" v-model="isShowDialog" width="769px">
-			<el-form :model="ruleForm" size="small" label-width="90px">
-				<el-row :gutter="35">
-					<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-						<el-form-item label="上级部门">
-							<el-cascader
-								:options="deptData"
-								:props="{ checkStrictly: true, value: 'deptName', label: 'deptName' }"
-								placeholder="请选择部门"
-								clearable
-								class="w100"
-								v-model="ruleForm.deptLevel"
-							>
-								<template #default="{ node, data }">
-									<span>{{ data.deptName }}</span>
-									<span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
-								</template>
-							</el-cascader>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="部门名称">
-							<el-input v-model="ruleForm.deptName" placeholder="请输入部门名称" clearable></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="负责人">
-							<el-input v-model="ruleForm.person" placeholder="请输入负责人" clearable></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="手机号">
-							<el-input v-model="ruleForm.phone" placeholder="请输入手机号" clearable></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="邮箱">
-							<el-input v-model="ruleForm.email" placeholder="请输入" clearable></el-input>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="排序">
-							<el-input-number v-model="ruleForm.sort" :min="0" :max="999" controls-position="right" placeholder="请输入排序" class="w100" />
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="部门状态">
-							<el-switch v-model="ruleForm.status" inline-prompt active-text="启" inactive-text="禁"></el-switch>
-						</el-form-item>
-					</el-col>
-					<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-						<el-form-item label="部门描述">
-							<el-input v-model="ruleForm.describe" type="textarea" placeholder="请输入部门描述" maxlength="150"></el-input>
-						</el-form-item>
-					</el-col>
-				</el-row>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="onCancel" size="small">取 消</el-button>
-					<el-button type="primary" @click="onSubmit" size="small">新 增</el-button>
-				</span>
-			</template>
-		</el-dialog>
+		<div v-dialogdrag>
+			<el-dialog title="新增部门" v-model="isShowDialog" width="769px">
+				<el-form :model="ruleForm" size="small" label-width="90px">
+					<el-row :gutter="35">
+						<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+							<el-form-item label="上级部门">
+								<el-cascader
+									:options="deptData"
+									:props="{ checkStrictly: true, value: 'deptName', label: 'deptName' }"
+									placeholder="请选择部门"
+									clearable
+									class="w100"
+									v-model="ruleForm.deptLevel"
+								>
+									<template #default="{ node, data }">
+										<span>{{ data.deptName }}</span>
+										<span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+									</template>
+								</el-cascader>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="部门名称">
+								<el-input v-model="ruleForm.deptName" placeholder="请输入部门名称" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="负责人">
+								<el-input v-model="ruleForm.person" placeholder="请输入负责人" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="手机号">
+								<el-input v-model="ruleForm.phone" placeholder="请输入手机号" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="邮箱">
+								<el-input v-model="ruleForm.email" placeholder="请输入" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="排序">
+								<el-input-number v-model="ruleForm.sort" :min="0" :max="999" controls-position="right" placeholder="请输入排序" class="w100" />
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="部门状态">
+								<el-switch v-model="ruleForm.status" inline-prompt active-text="启" inactive-text="禁"></el-switch>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+							<el-form-item label="部门描述">
+								<el-input v-model="ruleForm.describe" type="textarea" placeholder="请输入部门描述" maxlength="150"></el-input>
+							</el-form-item>
+						</el-col>
+					</el-row>
+				</el-form>
+				<template #footer>
+					<span class="dialog-footer">
+						<el-button @click="onCancel" size="small">取 消</el-button>
+						<el-button type="primary" @click="onSubmit" size="small">新 增</el-button>
+					</span>
+				</template>
+			</el-dialog>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { reactive, toRefs, onMounted } from 'vue';
+import { addNewDepartment, editDepartment } from '/@/api/department';
 export default {
 	name: 'systemAddDept',
 	setup() {
@@ -84,7 +87,7 @@ export default {
 				status: true, // 部门状态
 				describe: '', // 部门描述
 			},
-			deptData: [], // 部门数据
+			deptData: [] as Array<any>, // 部门数据
 		});
 		// 打开弹窗
 		const openDialog = () => {
@@ -100,20 +103,22 @@ export default {
 		};
 		// 新增
 		const onSubmit = () => {
-			closeDialog();
+			// closeDialog();
+			const rest = addNewDepartment({id:'新公司1', tel:'19798323'})
+			console.log('==rest==', rest)
 		};
 		// 初始化部门数据
 		const initTableData = () => {
 			state.deptData.push({
-				deptName: 'vueNextAdmin',
+				deptName: '赛诚国际物流有限公司',
 				createTime: new Date().toLocaleString(),
 				status: true,
-				sort: Number.parseInt(Math.random()),
+				sort: 0,
 				describe: '顶级部门',
 				id: Math.random(),
 				children: [
 					{
-						deptName: 'IT外包服务',
+						deptName: '赛诚国际物流有限公司',
 						createTime: new Date().toLocaleString(),
 						status: true,
 						sort: Number.parseInt(Math.random()),
@@ -121,7 +126,7 @@ export default {
 						id: Math.random(),
 					},
 					{
-						deptName: '资本控股',
+						deptName: '深圳前海赛诚物流有限公司',
 						createTime: new Date().toLocaleString(),
 						status: true,
 						sort: Number.parseInt(Math.random()),

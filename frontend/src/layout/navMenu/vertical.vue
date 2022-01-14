@@ -1,3 +1,11 @@
+<!--
+ * @Author: Jinosn.Liang
+ * @Date: 2022-01-12 20:46:17
+ * @LastEditors: Jinson.Liang
+ * @LastEditTime: 2022-01-12 21:29:59
+ * @Description:
+ * @FilePath: /frontend/src/layout/navMenu/vertical.vue
+-->
 <template>
 	<el-menu
 		router
