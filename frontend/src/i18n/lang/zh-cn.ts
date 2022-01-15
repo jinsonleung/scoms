@@ -6,6 +6,7 @@ export default {
 		systemMenu: '菜单管理',
 		systemRole: '角色管理',
 		systemUser: '用户管理',
+		systemEnterprise: '企业管理',
 		systemDept: '部门管理',
 		systemDic: '字典管理',
 		limits: '权限管理',

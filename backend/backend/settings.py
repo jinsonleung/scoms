@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'station',  # 场站设置
     'goods',  # for test
     'customer',  # for test
+    'enterprise',  # 企业及分支机构
     'department',  # 部门
 ]
 
@@ -89,7 +90,7 @@ DATABASES = {
         'NAME': 'scomsdb',  # 数据库名，自己本地创建
         'USER': 'root',  # 数据库用户名
         'PASSWORD': 'China123',  # 数据库密码
-        'HOST': '127.0.0.1',  # MySQL服务所在主机IP
+        'HOST': 'localhost',  # MySQL服务所在主机IP
         'PORT': '3306',  # MySQL服务端口
     }
 }

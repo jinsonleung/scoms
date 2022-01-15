@@ -6,6 +6,7 @@ export default {
 		systemMenu: 'systemMenu',
 		systemRole: 'systemRole',
 		systemUser: 'systemUser',
+		systemEnterprise: 'systemEnterprise',
 		systemDept: 'systemDept',
 		systemDic: 'systemDic',
 		limits: 'limits',

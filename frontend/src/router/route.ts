@@ -107,6 +107,21 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
+						path: '/system/enterprise',
+						name: 'systemEnterprise',
+						component: () => import('/@/views/system/enterprise/index.vue'),
+						meta: {
+							title: 'message.router.systemEnterprise',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'elementSchool',
+						},
+					},
+					{
 						path: '/system/dept',
 						name: 'systemDept',
 						component: () => import('/@/views/system/dept/index.vue'),
