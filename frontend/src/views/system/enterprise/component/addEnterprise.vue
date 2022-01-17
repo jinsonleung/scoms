@@ -1,9 +1,9 @@
 <template>
 	<div class="system-add-dept-container">
 		<div v-dialogdrag>
-			<el-dialog title="新增企业" v-model="isShowDialog" width="800px">
+			<el-dialog title="新增企业" v-model="isShowDialog" width="800px" >
 				<el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" size="small" label-width="110px">
-					<el-row :gutter="20">
+					<el-row :gutter="10">
 						<el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"  class="mb20">
 							<el-form-item label="上级企业" prop="enterpriseLevel">
 								<el-cascader
@@ -69,7 +69,8 @@
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="社会信用代码" prop="unifiedSocialCreditCode">
-								<el-input v-model="ruleForm.unifiedSocialCreditCode" placeholder="请输入统一社会信用代码" clearable></el-input>
+                <!--输入后将小写自动转为大写-->
+								<el-input v-model="ruleForm.unifiedSocialCreditCode" placeholder="请输入统一社会信用代码" onkeyup="this.value=this.value.toUpperCase()" clearable></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
