@@ -12,5 +12,6 @@ urlpatterns = [
     path('station/', include('station.urls')),    # url: station/xxx，场站信息接口
     path('goods/', include('goods.urls')),    # url: goods/xxx，场站信息接口
     path('customer/', include('customer.urls')),  # url: customer/xxx
+    path('enterprise/', include('enterprise.urls')),  # url: enterprise/xxx
 
 ]

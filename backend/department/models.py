@@ -30,7 +30,7 @@ class Department(models.Model):
         db_table = 'department'  # 修改表名
         verbose_name = '部门'  # 详细名称
         verbose_name_plural = verbose_name  # 详细名称
-        ordering = ['company_account']  # 排序字段
+        ordering = ['dept_id']  # 排序字段
 
     def __str__(self):
-        return self.company_account
+        return self.dept_id

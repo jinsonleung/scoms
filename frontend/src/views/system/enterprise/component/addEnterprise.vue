@@ -7,7 +7,7 @@
 						<el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"  class="mb20">
 							<el-form-item label="上级企业" prop="enterpriseLevel">
 								<el-cascader
-									:options="deptData"
+									:options="enterpriseData"
 									:props="{ checkStrictly: true, value: 'deptName', label: 'deptName' }"
 									placeholder="请选择上级企业"
 									clearable
@@ -39,8 +39,18 @@
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-							<el-form-item label="企业类别" prop="classification">
-								<el-select v-model="ruleForm.classification" placeholder="请选择企业类别" clearable class="w100">
+							<el-form-item label="企业类型" prop="enterpriseType">
+								<el-select v-model="ruleForm.enterpriseType" placeholder="请选择企业类型" clearable class="w100">
+                  <el-option label="外商投资企业" value="1"></el-option>
+                  <el-option label="股份制企业" value="2"></el-option>
+                  <el-option label="私营企业" value="3"></el-option>
+                  <el-option label="其他" value="4"></el-option>
+                </el-select>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="体系结构" prop="architecture">
+								<el-select v-model="ruleForm.architecture" placeholder="请选择体系结构" clearable class="w100">
                   <el-option label="总公司" value="1"></el-option>
                   <el-option label="子公司" value="2"></el-option>
                   <el-option label="办事处" value="3"></el-option>
@@ -49,28 +59,14 @@
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-							<el-form-item label="企业地址" prop="address">
-								<el-input v-model="ruleForm.address" placeholder="请输入企业地址" clearable></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-							<el-form-item label="所在城市" prop="threeLevelLinkage">
-                <el-cascader
-                  v-model="threeLevelLinkage"
-                  :options="threeLevelLinkageList"
-                  :props="{ expandTrigger: 'hover', value: 'code', label: 'name' }"
-                  size="small"
-                  placeholder="请选择所在城市"
-                  class="w100"
-                  clearable
-                >
-                </el-cascader>
-							</el-form-item>
-						</el-col>
-						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="社会信用代码" prop="unifiedSocialCreditCode">
                 <!--输入后将小写自动转为大写-->
 								<el-input v-model="ruleForm.unifiedSocialCreditCode" placeholder="请输入统一社会信用代码" onkeyup="this.value=this.value.toUpperCase()" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="注册资本" prop="registeredCapital">
+								<el-input v-model="ruleForm.registeredCapital" placeholder="请输入注册资本" clearable></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -89,6 +85,25 @@
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="企业地址" prop="address">
+								<el-input v-model="ruleForm.address" placeholder="请输入企业地址" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="所在城市" prop="city">
+                <el-cascader
+                  v-model="ruleForm.city"
+                  :options="threeLevelLinkageList"
+                  :props="{ expandTrigger: 'hover', value: 'code', label: 'name' }"
+                  size="small"
+                  placeholder="请选择所在城市"
+                  class="w100"
+                  clearable
+                >
+                </el-cascader>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="所在行业" prop="industry">
 								<el-select v-model="ruleForm.industry" placeholder="请选择所在行业" clearable class="w100">
                   <el-option label="物流运输" value="1"></el-option>
@@ -99,11 +114,15 @@
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+							<el-form-item label="企业网站" prop="website">
+								<el-input v-model="ruleForm.website" placeholder="请输入企业网站" clearable></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="企业法人姓名" prop="legalPersonName">
 								<el-input v-model="ruleForm.legalPersonName" placeholder="请输入企业法人姓名" clearable></el-input>
 							</el-form-item>
 						</el-col>
-
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="企业法人邮箱" prop="legalPersonEmail">
 								<el-input v-model="ruleForm.legalPersonEmail" placeholder="请输入企业法人邮箱" clearable></el-input>
@@ -130,13 +149,13 @@
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-							<el-form-item label="企业描述" prop="description">
-								<el-input v-model="ruleForm.description" type="textarea" placeholder="请输入企业描述" :rows="4" maxlength="512"></el-input>
+							<el-form-item label="经营范围" prop="businessScope">
+								<el-input v-model="ruleForm.businessScope" type="textarea" placeholder="请输入经营范围" :rows="6" maxlength="512"></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
 							<el-form-item label="备注" prop="remark">
-								<el-input v-model="ruleForm.remark" type="textarea" placeholder="请输入备注" maxlength="256"></el-input>
+								<el-input v-model="ruleForm.remark" type="textarea" placeholder="请输入备注" :rows="4" maxlength="256"></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -170,31 +189,34 @@ export default {
     const state = reactive({
       isShowDialog: false,
       ruleForm: {
-        enterpriseLevel: [], // 上级企业
+        enterpriseLevel: '', // 上级企业
         account: '', // 企业账号
         fullName: '', // 企业名全称
         abbreviationName: '', // 企业名简称
-        classification: '', // 企业分类（总部/分公司/子公司
+        enterpriseType: '', // 企业类型（外商投资企业/股份制企业/私营企业/其他）
+        architecture: '', // 体系结构（总部/子公司/办事事/其他）
+        unifiedSocialCreditCode: '', // 统一社会信用代码
+        registeredCapital: '人民币0.0000万',  // 注册资本，默认为:人民币0.0000万
+        establishedDate: '', // 成立日期
         address: '', // 公司地址
         city: '', // 所在城市
-        unifiedSocialCreditCode: '', // 统一社会信用代码
-        establishedDate: '', // 成立日期
         effectiveStartDate: '', // 营业期限(起)
         effectiveEndDate: '', // 营业期限(止)
         industry: '', // 所在行业
+        website: '', // 企业网站
         legalPersonName: '', // 企业法人姓名
         legalPersonEmail: '', // 企业法人邮箱
         contactName: '', // 联系人姓名
         contactTel: '', // 联系人电话
         contactPhone: '', // 联系人手机
         contactEmail: '', // 联系人邮箱
-        description: '', // 企业描述
+        businessScope: '', // 经营范围
         remark: '', // 备注
         isAvailable: false, // 是否启用,默认为还没激活
       },
-      deptData: [] as Array<any>, // 企业数据
+      enterpriseData: [] as Array<any>, // 企业数据
       // 省市区三级联动
-      threeLevelLinkage: '',
+      // threeLevelLinkage: '',
       threeLevelLinkageList: [],
       linkage: {
         province: '',
@@ -207,8 +229,10 @@ export default {
       // 表单检验规则
       rules: {
         account: {required: true, message: '请输入企业账号', trigger: 'blur'},
-        fullName: {required: true, message: '请输入企业全称', trigger: 'blur'},
-        classification: {required: true, message: '请选择企业类别', trigger: 'blur'},
+        fullName: {required: true, message: '请输入企业名全称', trigger: 'blur'},
+        abbreviationName: {required: true, message: '请输入企业名简称', trigger: 'blur'},
+        enterpriseType: {required: true, message: '请选择企业类型', trigger: 'blur'},
+        architecture: {required: true, message: '请选择体系结构', trigger: 'blur'},
         establishedDate: {required: true, message: '请选择成立日期', trigger: 'blur'},
         industry: {required: true, message: '请选择所在行业', trigger: 'blur'},
       },
@@ -268,7 +292,7 @@ export default {
 		};
 		// 初始化企业数据
 		const initTableData = () => {
-			state.deptData.push({
+			state.enterpriseData.push({
 				deptName: '赛诚国际物流有限公司',
 				createTime: new Date().toLocaleString(),
 				status: true,
