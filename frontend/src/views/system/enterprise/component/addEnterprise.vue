@@ -179,7 +179,7 @@
 
 <script lang="ts">
 import { ref, reactive, toRefs, onMounted } from 'vue';
-import { addNewDepartment } from '/@/api/department';
+import { getPageEnterprises } from '/@/api/enterprise';
 import threeLevelLinkageJson from '/@/mock/threeLevelLinkage.json';
 
 export default {
@@ -287,7 +287,7 @@ export default {
 		// 新增
 		const onSubmit = () => {
 			// closeDialog();
-			const rest = addNewDepartment({id:'新公司1', tel:'19798323'})
+			const rest = getPageEnterprises({limit: 3, offset: 2 })
 			console.log('==rest==', rest)
 		};
 		// 初始化企业数据
