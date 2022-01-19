@@ -49,7 +49,7 @@ def add(request):
     return JsonResponse(response)
 
 
-# 新增记录接口，方法二，POST
+# 新增记录接口，方法一，POST
 @require_http_methods(['POST'])
 def add_book(request):
     response = {}

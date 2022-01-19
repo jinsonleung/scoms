@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 # 企业信息表
 class Enterprise(models.Model):
     id = models.SmallAutoField(primary_key=True, verbose_name='自增主键')

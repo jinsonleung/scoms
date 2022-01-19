@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets, serializers
 from enterprise.models import Enterprise
-
 from django.core import serializers
 import json
+import time
 # 分页器Paginator,是导入了一个类，在用实列出来的对象调用方法，
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from enterprise.serializer import EnterpriseSerializer
@@ -52,3 +52,62 @@ def get_page_list(request):
         response['return_message'] = str(e)
         response['error_number'] = 1
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})    # 去除中文乱码
+
+
+# 新增记录接口，方法一，POST
+@require_http_methods(['POST'])
+def add(request):
+    """
+    @func：新增记录接口，使用POST方式
+    @param request： 前端参数，格式为{data:'{*:*}',userName:*}
+    @return: 是否成功对象
+    """
+    response = {}
+    try:
+        res = json.loads(request.body)  # 加载数据
+        data = res['data']
+        user_name = res['userName']
+        print('res.data====', res['data'])
+        # print('res.userName====', res['userName'])
+        enterprise = Enterprise(
+            enterprise_level=data['enterpriseLevel'],
+            account=data['account'],
+            full_name=data['fullName'],
+            abbreviation_name=data['abbreviationName'],
+            enterprise_type=data['enterpriseType'],
+            architecture=data['architecture'],
+            unified_social_credit_code=data['unifiedSocialCreditCode'],
+            registered_capital=data['registeredCapital'],
+            established_date=data['establishedDate'] != '' and data['establishedDate'] or None,   # 类型不对
+            effective_start_date=data['effectiveStartDate'] != '' and data['effectiveStartDate'] or None,
+            effective_end_date=data['effectiveEndDate'] != '' and data['effectiveStartDate'] or None,
+            address=data['address'],
+            city=data['city'],
+            industry=data['industry'],
+            website=data['website'],
+            legal_person_name=data['legalPersonName'],
+            legal_person_email=data['legalPersonEmail'],
+            contact_name=data['contactName'],
+            contact_tel=data['contactTel'],
+            contact_phone=data['contactPhone'],
+            contact_email=data['contactEmail'],
+            business_scope=data['businessScope'],
+            remark=data['remark'],
+            # is_available=True,
+            is_available=data['isAvailable'],
+            # is_delete=data[''],
+            # # create_datetime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            create_by=user_name,
+            # # 格式化成2016-03-20 11:45:39形式
+            # # update_datetime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+            update_by=user_name,
+        )
+        enterprise.save()   # 保存
+        response['return_message'] = 'success'
+        response['error_num'] = 0
+    except Exception as e:
+        response = {'error_message', str(e)}
+    return JsonResponse(response)
+
+
+

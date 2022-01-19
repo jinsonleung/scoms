@@ -179,8 +179,9 @@
 
 <script lang="ts">
 import { ref, reactive, toRefs, onMounted } from 'vue';
-import { getPageEnterprises } from '/@/api/enterprise';
+import { getPageEnterprises, addNewEnterprise } from '/@/api/enterprise';
 import threeLevelLinkageJson from '/@/mock/threeLevelLinkage.json';
+import {Session} from "/@/utils/storage";
 
 export default {
 	name: 'systemAddDept',
@@ -198,10 +199,10 @@ export default {
         unifiedSocialCreditCode: '', // 统一社会信用代码
         registeredCapital: '人民币0.0000万',  // 注册资本，默认为:人民币0.0000万
         establishedDate: '', // 成立日期
-        address: '', // 公司地址
-        city: '', // 所在城市
         effectiveStartDate: '', // 营业期限(起)
         effectiveEndDate: '', // 营业期限(止)
+        address: '', // 公司地址
+        city: '', // 所在城市
         industry: '', // 所在行业
         website: '', // 企业网站
         legalPersonName: '', // 企业法人姓名
@@ -237,7 +238,6 @@ export default {
         industry: {required: true, message: '请选择所在行业', trigger: 'blur'},
       },
     });
-
 
     // 初始化城市数据
 		const initCityData = () => {
@@ -286,9 +286,18 @@ export default {
 		};
 		// 新增
 		const onSubmit = () => {
-			// closeDialog();
-			const rest = getPageEnterprises({limit: 3, offset: 2 })
-			console.log('==rest==', rest)
+			// 获取分页记录,获取成功
+			// const rest = getPageEnterprises({limit:5, offset:1})
+			// 新增记录
+      // const rest = addNewEnterprise(state.ruleForm)
+
+      let userName = Session.get('userInfo').userName
+      const res = addNewEnterprise({data:state.ruleForm,userName:userName})
+
+      console.log('==res==', res)
+
+
+
 		};
 		// 初始化企业数据
 		const initTableData = () => {
