@@ -71,17 +71,17 @@
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="成立日期" prop="establishedDate">
-                <el-date-picker v-model="ruleForm.establishedDate" type="date" placeholder="请选择成立日期" class="w100"></el-date-picker>
+                <el-date-picker v-model="ruleForm.establishedDate" type="date" placeholder="请选择成立日期" value-format="YYYY-MM-DD" class="w100"></el-date-picker>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="营业期限(起)" prop="effectiveStartDate">
-                <el-date-picker v-model="ruleForm.effectiveStartDate" type="date" placeholder="请选择营业期限(起)" style="width: 100%"></el-date-picker>
+                <el-date-picker v-model="ruleForm.effectiveStartDate" type="date" placeholder="请选择营业期限(起)" value-format="YYYY-MM-DD" class="w100"></el-date-picker>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
 							<el-form-item label="营业期限(止)" prop="effectiveEndDate">
-                <el-date-picker v-model="ruleForm.effectiveEndDate" type="date" placeholder="请选择营业期限(止)" style="width: 100%"></el-date-picker>
+                <el-date-picker v-model="ruleForm.effectiveEndDate" type="date" placeholder="请选择营业期限(止)" value-format="YYYY-MM-DD" class="w100"></el-date-picker>
 							</el-form-item>
 						</el-col>
 						<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -202,7 +202,7 @@ export default {
         effectiveStartDate: '', // 营业期限(起)
         effectiveEndDate: '', // 营业期限(止)
         address: '', // 公司地址
-        city: '', // 所在城市
+        city: '', // 省市区三级联动
         industry: '', // 所在行业
         website: '', // 企业网站
         legalPersonName: '', // 企业法人姓名
@@ -292,9 +292,14 @@ export default {
       // const rest = addNewEnterprise(state.ruleForm)
 
       let userName = Session.get('userInfo').userName
-      const res = addNewEnterprise({data:state.ruleForm,userName:userName})
-
-      console.log('==res==', res)
+      // const res = addNewEnterprise({data:state.ruleForm,userName:userName})
+      // console.log('==res==', res)
+      // console.log('==result_code==', res["result_code"])
+       addNewEnterprise({data:state.ruleForm,userName:userName}).then(res=>{
+         console.log(res.result_code)
+       }).catch(err=>{
+        console.log(err)
+       })
 
 
 

@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+import django.utils.timezone as timezone
 from django.conf import settings
 
 
@@ -30,6 +32,7 @@ class Enterprise(models.Model):
     remark = models.TextField(max_length=256, blank=True, null=True, verbose_name='备注')
     is_available = models.BooleanField(default=False, verbose_name='是否启用')  # 默认为还没激活
     is_delete = models.BooleanField(default=False, verbose_name='删除标志')  # 默认为还没删除
+    # create_datetime = models.DateTimeField(auto_now_add=datetime.datetime.now().replace(microsecond=0), verbose_name='创建记录日期')   # 去掉毫秒
     create_datetime = models.DateTimeField(auto_now_add=True, verbose_name='创建记录日期')   # 记录第一次创建时间，以后不会更新
     create_by = models.CharField(max_length=32, blank=False, null=False, verbose_name='创建人')
     update_datetime = models.DateTimeField(auto_now=True, verbose_name='更新记录日期')   # 每次更新记录时就更新当前时间

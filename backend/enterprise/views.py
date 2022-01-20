@@ -20,11 +20,11 @@ def get_all(request):
     print('==customers.count==', all_queryset)
     try:
         response['return_list'] = serializers.serialize('python', all_queryset, ensure_ascii=False)    # 对象序列化
-        response['return_message'] = 'success'
-        response['error_number'] = 0
+        response['result_message'] = 'success'
+        response['result_code'] = 0
     except Exception as e:
-        response['return_message'] = str(e)
-        response['error_number'] = 1
+        response['result_message'] = str(e)
+        response['result_code'] = 1
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})    # 去除中文乱码
 
 
@@ -46,11 +46,11 @@ def get_page_list(request):
     try:
         response['return_list'] = page_list  # 对象序列化
         response['total_counts'] = total_counts
-        response['return_message'] = 'success'
-        response['error_number'] = 0
+        response['result_message'] = 'success'
+        response['result_code'] = 0
     except Exception as e:
-        response['return_message'] = str(e)
-        response['error_number'] = 1
+        response['result_message'] = str(e)
+        response['result_code'] = 1
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})    # 去除中文乱码
 
 
@@ -58,17 +58,22 @@ def get_page_list(request):
 @require_http_methods(['POST'])
 def add(request):
     """
-    @func：新增记录接口，使用POST方式
-    @param request： 前端参数，格式为{data:'{*:*}',userName:*}
+    @func：新增记录接口，使用POST方式，要求前端传过来的日期格式为
+    @param request：前端参数，格式为{data:'{*:*}',userName:*}
     @return: 是否成功对象
     """
     response = {}
     try:
-        res = json.loads(request.body)  # 加载数据
+        # 加载数据
+        res = json.loads(request.body)
         data = res['data']
-        user_name = res['userName']
-        print('res.data====', res['data'])
-        # print('res.userName====', res['userName'])
+        # 判断企业账号是否存在（企业账号不可重复）
+        is_exist = Enterprise.objects.filter(account=data['account']).exists()  # 查询所有记录并排序（过滤软删除记录）
+        # 企业账号存在，则返回
+        if is_exist:
+            response = {'result_body': False, 'result_message': 'account is existed', 'result_code': 4001}
+            return JsonResponse(response)
+        # 企业账号不存在，则保存
         enterprise = Enterprise(
             enterprise_level=data['enterpriseLevel'],
             account=data['account'],
@@ -80,7 +85,7 @@ def add(request):
             registered_capital=data['registeredCapital'],
             established_date=data['establishedDate'] != '' and data['establishedDate'] or None,   # 类型不对
             effective_start_date=data['effectiveStartDate'] != '' and data['effectiveStartDate'] or None,
-            effective_end_date=data['effectiveEndDate'] != '' and data['effectiveStartDate'] or None,
+            effective_end_date=data['effectiveEndDate'] != '' and data['effectiveEndDate'] or None,
             address=data['address'],
             city=data['city'],
             industry=data['industry'],
@@ -93,20 +98,20 @@ def add(request):
             contact_email=data['contactEmail'],
             business_scope=data['businessScope'],
             remark=data['remark'],
-            # is_available=True,
             is_available=data['isAvailable'],
-            # is_delete=data[''],
+            # is_delete=data['']    # 默认不标删除标志
             # # create_datetime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            create_by=user_name,
+            create_by=res['userName'],
             # # 格式化成2016-03-20 11:45:39形式
             # # update_datetime=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
-            update_by=user_name,
+            update_by=res['userName'],
         )
         enterprise.save()   # 保存
-        response['return_message'] = 'success'
-        response['error_num'] = 0
+        # response['result_message'] = 'success'
+        # response['result_code'] = 0
+        response = {'result_body': True, 'result_message': 'success', 'result_code': 200}
     except Exception as e:
-        response = {'error_message', str(e)}
+        response = {'result_body': False, 'result_message': str(e), 'result_code': 4002}
     return JsonResponse(response)
 
 
