@@ -44,13 +44,9 @@ def get_page_list(request):
     page_list = paginator.page(int(offset)+1)  # 第int(offset)+1页
     page_list = EnterpriseSerializer(page_list, many=True).data  # 当前页上所有对象的列表
     try:
-        response['return_list'] = page_list  # 对象序列化
-        response['total_counts'] = total_counts
-        response['result_message'] = 'success'
-        response['result_code'] = 0
+        response = {'result_message': 'success', 'result_body': page_list, 'result_code': 200, 'total_counts': total_counts}
     except Exception as e:
-        response['result_message'] = str(e)
-        response['result_code'] = 1
+        response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 40002}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})    # 去除中文乱码
 
 
@@ -71,7 +67,7 @@ def add(request):
         is_exist = Enterprise.objects.filter(account=data['account']).exists()  # 查询所有记录并排序（过滤软删除记录）
         # 企业账号存在，则返回
         if is_exist:
-            response = {'result_body': False, 'result_message': 'account is existed', 'result_code': 4001}
+            response = {'result_message': 'failure', 'result_body': 'account is existed', 'result_code': 40001}
             return JsonResponse(response)
         # 企业账号不存在，则保存
         enterprise = Enterprise(
@@ -109,9 +105,9 @@ def add(request):
         enterprise.save()   # 保存
         # response['result_message'] = 'success'
         # response['result_code'] = 0
-        response = {'result_body': True, 'result_message': 'success', 'result_code': 200}
+        response = {'result_message': 'success', 'result_body': '',  'result_code': 200}
     except Exception as e:
-        response = {'result_body': False, 'result_message': str(e), 'result_code': 4002}
+        response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 40002}
     return JsonResponse(response)
 
 

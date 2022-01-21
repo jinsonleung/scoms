@@ -1,6 +1,8 @@
 // 接口类型声明
 
 // 布局配置
+import internal from "stream";
+
 export interface ThemeConfigState {
 	themeConfig: {
 		isDrawer: boolean;
@@ -90,4 +92,18 @@ export interface RootStateTypes {
 	tagsViewRoutes: TagsViewRoutesState;
 	userInfos: UserInfosState;
 	requestOldRoutes: RequestOldRoutesState;
+}
+
+// promise返回参数泛型接口
+export interface ResponseData<T=any> {
+	result_body:T;
+	result_message: string;
+	result_code: internal;
+}
+
+// promise返回参数-2
+export interface ResultTypes<T> extends ResponseData {
+	data:T;
+	msg: string;
+	code: internal;
 }

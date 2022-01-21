@@ -71,6 +71,8 @@
 
 <script lang="ts">
 import { reactive, toRefs, onMounted } from 'vue';
+import {addNewEnterprise} from "/@/api/enterprise";
+import {ResponseData} from "/@/store/interface";
 export default {
 	name: 'systemEditDept',
 	setup() {
