@@ -192,7 +192,7 @@ import {ElMessage} from "element-plus";
 import {ResponseData} from '/@/store/interface';
 
 export default {
-  name: 'systemAddDept',
+  name: 'systemAddEnerprise',
   setup() {
     const ruleFormRef = ref(null);
     const state = reactive({

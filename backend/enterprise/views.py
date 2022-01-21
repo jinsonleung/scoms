@@ -111,4 +111,24 @@ def add(request):
     return JsonResponse(response)
 
 
+# 删除记录接口，软删除
+@require_http_methods(['POST'])
+def delete(request):
+    """
+    @param request：前端参数，格式为{id:'deleteId'}
+    @return: 是否成功对象
+    """
+    response = {}
+    try:
+        # 加载请求数据
+        res = json.loads(request.body)
+        # 进行软删除
+        return_value = Enterprise.objects.filter(account=res['id']).update(is_delete=True)  # 更新记录
+        if return_value == 1:
+            response = {'result_message': 'success', 'result_body': 'one record is deleted',  'result_code': 200}
+        else:
+            response = {'result_message': 'failure', 'result_body': '',  'result_code': 40003}
+    except Exception as e:
+        response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 40004}
+    return JsonResponse(response)
 

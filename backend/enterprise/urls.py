@@ -12,6 +12,8 @@ urlpatterns = [
     path('getpagelist', views.get_page_list),
     # 新增记录接口： enterprise/add
     path('add', views.add),
+    # 删除记录接口： enterprise/delete，软删除
+    path('delete', views.delete),
     ]
 
 

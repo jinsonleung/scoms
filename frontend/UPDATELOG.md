@@ -24,6 +24,8 @@
 `2022.01.19`
 - 🐞 enterprise/addNewEnterprise.vue前端的日期格式后端不接受
 
+`2022.01.21`
+- 🐞 后端数据库字段名与前段表单的字段名要保持一致，这样可使用row传值更新，要更新addEnterprise.vue弹窗的父子数据传递
 
 图标
 - 🎯 优化 

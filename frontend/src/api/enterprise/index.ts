@@ -36,7 +36,7 @@ export function getAllEnterprises(params: object){
 }
 
 /**
- * 分布查询企业记录
+ * 分页查询企业记录
  * @param params 要传的参数值
  * @returns 返回接口数据
  */
@@ -44,6 +44,19 @@ export function getPageEnterprises(params:any){
 	return request({
 		url: '/enterprise/getpagelist?limit='+ params.limit + '&offset=' + params.offset,
 		method: 'get',
+		data: params,
+	});
+}
+
+/**
+ * 删除企业记录，软删除
+ * @param params 要传的参数值
+ * @returns 返回接口数据
+ */
+export function deleteEnterprises(params:any){
+	return request({
+		url: '/enterprise/delete',
+		method: 'post',
 		data: params,
 	});
 }

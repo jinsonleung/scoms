@@ -5,14 +5,13 @@ import { store, key } from './store';
 import { directive } from '/@/utils/directive';
 import { i18n } from '/@/i18n/index';
 import other from '/@/utils/other';
-
+// import moment from 'moment'; // 时间格式化
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import '/@/theme/index.scss';
 import mitt from 'mitt';
 import screenShort from 'vue-web-screen-shot';
 import VueGridLayout from 'vue-grid-layout';
-
 import dialogDrag from "/@/utils/directives/dialogDrag"  //引入二将封装的可拖拽dialog组件
 
 const app = createApp(App);
@@ -30,4 +29,5 @@ app
 	.use(dialogDrag) //注册自定义可拖拽dialog组件
 	.mount('#app');
 
+// 全局挂载组件
 app.config.globalProperties.mittBus = mitt();
