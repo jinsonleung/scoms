@@ -41,20 +41,24 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="企业类型" prop="enterpriseType">
                 <el-select v-model="ruleForm.enterpriseType" placeholder="请选择企业类型" clearable class="w100">
-                  <el-option label="外商投资企业" value="1"></el-option>
-                  <el-option label="股份制企业" value="2"></el-option>
-                  <el-option label="私营企业" value="3"></el-option>
-                  <el-option label="其他" value="4"></el-option>
+                  <el-option
+                    v-for="item in enterpriseTypeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="体系结构" prop="architecture">
                 <el-select v-model="ruleForm.architecture" placeholder="请选择体系结构" clearable class="w100">
-                  <el-option label="总公司" value="1"></el-option>
-                  <el-option label="子公司" value="2"></el-option>
-                  <el-option label="办事处" value="3"></el-option>
-                  <el-option label="其他" value="4"></el-option>
+                  <el-option
+                    v-for="item in enterpriseArchitectureOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -110,10 +114,12 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="所在行业" prop="industry">
                 <el-select v-model="ruleForm.industry" placeholder="请选择所在行业" clearable class="w100">
-                  <el-option label="物流运输" value="1"></el-option>
-                  <el-option label="国际贸易" value="2"></el-option>
-                  <el-option label="跨境电商" value="3"></el-option>
-                  <el-option label="其他" value="4"></el-option>
+                  <el-option
+                    v-for="item in industryOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -190,6 +196,7 @@ import threeLevelLinkageJson from '/@/mock/threeLevelLinkage.json';
 import {Session} from "/@/utils/storage";
 import {ElMessage} from "element-plus";
 import {ResponseData} from '/@/store/interface';
+import {enterpriseTypeOptions, enterpriseArchitectureOptions, industryOptions} from '/@/views/system/enterprise/enterpriseOptions';
 
 export default {
   name: 'systemAddEnerprise',
@@ -296,7 +303,7 @@ export default {
     const onSubmit = async () => {
       // 获取分页记录,获取成功
       // const rest = getPageEnterprises({limit:5, offset:1})
-      let userName = Session.get('userInfo').userName
+      let userName = Session.get('userInfo').userName;
       addNewEnterprise({data: state.ruleForm, userName: userName}).then((res<ResponseData<any>>) => {
         if (res.result_code == 200) {
           // 清空表单
@@ -304,50 +311,19 @@ export default {
           ElMessage.success('新增企业成功。');
         } else if (res.result_code == 40001) {
           ElMessage.warning('新增企业失败，原因：账号' + state.ruleForm.account + '重复！');
-        }
-      }).catch(err => {
+        };
+      }).catch((err:any) => {
         ElMessage.success('添加企业失败，原因：' + err);
         console.log(err);
       });
     };
 
-
-    // 初始化企业数据
-    const initTableData = () => {
-      state.enterpriseData.push({
-        deptName: '赛诚国际物流有限公司',
-        createTime: new Date().toLocaleString(),
-        status: true,
-        sort: 0,
-        describe: '顶级企业',
-        id: Math.random(),
-        children: [
-          {
-            deptName: '赛诚国际物流有限公司',
-            createTime: new Date().toLocaleString(),
-            status: true,
-            sort: Number.parseInt(Math.random()),
-            describe: '总部',
-            id: Math.random(),
-          },
-          {
-            deptName: '深圳前海赛诚物流有限公司',
-            createTime: new Date().toLocaleString(),
-            status: true,
-            sort: Number.parseInt(Math.random()),
-            describe: '分部',
-            id: Math.random(),
-          },
-        ],
-      });
-    };
-    // 页面加载时
-    onMounted(() => {
-      initTableData();
-    });
     return {
       ruleFormRef,
       // rules,
+      enterpriseTypeOptions,
+      enterpriseArchitectureOptions,
+      industryOptions,
       onReset,
       onProvinceChange,
       onCityChange,
@@ -358,5 +334,5 @@ export default {
       ...toRefs(state),
     };
   },
-};
+}
 </script>

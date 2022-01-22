@@ -94,6 +94,13 @@ export interface RootStateTypes {
 	requestOldRoutes: RequestOldRoutesState;
 }
 
+// select选择器选项接口
+export interface SelectOptionTypes{
+	value: string,
+	label: string,
+}
+
+
 // promise返回参数泛型接口
 export interface ResponseData<T=any> {
 	result_body:T;

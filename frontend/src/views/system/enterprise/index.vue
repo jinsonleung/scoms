@@ -25,17 +25,17 @@
       >
         <el-table-column prop="account" label="企业账号" show-overflow-tooltip fixed sortable
                          width="100px"></el-table-column>
-        <el-table-column prop="full_name" label="企业名全称" show-overflow-tooltip sortable width="200px"></el-table-column>
-        <el-table-column prop="abbreviation_name" label="企业名简称" show-overflow-tooltip sortable
+        <el-table-column prop="fullName" label="企业名全称" show-overflow-tooltip sortable width="200px"></el-table-column>
+        <el-table-column prop="abbreviationName" label="企业名简称" show-overflow-tooltip sortable
                          width="120px"></el-table-column>
-        <el-table-column prop="enterprise_type" label="企业类型" show-overflow-tooltip width="120px"></el-table-column>
+        <el-table-column prop="enterpriseType" label="企业类型" show-overflow-tooltip width="120px"></el-table-column>
         <el-table-column prop="architecture" label="体系结构" show-overflow-tooltip width="80px"></el-table-column>
-        <el-table-column prop="unified_social_credit_code" label="社会信用代码" show-overflow-tooltip
+        <el-table-column prop="unifiedSocialCreditCode" label="社会信用代码" show-overflow-tooltip
                          width="180px"></el-table-column>
-        <el-table-column prop="established_date" label="成立日期" show-overflow-tooltip width="120px"></el-table-column>
+        <el-table-column prop="establishedDate" label="成立日期" show-overflow-tooltip width="120px"></el-table-column>
         <el-table-column prop="status" label="企业状态" show-overflow-tooltip width="80px">
           <template #default="scope">
-            <el-tag type="success" size="small" v-if="scope.row.is_available">启用</el-tag>
+            <el-tag type="success" size="small" v-if="scope.row.isAvailable">启用</el-tag>
             <el-tag type="info" size="small" v-else>禁用</el-tag>
           </template>
         </el-table-column>
@@ -63,6 +63,13 @@ import AddEnterprise from '/@/views/system/enterprise/component/addEnterprise.vu
 import EditEnterprise from '/@/views/system/enterprise/component/editEnterprise.vue';
 import {getPageEnterprises, deleteEnterprises} from "/@/api/enterprise";
 import moment from "moment";
+import {
+  enterpriseTypeOptions,
+  enterpriseArchitectureOptions,
+  industryOptions,
+  getOptionsLabel
+} from '/@/views/system/enterprise/enterpriseOptions';
+
 
 
 export default {
@@ -89,21 +96,36 @@ export default {
         console.log('==res==', res.result_body);
         res.result_body.forEach((item: any, i: any) => {
           state.tableData.data.push({
+            id: item.id,
+            enterpriseLevel: item.enterprise_level,
             account: item.account,
-            full_name: item.full_name,
-            abbreviation_name: item.abbreviation_name,
-            enterprise_type: item.enterprise_type,
-            architecture: item.architecture,
-            unified_social_credit_code: item.unified_social_credit_code,
-            established_date: item.established_date ? moment(item.established_date).format('YYYY-MM-DD') : '',
-            is_available: item.is_available,
+            fullName: item.full_name,
+            abbreviationName: item.abbreviation_name,
+            enterpriseType: getOptionsLabel(enterpriseTypeOptions,item.enterprise_type),
+            architecture: getOptionsLabel(enterpriseArchitectureOptions,item.architecture),
+            unifiedSocialCreditCode: item.unified_social_credit_code,
+            registeredCapital: item.registered_capital,
+            establishedDate: moment(item.established_date).format('YYYY-MM-DD'),
+            effectiveStartDate: item.effective_start_date,
+            effectiveEndDate: item.effective_end_date,
+            address: item.address,
+            city: item.city,
+            industry: item.industry,
+            website: item.website,
+            legalPersonName: item.legal_person_name,
+            legalPersonEmail: item.legal_person_email,
+            contactName: item.contact_name,
+            contactTel: item.contact_tel,
+            contactPhone: item.contact_phone,
+            contactEmail: item.contact_email,
+            businessScope: item.business_scope,
+            remark: item.remark,
+            isAvailable: item.is_available,
           });
         });
       }).catch(() => {
         ElMessage.warning('出错啦。。。')
       });
-
-
     };
 
     // 打开新增菜单弹窗
@@ -145,6 +167,9 @@ export default {
 
 
     return {
+      enterpriseTypeOptions,
+      enterpriseArchitectureOptions,
+      industryOptions,
       addEnterpriseRef,
       editEnterpriseRef,
       onOpenAddEnterprise,

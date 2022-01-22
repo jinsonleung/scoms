@@ -1,6 +1,6 @@
 <template>
-	<div class="system-edit-dept-container">
-		<div v-dialogdrag>
+  <div class="system-edit-dept-container">
+    <div v-dialogdrag>
       <el-dialog title="修改企业信息" v-model="isShowDialog" width="800px">
         <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" size="small" label-width="110px">
           <el-row :gutter="10">
@@ -25,12 +25,12 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="企业账号" prop="account">
-                <el-input v-model="ruleForm.account" placeholder="请输入企业账号" clearable></el-input>
+                <el-input v-model="ruleForm.account" placeholder="请输入企业账号" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="企业名全称" prop="full_name">
-                <el-input v-model="ruleForm.full_name" placeholder="请输入企业名全称" clearable></el-input>
+                <el-input v-model="ruleForm.fullName" placeholder="请输入企业名全称" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -41,20 +41,24 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="企业类型" prop="enterpriseType">
                 <el-select v-model="ruleForm.enterpriseType" placeholder="请选择企业类型" clearable class="w100">
-                  <el-option label="外商投资企业" value="1"></el-option>
-                  <el-option label="股份制企业" value="2"></el-option>
-                  <el-option label="私营企业" value="3"></el-option>
-                  <el-option label="其他" value="4"></el-option>
+                  <el-option
+                    v-for="item in enterpriseTypeOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="体系结构" prop="architecture">
                 <el-select v-model="ruleForm.architecture" placeholder="请选择体系结构" clearable class="w100">
-                  <el-option label="总公司" value="1"></el-option>
-                  <el-option label="子公司" value="2"></el-option>
-                  <el-option label="办事处" value="3"></el-option>
-                  <el-option label="其他" value="4"></el-option>
+                  <el-option
+                    v-for="item in enterpriseArchitectureOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -110,10 +114,12 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="所在行业" prop="industry">
                 <el-select v-model="ruleForm.industry" placeholder="请选择所在行业" clearable class="w100">
-                  <el-option label="物流运输" value="1"></el-option>
-                  <el-option label="国际贸易" value="2"></el-option>
-                  <el-option label="跨境电商" value="3"></el-option>
-                  <el-option label="其他" value="4"></el-option>
+                  <el-option
+                    v-for="item in industryOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -179,24 +185,28 @@
 					</span>
         </template>
       </el-dialog>
-		</div>
-	</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import {reactive, toRefs, onMounted, ref} from 'vue';
 import {addNewEnterprise} from "/@/api/enterprise";
 import {ResponseData} from "/@/store/interface";
+import threeLevelLinkageJson from '/@/mock/threeLevelLinkage.json';
+import {enterpriseArchitectureOptions, enterpriseTypeOptions,industryOptions} from "/@/views/system/enterprise/enterpriseOptions";
+
+
 export default {
-	name: 'systemEditEnterprise',
-	setup() {
+  name: 'systemEditEnterprise',
+  setup() {
     const ruleFormRef = ref(null);
     const state = reactive({
       isShowDialog: false,
       ruleForm: {
         enterpriseLevel: '', // 上级企业
         account: '', // 企业账号
-        full_name: '', // 企业名全称
+        fullName: '', // 企业名全称
         abbreviationName: '', // 企业名简称
         enterpriseType: '', // 企业类型（外商投资企业/股份制企业/私营企业/其他）
         architecture: '', // 体系结构（总部/子公司/办事事/其他）
@@ -206,7 +216,7 @@ export default {
         effectiveStartDate: '', // 营业期限(起)
         effectiveEndDate: '', // 营业期限(止)
         address: '', // 公司地址
-        city: '', // 省市区三级联动
+        city: [], // 省市区三级联动
         industry: '', // 所在行业
         website: '', // 企业网站
         legalPersonName: '', // 企业法人姓名
@@ -242,64 +252,90 @@ export default {
         industry: {required: true, message: '请选择所在行业', trigger: 'blur'},
       },
     });
-		// 打开弹窗
-		const openDialog = (row: Object) => {
-      console.log('==edit->row==', row)
-			state.ruleForm = row;
-			state.isShowDialog = true;
-		};
-		// 关闭弹窗
-		const closeDialog = () => {
-			state.isShowDialog = false;
-		};
-		// 取消
-		const onCancel = () => {
-			closeDialog();
-		};
-		// 新增
-		const onSubmit = () => {
-			closeDialog();
-		};
-		// 初始化企业数据
-		// const initTableData = () => {
-		// 	state.deptData.push({
-		// 		deptName: 'vueNextAdmin',
-		// 		createTime: new Date().toLocaleString(),
-		// 		status: true,
-		// 		sort: Number.parseInt(Math.random()),
-		// 		describe: '顶级企业',
-		// 		id: Math.random(),
-		// 		children: [
-		// 			{
-		// 				deptName: 'IT外包服务',
-		// 				createTime: new Date().toLocaleString(),
-		// 				status: true,
-		// 				sort: Number.parseInt(Math.random()),
-		// 				describe: '总部',
-		// 				id: Math.random(),
-		// 			},
-		// 			{
-		// 				deptName: '资本控股',
-		// 				createTime: new Date().toLocaleString(),
-		// 				status: true,
-		// 				sort: Number.parseInt(Math.random()),
-		// 				describe: '分部',
-		// 				id: Math.random(),
-		// 			},
-		// 		],
-		// 	});
-		// };
-		// 页面加载时
-		onMounted(() => {
-			// initTableData();
-		});
-		return {
-			openDialog,
-			closeDialog,
-			onCancel,
-			onSubmit,
-			...toRefs(state),
-		};
-	},
+    // 打开弹窗
+    const openDialog = (row: any) => {
+      console.log('==row==', row.city);
+      let cityStr = row.city.replace(/\s/g, '').replace(/\'/g,'')
+      cityStr=cityStr.substring(1,cityStr.length-1);
+      row.city = cityStr.split(',')
+      state.ruleForm = row;
+      state.isShowDialog = true;
+    };
+    // 关闭弹窗
+    const closeDialog = () => {
+      state.isShowDialog = false;
+    };
+    // 取消
+    const onCancel = () => {
+      closeDialog();
+    };
+    // 新增
+    const onSubmit = () => {
+      //closeDialog();
+      const threeLevelLinkageListKey = ['13','1304','1306'];
+
+
+
+
+      console.log('==currentCity==', getJsonCity(threeLevelLinkageListKey))
+    };
+
+    const getJsonCity = (codeList: Array<string>) => {
+      let name_list = '';
+      codeList.forEach(v=>{
+        console.log('==v==',v)
+        threeLevelLinkageJson.forEach((item:any)=>{
+          if (item.code ===v ) {
+            name_list += item.name;
+            console.log('==name_list==',name_list)
+            getJsonCity(codeList);
+          };
+      });
+    });
+      return name_list;
+    };
+
+
+    // 初始化城市数据
+    const initCityData = () => {
+      state.threeLevelLinkageList = threeLevelLinkageJson;
+      state.linkage.provinceList = threeLevelLinkageJson;
+    };
+    // 省下拉改变时
+    const onProvinceChange = (name: string) => {
+      state.linkage.city = '';
+      state.linkage.area = '';
+      state.linkage.cityList = [];
+      state.linkage.areaList = [];
+      state.linkage.provinceList.map((v: any) => {
+        if (v.name === name) state.linkage.cityList = v.children;
+      });
+    };
+    // 市下拉改变时
+    const onCityChange = (name: string) => {
+      state.linkage.area = '';
+      state.linkage.areaList = [];
+      state.linkage.cityList.map((v: any) => {
+        if (v.name === name) state.linkage.areaList = v.children;
+      });
+    };
+
+    // 页面加载时
+    onMounted(() => {
+      initCityData();
+    });
+    return {
+      enterpriseTypeOptions,
+      enterpriseArchitectureOptions,
+      industryOptions,
+      onCityChange,
+      onProvinceChange,
+      openDialog,
+      closeDialog,
+      onCancel,
+      onSubmit,
+      ...toRefs(state),
+    };
+  },
 };
 </script>
