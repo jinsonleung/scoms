@@ -20,9 +20,15 @@
       <!--数据列表栏-->
       <el-table
           :data="tableData.data"
-          style="width: 100%"
+          :header-row-style="{height:'30px'}"
+          :header-cell-style="{padding:0}"
+          :row-style="{height:'30px'}"
+          :cell-style="{padding:'0'}"
+          style="width: 100%; font-size: 10px"
           row-key="id"
       >
+        <el-table-column type="index" label="序号" show-overflow-tooltip fixed sortable
+                         width="50px"></el-table-column>
         <el-table-column prop="account" label="企业账号" show-overflow-tooltip fixed sortable
                          width="100px"></el-table-column>
         <el-table-column prop="fullName" label="企业名全称" show-overflow-tooltip sortable width="200px"></el-table-column>
@@ -35,8 +41,8 @@
         <el-table-column prop="establishedDate" label="成立日期" show-overflow-tooltip width="120px"></el-table-column>
         <el-table-column prop="status" label="企业状态" show-overflow-tooltip width="80px">
           <template #default="scope">
-            <el-tag type="success" size="small" v-if="scope.row.isAvailable">启用</el-tag>
-            <el-tag type="info" size="small" v-else>禁用</el-tag>
+            <el-tag size="small" type="success"  v-if="scope.row.isAvailable">启用</el-tag>
+            <el-tag size="small" type="info"  v-else>禁用</el-tag>
           </template>
         </el-table-column>
 
@@ -48,6 +54,19 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-pagination
+          @size-change="onHandleSizeChange"
+          @current-change="onHandleCurrentChange"
+          class="mt15"
+          :pager-count="5"
+          :page-sizes="[10, 20, 30]"
+          v-model:current-page="tableData.param.pageNum"
+          background
+          v-model:page-size="tableData.param.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableData.total"
+      >
+      </el-pagination>
     </el-card>
     <!--添加企业弹窗组件-->
     <AddEnterprise ref="addEnterpriseRef"/>
@@ -92,17 +111,19 @@ export default {
 
     // 初始化表格数据
     const initTableData = async () => {
-      getPageEnterprises({limit: state.tableData.param.pageSize, offset: state.tableData.param.pageNum}).then((res) => {
-        console.log('==res==', res.result_body);
+      getPageEnterprises({limit: state.tableData.param.pageSize, offset: state.tableData.param.pageNum}).then((res:any) => {
+        console.log('==res.length==', res.result_body.length);
+        const data: Array<object> = [];
+
         res.result_body.forEach((item: any, i: any) => {
-          state.tableData.data.push({
+          data.push({
             id: item.id,
             enterpriseLevel: item.enterprise_level,
             account: item.account,
             fullName: item.full_name,
             abbreviationName: item.abbreviation_name,
-            enterpriseType: getOptionsLabel(enterpriseTypeOptions,item.enterprise_type),
-            architecture: getOptionsLabel(enterpriseArchitectureOptions,item.architecture),
+            enterpriseType: getOptionsLabel(enterpriseTypeOptions, item.enterprise_type),
+            architecture: getOptionsLabel(enterpriseArchitectureOptions, item.architecture),
             unifiedSocialCreditCode: item.unified_social_credit_code,
             registeredCapital: item.registered_capital,
             establishedDate: moment(item.established_date).format('YYYY-MM-DD'),
@@ -123,6 +144,9 @@ export default {
             isAvailable: item.is_available,
           });
         });
+        state.tableData.data = data;
+        state.tableData.total = res.total_counts;
+
       }).catch(() => {
         ElMessage.warning('出错啦。。。')
       });
@@ -159,10 +183,19 @@ export default {
             });
           })
     };
+
+		// 分页改变
+		const onHandleSizeChange = (val: number) => {
+			state.tableData.param.pageSize = val;
+		};
+		// 分页改变
+		const onHandleCurrentChange = (val: number) => {
+			state.tableData.param.pageNum = val;
+		};
     // 页面加载时
     onMounted(() => {
       initTableData();
-      console.log('==state.tableData.data==', state.tableData.data)
+      // console.log('==state.tableData.data==', state.tableData.data)
     });
 
 
@@ -174,6 +207,8 @@ export default {
       editEnterpriseRef,
       onOpenAddEnterprise,
       onOpenEditEnterprise,
+      onHandleSizeChange,
+      onHandleCurrentChange,
       onTabelRowDel,
       ...toRefs(state),
     };

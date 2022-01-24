@@ -403,6 +403,20 @@
 	border-bottom-color: set-color(primary);
 }
 
+/* ==jinson begin== */
+  /*修改table 的背景颜色和文字颜色*/
+  .el-table td, .el-table th.is-leaf,.el-table--border, .el-table--group{
+    background-color: white;
+    color: black;
+  }
+
+  /*修改element-ui的table 在鼠标悬停hover时的高亮颜色*/
+  .el-table tbody tr:hover>td {
+	  //background-color: black !important;
+  }
+/* ==jinson end== */
+
+
 /* Tag 标签
 ------------------------------- */
 // primary

@@ -39,7 +39,8 @@ def get_page_list(request):
     # all_queryset = Enterprise.objects.all().order_by('account')  # 查询所有记录并排序
     all_queryset = Enterprise.objects.filter(is_delete=False).order_by('account')  # 查询所有记录并排序（过滤软删除记录）
     paginator = Paginator(all_queryset, limit)  # 获取Paginator对象,将customers列表分为每页limit条数据
-    total_counts = paginator.count   # objects列表总记录数
+    total_counts = all_queryset.count()   # objects列表总记录数
+    print('==total_counts==', total_counts)
     # total_pages = paginator.num_pages  # 一共多少页
     page_list = paginator.page(int(offset)+1)  # 第int(offset)+1页
     page_list = EnterpriseSerializer(page_list, many=True).data  # 当前页上所有对象的列表

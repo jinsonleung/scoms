@@ -608,6 +608,11 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
+china-area-data@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.npm.taobao.org/china-area-data/download/china-area-data-5.0.1.tgz#7943b83a0619f033bb5893da80cb46e52e44be66"
+  integrity sha1-eUO4OgYZ8DO7WJPagMtG5S5EvmY=
+
 "chokidar@>=3.0.0 <4.0.0":
   version "3.5.2"
   resolved "https://registry.npmmirror.com/chokidar/download/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
@@ -751,6 +756,14 @@ echarts@^5.2.2:
   dependencies:
     tslib "2.3.0"
     zrender "5.2.1"
+
+element-china-area-data@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npm.taobao.org/element-china-area-data/download/element-china-area-data-5.0.2.tgz#006c26594b8865cb619994063c732562e4583d30"
+  integrity sha1-AGwmWUuIZcthmZQGPHMlYuRYPTA=
+  dependencies:
+    china-area-data "^5.0.1"
+    lodash-es "^4.17.15"
 
 element-plus@^1.2.0-beta.6:
   version "1.2.0-beta.6"
@@ -1299,6 +1312,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+lodash-es@^4.17.15:
+  version "4.17.21"
+  resolved "https://registry.npmmirror.com/lodash-es/download/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
 lodash.merge@^4.6.2:
   version "4.6.2"
