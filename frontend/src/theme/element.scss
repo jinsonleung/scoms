@@ -419,6 +419,7 @@
 
 /* Tag 标签
 ------------------------------- */
+
 // primary
 .el-tag {
 	@include Tag(primary, primary-light-8, primary-light-6);
@@ -561,6 +562,11 @@
 
 /* Pagination 分页
 ------------------------------- */
+//jinson begin
+.el-pagination{
+	--el-pagination-font-size: 12px;
+}
+//jinson end
 .el-pager li.active,
 .el-pager li:hover,
 .el-pagination button:hover,

@@ -10,10 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os.path
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# 该语句的作用：让django到apps目录下寻找app
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -35,15 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # ==框架==
     'rest_framework',  # rest framework
     'corsheaders',  # 允许跨域
-    'books',  # for test
-    'ocr',  # OCR文字识别app
-    'station',  # 场站设置
-    'goods',  # for test
-    'customer',  # for test
-    'enterprise',  # 企业及分支机构
-    'department',  # 部门
+    # ==apps==
+    'common',    # 公共app
+    'enterprise'    # 企业信息
+
 ]
 
 MIDDLEWARE = [

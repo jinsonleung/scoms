@@ -50,12 +50,25 @@ export function getPageEnterprises(params:any){
 
 /**
  * 删除企业记录，软删除
- * @param params 要传的参数值
+ * @param params 要传的参数值，如{id:xxx}
  * @returns 返回接口数据
  */
 export function deleteEnterprises(params:any){
 	return request({
 		url: '/enterprise/delete',
+		method: 'post',
+		data: params,
+	});
+}
+
+/**
+ * 查找企业记录
+ * @param params 要传的参数值，如{account:xxx}或{'enterprise_name'}
+ * @returns 返回接口数据
+ */
+export function getEnterprises(params:any){
+	return request({
+		url: '/enterprise/search',
 		method: 'post',
 		data: params,
 	});

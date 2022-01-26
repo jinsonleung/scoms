@@ -29,6 +29,15 @@
 - 🐞 修复 ‘cryptography‘ package is required for sha256_password or caching_sha2_password auth methods 解决方案   
 ```MySQL8.0之后身份验证插件导致的，取消MySql自动登录密码输入即可或先联系Mysql```
 
+`2022.01.25`
+- 🎯 学习：这个后端Django项目不错，“基于 django 3.X 的 RESTfulAPI 风格的项目模板，用于快速构建高性能的服务端” https://gitee.com/aeasringnar/django-RESTfulAPI 
+
+`2022.01.26`
+- 🎯 优化：添加apps目录，将所有app放在此目录下集中管理
+- 🐞 Bug：common.model.BaseModel被继承后字段放在数据库表格前，**需要解决此问题**
+
+
+
 图标
 - 🎯 优化 
 - 🎯 优化 

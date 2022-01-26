@@ -3,8 +3,8 @@
     <el-card shadow="hover">
       <!--查询栏-->
       <div class="system-dept-search mb15">
-        <el-input size="small" placeholder="请输入企业名称" style="max-width: 180px"></el-input>
-        <el-button size="small" type="primary" class="ml10">
+        <el-input v-model="searchText" size="small" placeholder="请输入企业名称" style="max-width: 180px"></el-input>
+        <el-button size="small" type="primary" class="ml10" @click="onSearchEnterprise">
           <el-icon>
             <elementSearch/>
           </el-icon>
@@ -54,6 +54,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <!--分页导航栏-->
       <el-pagination
           @size-change="onHandleSizeChange"
           @current-change="onHandleCurrentChange"
@@ -95,6 +96,7 @@ export default {
   name: 'systemDept',
   components: {AddEnterprise, EditEnterprise},
   setup() {
+    const searchText = ref('');
     const addEnterpriseRef = ref();
     const editEnterpriseRef = ref();
     const state = reactive({
@@ -103,19 +105,20 @@ export default {
         total: 0,
         loading: false,
         param: {
-          pageNum: 0,
+          pageNum: 1,
           pageSize: 10,
         },
       },
     });
 
-    // 初始化表格数据
-    const initTableData = async () => {
-      getPageEnterprises({limit: state.tableData.param.pageSize, offset: state.tableData.param.pageNum}).then((res:any) => {
-        console.log('==res.length==', res.result_body.length);
+    // 获取分页数据
+    const getTablePageData = async (pageNum: number, pageSize: number) => {
+      getPageEnterprises({
+        limit: pageSize,
+        offset: pageNum
+      }).then((res: any) => {
         const data: Array<object> = [];
-
-        res.result_body.forEach((item: any, i: any) => {
+        res.result_body.forEach((item: any) => {
           data.push({
             id: item.id,
             enterpriseLevel: item.enterprise_level,
@@ -146,10 +149,19 @@ export default {
         });
         state.tableData.data = data;
         state.tableData.total = res.total_counts;
-
       }).catch(() => {
         ElMessage.warning('出错啦。。。')
       });
+    }
+
+    // 初始化表格数据
+    const initTableData = () => {
+      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize)
+    };
+
+    // 查找
+    const onSearchEnterprise = (params:object) => {
+
     };
 
     // 打开新增菜单弹窗
@@ -187,10 +199,13 @@ export default {
 		// 分页改变
 		const onHandleSizeChange = (val: number) => {
 			state.tableData.param.pageSize = val;
+      state.tableData.param.pageNum = 1;
+      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize)
 		};
 		// 分页改变
 		const onHandleCurrentChange = (val: number) => {
 			state.tableData.param.pageNum = val;
+      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize)
 		};
     // 页面加载时
     onMounted(() => {
@@ -200,11 +215,13 @@ export default {
 
 
     return {
+      searchText,
       enterpriseTypeOptions,
       enterpriseArchitectureOptions,
       industryOptions,
       addEnterpriseRef,
       editEnterpriseRef,
+      onSearchEnterprise,
       onOpenAddEnterprise,
       onOpenEditEnterprise,
       onHandleSizeChange,
