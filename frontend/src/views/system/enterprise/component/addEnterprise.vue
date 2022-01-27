@@ -5,14 +5,14 @@
         <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" size="small" label-width="110px">
           <el-row :gutter="10">
             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="上级企业" prop="enterpriseLevel">
+              <el-form-item label="上级企业" prop="superior_level">
                 <el-cascader
                     :options="enterpriseData"
                     :props="{ checkStrictly: true, value: 'deptName', label: 'deptName' }"
                     placeholder="请选择上级企业"
                     clearable
                     class="w100"
-                    v-model="ruleForm.enterpriseLevel"
+                    v-model="ruleForm.superior_level"
                 >
                   <template #default="{ node, data }">
                     <span>{{ data.deptName }}</span>
@@ -29,18 +29,18 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="企业名全称" prop="fullName">
-                <el-input v-model="ruleForm.fullName" placeholder="请输入企业名全称" clearable></el-input>
+              <el-form-item label="企业名全称" prop="full_name">
+                <el-input v-model="ruleForm.full_name" placeholder="请输入企业名全称" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="企业名简称" prop="abbreviationName">
-                <el-input v-model="ruleForm.abbreviationName" placeholder="请输入企业名简称" clearable></el-input>
+              <el-form-item label="企业名简称" prop="abbreviation_name">
+                <el-input v-model="ruleForm.abbreviation_name" placeholder="请输入企业名简称" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="企业类型" prop="enterpriseType">
-                <el-select v-model="ruleForm.enterpriseType" placeholder="请选择企业类型" clearable class="w100">
+              <el-form-item label="企业类型" prop="enterprise_type">
+                <el-select v-model="ruleForm.enterprise_type" placeholder="请选择企业类型" clearable class="w100">
                   <el-option
                     v-for="item in enterpriseTypeOptions"
                     :key="item.value"
@@ -63,32 +63,32 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="社会信用代码" prop="unifiedSocialCreditCode">
+              <el-form-item label="社会信用代码" prop="unified_social_credit_code">
                 <!--输入后将小写自动转为大写-->
-                <el-input v-model="ruleForm.unifiedSocialCreditCode" placeholder="请输入统一社会信用代码"
+                <el-input v-model="ruleForm.unified_social_credit_code" placeholder="请输入统一社会信用代码"
                           onkeyup="this.value=this.value.toUpperCase()" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="注册资本" prop="registeredCapital">
-                <el-input v-model="ruleForm.registeredCapital" placeholder="请输入注册资本" clearable></el-input>
+              <el-form-item label="注册资本" prop="registered_capital">
+                <el-input v-model="ruleForm.registered_capital" placeholder="请输入注册资本" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="成立日期" prop="establishedDate">
-                <el-date-picker v-model="ruleForm.establishedDate" type="date" placeholder="请选择成立日期"
+              <el-form-item label="成立日期" prop="established_date">
+                <el-date-picker v-model="ruleForm.established_date" type="date" placeholder="请选择成立日期"
                                 value-format="YYYY-MM-DD" class="w100"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="营业期限(起)" prop="effectiveStartDate">
-                <el-date-picker v-model="ruleForm.effectiveStartDate" type="date" placeholder="请选择营业期限(起)"
+              <el-form-item label="营业期限(起)" prop="effective_start_date">
+                <el-date-picker v-model="ruleForm.effective_start_date" type="date" placeholder="请选择营业期限(起)"
                                 value-format="YYYY-MM-DD" class="w100"></el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="营业期限(止)" prop="effectiveEndDate">
-                <el-date-picker v-model="ruleForm.effectiveEndDate" type="date" placeholder="请选择营业期限(止)"
+              <el-form-item label="营业期限(止)" prop="effective_end_date">
+                <el-date-picker v-model="ruleForm.effective_end_date" type="date" placeholder="请选择营业期限(止)"
                                 value-format="YYYY-MM-DD" class="w100"></el-date-picker>
               </el-form-item>
             </el-col>
@@ -129,38 +129,38 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="企业法人姓名" prop="legalPersonName">
-                <el-input v-model="ruleForm.legalPersonName" placeholder="请输入企业法人姓名" clearable></el-input>
+              <el-form-item label="企业法人姓名" prop="legal_person_name">
+                <el-input v-model="ruleForm.legal_person_name" placeholder="请输入企业法人姓名" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="企业法人邮箱" prop="legalPersonEmail">
-                <el-input v-model="ruleForm.legalPersonEmail" placeholder="请输入企业法人邮箱" clearable></el-input>
+              <el-form-item label="企业法人邮箱" prop="legal_person_email">
+                <el-input v-model="ruleForm.legal_person_email" placeholder="请输入企业法人邮箱" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="联系人姓名" prop="contactName">
-                <el-input v-model="ruleForm.contactName" placeholder="请输入联系人姓名" clearable></el-input>
+              <el-form-item label="联系人姓名" prop="contact_name">
+                <el-input v-model="ruleForm.contact_name" placeholder="请输入联系人姓名" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="联系人电话" prop="contactTel">
-                <el-input v-model="ruleForm.contactTel" placeholder="请输入联系人电话" clearable></el-input>
+              <el-form-item label="联系人电话" prop="contact_tel">
+                <el-input v-model="ruleForm.contact_tel" placeholder="请输入联系人电话" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="联系人手机" prop="contactPhone">
-                <el-input v-model="ruleForm.contactPhone" placeholder="请输入联系人手机" clearable></el-input>
+              <el-form-item label="联系人手机" prop="contact_phone">
+                <el-input v-model="ruleForm.contact_phone" placeholder="请输入联系人手机" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="联系人邮箱" prop="contactEmail">
-                <el-input v-model="ruleForm.contactEmail" placeholder="请输入联系人邮箱" clearable></el-input>
+              <el-form-item label="联系人邮箱" prop="contact_email">
+                <el-input v-model="ruleForm.contact_email" placeholder="请输入联系人邮箱" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-              <el-form-item label="经营范围" prop="businessScope">
-                <el-input v-model="ruleForm.businessScope" type="textarea" placeholder="请输入经营范围" :rows="6"
+              <el-form-item label="经营范围" prop="business_scope">
+                <el-input v-model="ruleForm.business_scope" type="textarea" placeholder="请输入经营范围" :rows="6"
                           maxlength="512"></el-input>
               </el-form-item>
             </el-col>
@@ -171,8 +171,8 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="是否启用" prop="isAvailable">
-                <el-switch v-model="ruleForm.isAvailable" inline-prompt active-text="启" inactive-text="否"></el-switch>
+              <el-form-item label="是否启用" prop="is_available">
+                <el-switch v-model="ruleForm.is_available" inline-prompt active-text="启" inactive-text="否"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -205,30 +205,30 @@ export default {
     const state = reactive({
       isShowDialog: false,
       ruleForm: {
-        enterpriseLevel: '', // 上级企业
+        superior_level: '', // 上级企业
         account: '', // 企业账号
-        fullName: '', // 企业名全称
-        abbreviationName: '', // 企业名简称
-        enterpriseType: '', // 企业类型（外商投资企业/股份制企业/私营企业/其他）
+        full_name: '', // 企业名全称
+        abbreviation_name: '', // 企业名简称
+        enterprise_type: '', // 企业类型（外商投资企业/股份制企业/私营企业/其他）
         architecture: '', // 体系结构（总部/子公司/办事事/其他）
-        unifiedSocialCreditCode: '', // 统一社会信用代码
-        registeredCapital: '人民币0.0000万',  // 注册资本，默认为:人民币0.0000万
-        establishedDate: '', // 成立日期
-        effectiveStartDate: '', // 营业期限(起)
-        effectiveEndDate: '', // 营业期限(止)
+        unified_social_credit_code: '', // 统一社会信用代码
+        registered_capital: '人民币0.0000万',  // 注册资本，默认为:人民币0.0000万
+        established_date: '', // 成立日期
+        effective_start_date: '', // 营业期限(起)
+        effective_end_date: '', // 营业期限(止)
         address: '', // 公司地址
         city: '', // 省市区三级联动
         industry: '', // 所在行业
         website: '', // 企业网站
-        legalPersonName: '', // 企业法人姓名
-        legalPersonEmail: '', // 企业法人邮箱
-        contactName: '', // 联系人姓名
-        contactTel: '', // 联系人电话
-        contactPhone: '', // 联系人手机
-        contactEmail: '', // 联系人邮箱
-        businessScope: '', // 经营范围
+        legal_person_name: '', // 企业法人姓名
+        legal_person_email: '', // 企业法人邮箱
+        contact_name: '', // 联系人姓名
+        contact_tel: '', // 联系人电话
+        contact_phone: '', // 联系人手机
+        contact_email: '', // 联系人邮箱
+        business_scope: '', // 经营范围
         remark: '', // 备注
-        isAvailable: false, // 是否启用,默认为还没激活
+        is_available: false, // 是否启用,默认为还没激活
       },
       enterpriseData: [] as Array<any>, // 企业数据
       // 省市区三级联动
@@ -245,11 +245,11 @@ export default {
       // 表单检验规则
       rules: {
         account: {required: true, message: '请输入企业账号', trigger: 'blur'},
-        fullName: {required: true, message: '请输入企业名全称', trigger: 'blur'},
-        abbreviationName: {required: true, message: '请输入企业名简称', trigger: 'blur'},
-        enterpriseType: {required: true, message: '请选择企业类型', trigger: 'blur'},
+        full_name: {required: true, message: '请输入企业名全称', trigger: 'blur'},
+        abbreviation_name: {required: true, message: '请输入企业名简称', trigger: 'blur'},
+        enterprise_type: {required: true, message: '请选择企业类型', trigger: 'blur'},
         architecture: {required: true, message: '请选择体系结构', trigger: 'blur'},
-        establishedDate: {required: true, message: '请选择成立日期', trigger: 'blur'},
+        established_date: {required: true, message: '请选择成立日期', trigger: 'blur'},
         industry: {required: true, message: '请选择所在行业', trigger: 'blur'},
       },
     });
@@ -303,8 +303,12 @@ export default {
     const onSubmit = async () => {
       // 获取分页记录,获取成功
       // const rest = getPageEnterprises({limit:5, offset:1})
+
+      console.log('==type(state.ruleForm)==', state.ruleForm)
+
       let userName = Session.get('userInfo').userName;
       addNewEnterprise({data: state.ruleForm, userName: userName}).then((res<ResponseData<any>>) => {
+      // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
         if (res.result_code == 200) {
           // 清空表单
           ruleFormRef.value.resetFields();

@@ -43,7 +43,7 @@ const viteConfig: UserConfig = {
 			},
 			// 企业信息代理（正确）
             '/enterprise': {
-                // 后端实际地址为如http://127.0.0.1:8000/enterprises-1/getall，前端url为/enterprises-1/getall
+                // 后端实际地址为如http://127.0.0.1:8000/enterprise/getall，前端url为/enterprise/getall
 				target: 'http://127.0.0.1:8000',
                 changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/enterprise/, ''),

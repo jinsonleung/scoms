@@ -35,7 +35,7 @@
 `2022.01.26`
 - 🎯 优化：添加apps目录，将所有app放在此目录下集中管理
 - 🐞 Bug：common.model.BaseModel被继承后字段放在数据库表格前，**需要解决此问题**
-
+- 🐞 Bug：保存字典至model还没处理完成，或参考：https://www.jb51.net/article/163765.htm
 
 
 图标

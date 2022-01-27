@@ -2,8 +2,23 @@ from django.db import models
 from apps.common.models import BaseModel
 
 
-# 企业信息表，继承抽象基类BaseModel
+class EnterpriseManager(models.Manager):
+    # 自定义模型管理器，继承了models.Manager并重父类的方法get_queryset()
+    def get_queryset(self):
+        # 过滤并保留is_delete标志为False的记录
+        return super(EnterpriseManager, self).get_queryset().filter(is_delete=False)
+
+    # 在这里定义管理器的其他方法,如
+    # def create(self, title):
+    #     # 创建
+    #     enterprise = self.create(title=title)
+    #     # do something with the book
+    #     enterprise.save()
+    #     return enterprise
+
+
 class Enterprise(BaseModel):
+    # 企业信息表，继承抽象基类BaseModel
     id = models.SmallAutoField(primary_key=True, verbose_name='自增主键')
     superior_level = models.CharField(max_length=64, blank=True, null=True, verbose_name='上级企业')
     account = models.CharField(max_length=16, unique=True, verbose_name='企业账号')
@@ -30,7 +45,10 @@ class Enterprise(BaseModel):
     remark = models.TextField(max_length=256, blank=True, null=True, verbose_name='备注')
     is_available = models.BooleanField(default=False, verbose_name='是否启用')  # 默认为还没激活
 
-    class Meta:  # 更改数据库表名称
+    objects = models.Manager()   # 默认模型管理器
+    custom = EnterpriseManager()    # 自定义模型管理器，此管理器为返回的是is_delete=False的queryset
+
+    class Meta:
         db_table = 'enterprise'  # 修改表名
         verbose_name = '企业信息表'  # 详细名称
         verbose_name_plural = verbose_name  # 详细名称
