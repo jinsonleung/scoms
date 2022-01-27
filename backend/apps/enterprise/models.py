@@ -28,9 +28,9 @@ class Enterprise(BaseModel):
     architecture = models.CharField(max_length=64, blank=False, null=False, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  null=True, verbose_name='统一社会信用代码')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
-    established_date = models.DateTimeField(blank=True, null=True, verbose_name='成立日期')
-    effective_start_date = models.DateTimeField(blank=True, null=True, verbose_name='营业期限(起)')
-    effective_end_date = models.DateTimeField(blank=True, null=True, verbose_name='营业期限(止)')
+    established_date = models.DateTimeField(blank=True, null=True, default=None, verbose_name='成立日期')
+    effective_start_date = models.DateTimeField(blank=True, null=True, default=None, verbose_name='营业期限(起)')
+    effective_end_date = models.DateTimeField(blank=True, null=True, default=None, verbose_name='营业期限(止)')
     address = models.CharField(max_length=128, null=True, verbose_name='公司地址')
     city = models.CharField(max_length=32, null=True, verbose_name='所在城市')
     industry = models.CharField(max_length=32, null=True, verbose_name='所在行业')
@@ -55,4 +55,4 @@ class Enterprise(BaseModel):
         ordering = ['account']  # 排序字段
 
     def __str__(self):
-        return self.account
+        return self.established_date + self.effective_start_date + self.effective_end_date

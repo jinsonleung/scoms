@@ -62,6 +62,7 @@ class BaseModel(models.Model):
     # desc = models.TextField(default='', blank=True, verbose_name='描述')
     # sort_time = models.DateTimeField(auto_now_add=True, verbose_name='排序时间')
     is_delete = models.BooleanField(default=False, verbose_name='删除标志')  # 默认为标志为False
+    # create_datetime = models.DateTimeField(auto_now_add=True, verbose_name='创建记录日期')   # 创建记录时间，以后不会更新
     create_datetime = models.DateTimeField(auto_now_add=True, verbose_name='创建记录日期')   # 创建记录时间，以后不会更新
     create_by = models.CharField(max_length=32, blank=False, null=False, verbose_name='创建人')
     update_datetime = models.DateTimeField(auto_now=True, verbose_name='更新记录日期')   # 每次更新记录时就更新当前时间
