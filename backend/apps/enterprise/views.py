@@ -61,7 +61,7 @@ def get_page_list(request):
 
 
 @require_http_methods(['POST'])
-def add_new(request):
+def add(request):
     data = request.body
     print('==type(data)==', type(data))
     # data = request.body['account']
@@ -84,7 +84,7 @@ def add_new(request):
 
 
 @require_http_methods(['POST'])
-def add(request):
+def add_old(request):
     """
     @func：增加记录接口，使用POST方式，要求前端传过来的日期格式为
     @param request：前端参数，如enterprise/{data:'{*:*}',userName:*}
