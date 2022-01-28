@@ -6,7 +6,6 @@
  * @Description: 部门api接口
  * @FilePath: /frontend/src/api/department/index.ts
  */
-
 import request from '/@/utils/request'
 
 /**
@@ -17,6 +16,19 @@ import request from '/@/utils/request'
 export function addNewEnterprise(params: object){
 	return request({
 		url: '/enterprise/add',
+		method: 'post',
+		data: params,
+	});
+}
+
+/**
+ * 修改企业记录
+ * @param params 要传的参数值
+ * @returns 返回接口数据
+ */
+export function updateEnterprise(params: object){
+	return request({
+		url: '/enterprise/update',
 		method: 'post',
 		data: params,
 	});

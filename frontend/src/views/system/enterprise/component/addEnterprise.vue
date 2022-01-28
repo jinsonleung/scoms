@@ -191,15 +191,14 @@
 
 <script lang="ts">
 import {ref, reactive, toRefs, onMounted} from 'vue';
-import {getPageEnterprises, addNewEnterprise} from '/@/api/enterprise';
+import {addNewEnterprise} from '/@/api/enterprise';
 import threeLevelLinkageJson from '/@/mock/threeLevelLinkage.json';
 import {Session} from "/@/utils/storage";
 import {ElMessage} from "element-plus";
-import {ResponseData} from '/@/store/interface';
 import {enterpriseTypeOptions, enterpriseArchitectureOptions, industryOptions} from '/@/views/system/enterprise/enterpriseOptions';
 
 export default {
-  name: 'systemAddEnerprise',
+  name: 'systemAddEnterprise',
   setup() {
     const ruleFormRef = ref(null);
     const state = reactive({
@@ -284,7 +283,8 @@ export default {
 
     // 重置表单
     const onReset = () => {
-      ruleFormRef.value.resetFields() //type断言机制报错，不要紧
+      // resetFields不是vue函数，是element ui函数，type断言机制报红，不要紧
+      if (ruleFormRef.value) ruleFormRef.value.resetFields()
     };
 
     // 打开弹窗
@@ -302,23 +302,20 @@ export default {
     // 新增
     const onSubmit = async () => {
       // 获取分页记录,获取成功
-      // const rest = getPageEnterprises({limit:5, offset:1})
-
       console.log('==type(state.ruleForm)==', state.ruleForm)
-
       let user_name = Session.get('userInfo').userName;
-      addNewEnterprise({data: state.ruleForm, user_name: user_name}).then((res<ResponseData<any>>) => {
-      // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
+      addNewEnterprise({data: state.ruleForm, user_name: user_name}).then((res: any) => {
+        // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
+        console.log('==res.result_code==', res.result_code);
         if (res.result_code == 200) {
           // 清空表单
-          ruleFormRef.value.resetFields();
+          if (ruleFormRef.value) ruleFormRef.value.resetFields();
           ElMessage.success('新增企业成功。');
         } else if (res.result_code == 40001) {
           ElMessage.warning('新增企业失败，原因：账号' + state.ruleForm.account + '重复！');
-        };
-      }).catch((err:any) => {
-        ElMessage.success('添加企业失败，原因：' + err);
-        console.log(err);
+        } else {
+          ElMessage.success('添加企业失败！');
+        }
       });
     };
 

@@ -38,6 +38,8 @@
 - 🐞 Bug：保存字典至model还没处理完成，存储日期为空时报错，或参考：https://www.jb51.net/article/163765.htm
 - 🐞 修复：报错“django.core.exceptions.ValidationError: ['“”的值有一个错误的日期格式。它的格式应该是YYYY-MM-DD']”，将前端传过来的字典中日期字段移除，再保存即可
 
+`2022.01.28`
+- 🐞 Bug：修改时出现，django.db.utils.IntegrityError: (1048, "Column 'create_datetime' cannot be null")
 
 图标
 - 🎯 优化 

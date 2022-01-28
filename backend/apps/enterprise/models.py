@@ -3,10 +3,14 @@ from apps.common.models import BaseModel
 
 
 class EnterpriseManager(models.Manager):
-    # 自定义模型管理器，继承了models.Manager并重父类的方法get_queryset()
+    # 自定义模型管理器，继承了models.Manager
     def get_queryset(self):
-        # 过滤并保留is_delete标志为False的记录
+        # 重写父类的方法get_queryset()，过滤并保留is_delete标志为False的记录
         return super(EnterpriseManager, self).get_queryset().filter(is_delete=False)
+
+    def is_exist(self, account):
+        # 判断是否有相同账号的记录存在
+        return super(EnterpriseManager, self).get_queryset().filter(account=account)
 
     # 在这里定义管理器的其他方法,如
     # def create(self, title):
@@ -21,7 +25,7 @@ class Enterprise(BaseModel):
     # 企业信息表，继承抽象基类BaseModel
     id = models.SmallAutoField(primary_key=True, verbose_name='自增主键')
     superior_level = models.CharField(max_length=64, blank=True, null=True, verbose_name='上级企业')
-    account = models.CharField(max_length=16, unique=True, verbose_name='企业账号')
+    account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='企业账号')
     full_name = models.CharField(max_length=64, blank=False, null=False, verbose_name='企业名全称')
     abbreviation_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='企业名简称')
     enterprise_type = models.CharField(max_length=32, blank=False, null=False, verbose_name='企业类型')
@@ -44,7 +48,6 @@ class Enterprise(BaseModel):
     business_scope = models.TextField(max_length=256, blank=True, null=True, verbose_name='经营范围')
     remark = models.TextField(max_length=256, blank=True, null=True, verbose_name='备注')
     is_available = models.BooleanField(default=False, verbose_name='是否启用')  # 默认为还没激活
-
 
     objects = models.Manager()   # 默认模型管理器
     custom = EnterpriseManager()    # 自定义模型管理器，此管理器为返回的是is_delete=False的queryset

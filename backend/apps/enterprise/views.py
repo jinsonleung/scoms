@@ -22,41 +22,33 @@ def get_all(request):
     @param：null
     @return：所有记录
     '''
-    response = {}
-    all_queryset = Enterprise.custom.all()
     try:
-        response['return_list'] = serializers.serialize('python', all_queryset, ensure_ascii=False)  # 对象序列化
-        response['result_message'] = 'success'
-        response['result_code'] = 0
+        enterprises = Enterprise.custom.all()
+        enterprises = serializers.serialize('python', enterprises, ensure_ascii=False)  # 对象序列化
+        response = {'result_message': 'success', 'result_body': enterprises, 'result_code': 200}
     except Exception as e:
-        response['result_message'] = str(e)
-        response['result_code'] = 1
+        response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 5001}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})  # 去除中文乱码
 
 
-# 功能：获取分页列表，正确
-# 参数：url?limit=10&offset=0，如customer/getpagelist?limit=10&offset=0
-# 返回：分面数据
 @require_http_methods(['GET'])
 def get_page_list(request):
     '''
     @func：获取分页列表，使用GET请求，正确
-    @param request：url?limit=10&offset=0，enterprise/getpagelist?limit=10&offset=0
+    @param request：url?limit=10&offset=0，如：enterprise/getpagelist?limit=10&offset=0
     @return：分页数据
     '''
-    response = {}  # 返回值对象
-    limit = request.GET.get('limit')  # 页长，获取get url(enterprise/getpagelist?limit=10&offset=0)参数
-    offset = request.GET.get('offset')  # 偏移量，获取get url(enterprise/getpagelist?limit=10&offset=0)参数
-    all_queryset = Enterprise.custom.all()
-    paginator = Paginator(all_queryset, limit)  # 获取Paginator对象,将customers列表分为每页limit条数据
-    total_counts = all_queryset.count()  # objects列表总记录数
-    print('==total_counts==', total_counts)
-    # total_pages = paginator.num_pages  # 一共多少页
-    page_list = paginator.page(int(offset))  # 第int(offset)+1页
-    page_list = EnterpriseSerializer(page_list, many=True).data  # 当前页上所有对象的列表
     try:
-        response = {'result_message': 'success', 'result_body': page_list, 'result_code': 200,
-                    'total_counts': total_counts}
+        limit = request.GET.get('limit')  # 页长，获取get url(enterprise/getpagelist?limit=10&offset=0)参数
+        offset = request.GET.get('offset')  # 偏移量，获取get url(enterprise/getpagelist?limit=10&offset=0)参数
+        enterprises = Enterprise.custom.all()
+        paginator = Paginator(enterprises, limit)  # 获取Paginator对象,将customers列表分为每页limit条数据
+        total_counts = enterprises.count()  # objects列表总记录数
+        print('==total_counts==', total_counts)
+        # total_pages = paginator.num_pages  # 一共多少页
+        page_list = paginator.page(int(offset))  # 第int(offset)+1页
+        page_list = EnterpriseSerializer(page_list, many=True).data  # 当前页上所有对象的列表
+        response = {'result_message': 'success', 'result_body': page_list, 'result_code': 200, 'total_counts': total_counts}
     except Exception as e:
         response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 40002}
     return JsonResponse(response, safe=False, json_dumps_params={'ensure_ascii': False})  # 去除中文乱码
@@ -64,12 +56,22 @@ def get_page_list(request):
 
 @require_http_methods(['POST'])
 def add(request):
-    response={}
+    """
+    @func：增加记录接口，使用POST方式，要求前端传过来的日期格式为
+    @param request：前端参数，如enterprise/{data:'{*:*}',userName:*}
+    @return: 是否成功对象
+    """
     try:
         # 将前端传过来的json格式数据转换为字典
         res = json.loads(request.body)
         data = res['data']
         user_name = res['user_name']
+        # 判断企业账号是否存在（企业账号不可重复）
+        is_exist = Enterprise.objects.filter(account=data['account']).exists()  # 查询所有记录并排序
+        # 企业账号存在，则返回
+        if is_exist:
+            response = {'result_message': 'failure', 'result_body': 'account is existed', 'result_code': 40001}
+            return JsonResponse(response)
         # 若前端的日期字段为空，则将从字典中移除，否则执行save()方法时报错
         if data['established_date'] == '': del data['established_date']
         if data['effective_start_date'] == '': del data['effective_start_date']
@@ -146,13 +148,49 @@ def add_old(request):
 
 
 @require_http_methods(['POST'])
+def update(request):
+    """
+    @func：根据account修改记录接口，使用POST方式，参数格式为{data:'{*:*}',userName:*}
+    @param request：前端参数，如enterprise/{data:'{*:*}',userName:*}
+    @return: 是否成功对象
+    """
+    # try:
+    # 将前端传过来的json格式数据转换为字典
+    res = json.loads(request.body)
+    data = res['data']
+    print('==data==', data)
+
+    user_name = res['user_name']
+    # 判断企业账号是否存在（企业账号不可重复）
+    is_exist = Enterprise.objects.filter(account=data['account']).exists()
+    # enterprise = Enterprise.custom.filter(account=data['account']).first()
+    print('==is_exist==', is_exist)
+    # 记录不存在，则返回
+    if is_exist is False:
+        response = {'result_message': 'failure', 'result_body': 'account is not existed', 'result_code': 40001}
+        return JsonResponse(response)
+    # 若前端的日期字段为空，则将从字典中移除，否则执行save()方法时报错
+    if data['established_date'] == '': del data['established_date']
+    if data['effective_start_date'] == '': del data['effective_start_date']
+    if data['effective_end_date'] == '': del data['effective_end_date']
+    # del data['create_datetime']
+    # 将字典转为对象,参考https://www.jb51.net/article/163765.htm
+    enterprise = Enterprise(update_by=user_name, **data)
+    enterprise.save()
+    response = {'result_message': 'success', 'result_body': 'update is successful', 'result_code': 200}
+    return JsonResponse(response)
+    # except Exception as e:
+    #     response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 50002}
+    # return JsonResponse(response)
+
+
+@require_http_methods(['POST'])
 def delete(request):
     """
     @func：删除记录（软删除）
     @param request：前端参数，格式为{id:'deleteId'}
     @return: 是否成功对象
     """
-    response = {}
     try:
         # 加载请求数据
         res = json.loads(request.body)
