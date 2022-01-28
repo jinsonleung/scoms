@@ -149,6 +149,27 @@ def add_old(request):
 
 @require_http_methods(['POST'])
 def update(request):
+    res0 = request.body
+    res1 = json.loads(request.body)
+    # res2 = EnterpriseSerializer(request.body)
+    data1 = res1['data']
+    # data2 = res2['data']
+
+    data2 = EnterpriseSerializer(data=data1)
+
+    print('==res0==', res0)
+    print('==data1==', data1)
+    print('==data2==', data2)
+    # print('==data2.account==', data2['account'])
+    response = {'result_message': '222', 'result_body': 'update is successful', 'result_code': 222}
+    if data2.is_valid():
+        data2.save()
+        response = {'result_message': 'failure', 'result_body': 'account is not existed', 'result_code': 40001}
+        return JsonResponse(response)
+    return JsonResponse(response)
+
+@require_http_methods(['POST'])
+def update_old(request):
     """
     @func：根据account修改记录接口，使用POST方式，参数格式为{data:'{*:*}',userName:*}
     @param request：前端参数，如enterprise/{data:'{*:*}',userName:*}

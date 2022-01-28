@@ -179,7 +179,6 @@
         </el-form>
         <template #footer>
 					<span class="dialog-footer">
-						<el-button @click="onReset" size="small">重 置</el-button>
 						<el-button @click="onCancel" size="small">取 消</el-button>
 						<el-button type="primary" @click="onSubmit" size="small">修改</el-button>
 					</span>

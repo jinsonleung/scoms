@@ -107,7 +107,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 						},
 					},
 					{
-						path: '/system/enterprises',
+						path: '/system/enterprise',
 						name: 'systemEnterprise',
 						component: () => import('/@/views/system/enterprise/index.vue'),
 						meta: {

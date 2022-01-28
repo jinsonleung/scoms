@@ -156,7 +156,9 @@ export default {
 
     // 初始化表格数据
     const initTableData = () => {
-      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize)
+      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize).then((res:any)=>{
+        console.log('==get table page data==', res)
+      })
     };
 
     // 查找
