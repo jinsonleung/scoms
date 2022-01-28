@@ -35,7 +35,8 @@
 `2022.01.26`
 - 🎯 优化：添加apps目录，将所有app放在此目录下集中管理
 - 🐞 Bug：common.model.BaseModel被继承后字段放在数据库表格前，**需要解决此问题**
-- 🐞 Bug：保存字典至model还没处理完成，或参考：https://www.jb51.net/article/163765.htm
+- 🐞 Bug：保存字典至model还没处理完成，存储日期为空时报错，或参考：https://www.jb51.net/article/163765.htm
+- 🐞 修复：报错“django.core.exceptions.ValidationError: ['“”的值有一个错误的日期格式。它的格式应该是YYYY-MM-DD']”，将前端传过来的字典中日期字段移除，再保存即可
 
 
 图标

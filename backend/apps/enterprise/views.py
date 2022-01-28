@@ -1,3 +1,5 @@
+import pickle
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
@@ -62,34 +64,23 @@ def get_page_list(request):
 
 @require_http_methods(['POST'])
 def add(request):
-    res = json.loads(request.body)
-    data = res['data']
-    print('==data==', data)
-    # print('==type(data)==', type(data))
-    # # data = request.body['account']
-    # data = json.loads(data)     # 将前端数据字符串转为字典
-    # print('==type(data)==', type(data))
-    # print('==data==', data)
-    established_date = '2022-01-22 11:33:55'  #
-    data['established_date'] = established_date
-    data['effective_start_date'] = '2022-01-22 11:33:55'
-    data['effective_end_date'] = '2022-01-22 11:33:55'
-    # print('==established_date==', data['established_date'])
-    print('==data2==', data)
-
-    enterprise = Enterprise(create_by='jinson1', update_by='jinson2', **data)
-    print('==enterprise==', enterprise)
-    enterprise.save()
-
-    # enterprise = data
-    # enterprise.save()
-    # print('==enterprise==', enterprise)
-    # #
-    # if enterprise.is_valid():
-    #     enterprise.save()
-    #     return Response(enterprise.data)
-    # return Response(enterprise.errors)
-    response = {'result_message': 'failure', 'result_body': '', 'result_code': 40002}
+    response={}
+    try:
+        # 将前端传过来的json格式数据转换为字典
+        res = json.loads(request.body)
+        data = res['data']
+        user_name = res['user_name']
+        # 若前端的日期字段为空，则将从字典中移除，否则执行save()方法时报错
+        if data['established_date'] == '': del data['established_date']
+        if data['effective_start_date'] == '': del data['effective_start_date']
+        if data['effective_end_date'] == '': del data['effective_end_date']
+        # 将字典转为对象,参考https://www.jb51.net/article/163765.htm
+        enterprise = Enterprise(create_by=user_name, update_by=user_name, **data)
+        enterprise.save()
+        response = {'result_message': 'success', 'result_body': 'save is successful', 'result_code': 200}
+        return JsonResponse(response)
+    except Exception as e:
+        response = {'result_message': 'failure', 'result_body': str(e), 'result_code': 50002}
     return JsonResponse(response)
 
 

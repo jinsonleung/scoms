@@ -306,8 +306,8 @@ export default {
 
       console.log('==type(state.ruleForm)==', state.ruleForm)
 
-      let userName = Session.get('userInfo').userName;
-      addNewEnterprise({data: state.ruleForm, userName: userName}).then((res<ResponseData<any>>) => {
+      let user_name = Session.get('userInfo').userName;
+      addNewEnterprise({data: state.ruleForm, user_name: user_name}).then((res<ResponseData<any>>) => {
       // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
         if (res.result_code == 200) {
           // 清空表单
