@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # ==框架==
-    'rest_framework',  # rest framework
+    'rest_framework',  # rest框架
+    'django_filters',   # django过滤器
     'corsheaders',  # 允许跨域
     # ==apps==
     'common',    # 公共app

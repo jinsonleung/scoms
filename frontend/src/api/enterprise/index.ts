@@ -28,7 +28,8 @@ export function addNewEnterprise(params: object){
  */
 export function updateEnterprise(params: object){
 	return request({
-		url: '/enterprise/update',
+		// url: '/enterprise/update',
+		url: '/enterprise/post',
 		method: 'post',
 		data: params,
 	});
@@ -54,7 +55,8 @@ export function getAllEnterprises(params: object){
  */
 export function getPageEnterprises(params:any){
 	return request({
-		url: '/enterprise/getpagelist?limit='+ params.limit + '&offset=' + params.offset,
+		// url: '/enterprise/getpagelist?limit='+ params.limit + '&offset=' + params.offset,
+		url: '/enterprise',
 		method: 'get',
 		data: params,
 	});

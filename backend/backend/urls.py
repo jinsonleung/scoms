@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
+
+from apps.enterprise import views
 from backend.settings import MEDIA_ROOT
 from django.views.static import serve
 
@@ -12,6 +14,7 @@ urlpatterns = [
     # path('station/', include('station.urls')),    # url: station/xxx，场站信息接口
     # path('goods/', include('goods.urls')),    # url: goods/xxx，场站信息接口
     # path('customer/', include('customer.urls')),  # url: customer/xxx
-    path('enterprise/', include('enterprise.urls')),  # 企业信息，url: enterprise-1/xxx
+    # path('enterprise/', include('enterprise.urls')),  # 企业信息，url: enterprise-1/xxx
+    path(r'enterprise/$', views.Enterprise.as_view()),
 
 ]
