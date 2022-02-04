@@ -42,10 +42,11 @@ INSTALLED_APPS = [
     # ==框架==
     'rest_framework',  # rest框架
     'django_filters',   # django过滤器
-    'corsheaders',  # 允许跨域
+    'corsheaders',  # 允许跨域请求
     # ==apps==
     'common',    # 公共app
-    'enterprise'    # 企业信息
+    'enterprise',    # 企业信息
+    'test0130',     # 用于测试
 
 ]
 

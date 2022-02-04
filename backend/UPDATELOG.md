@@ -16,6 +16,7 @@
 `pip3 freeze > requirements.txt`
 - 🎉 安装依赖环境   
 `pip3 install -r requirements.txt`
+- 🎉 任意目录创建应用 cd 目录, django-admin startapp 应用名
 
 
 ### 版本：1.0.0
@@ -42,6 +43,8 @@
 - 🐞 Bug：修改时出现，django.db.utils.IntegrityError: (1048, "Column 'create_datetime' cannot be null")
 - 🎉 学习：自动记录创建人和修改人，https://blog.csdn.net/zgj0607/article/details/119943187?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_paycolumn_v3&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_paycolumn_v3&utm_relevant_index=5
 
+`2022.02.4`
+- 🐞 Bug：分页还没有返回总记录条数
 
 图标
 - 🎯 优化 

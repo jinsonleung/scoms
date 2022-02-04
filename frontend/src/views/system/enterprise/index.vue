@@ -61,13 +61,15 @@
           class="mt15"
           :pager-count="5"
           :page-sizes="[10, 20, 30]"
-          v-model:current-page="tableData.param.pageNum"
+          v-model:current-page="tableData.param.page_num"
           background
-          v-model:page-size="tableData.param.pageSize"
+          v-model:page-size="tableData.param.page_size"
           layout="total, sizes, prev, pager, next, jumper"
           :total="tableData.total"
       >
       </el-pagination>
+      <el-button size="mini" type="text">删除</el-button>
+
     </el-card>
     <!--添加企业弹窗组件-->
     <AddEnterprise ref="addEnterpriseRef"/>
@@ -105,20 +107,21 @@ export default {
         total: 0,
         loading: false,
         param: {
-          pageNum: 1,
-          pageSize: 10,
+          page_num: 1,
+          page_size: 10,
         },
       },
     });
 
     // 获取分页数据
-    const getTablePageData = async (pageNum: number, pageSize: number) => {
+    const getTablePageData = async (page_num: number, page_size: number) => {
       getPageEnterprises({
-        limit: pageSize,
-        offset: pageNum
+        page_num: page_num,
+        page_size: page_size
       }).then((res: any) => {
+        // console.log('==res000==', res)
         const data: Array<object> = [];
-        res.result_body.forEach((item: any) => {
+        res.data.forEach((item: any) => {
           data.push({
             id: item.id,
             superior_level: item.superior_level,
@@ -148,7 +151,7 @@ export default {
           });
         });
         state.tableData.data = data;
-        state.tableData.total = res.total_counts;
+        state.tableData.total = res.count;
       }).catch(() => {
         ElMessage.warning('出错啦。。。')
       });
@@ -156,9 +159,7 @@ export default {
 
     // 初始化表格数据
     const initTableData = () => {
-      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize).then((res:any)=>{
-        console.log('==get table page data==', res)
-      })
+      getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size);
     };
 
     // 查找
@@ -176,7 +177,7 @@ export default {
     };
     // 删除当前行
     const onTabelRowDel = async (row: object) => {
-      const account = row.account;
+      // const account = row.account;
       ElMessageBox.confirm(`删除账号：${account} 的企业记录, 是否继续?`, '提示', {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
@@ -200,14 +201,14 @@ export default {
 
 		// 分页改变
 		const onHandleSizeChange = (val: number) => {
-			state.tableData.param.pageSize = val;
-      state.tableData.param.pageNum = 1;
-      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize)
+			state.tableData.param.page_size = val;
+      state.tableData.param.page_num = 1;
+      getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size)
 		};
 		// 分页改变
 		const onHandleCurrentChange = (val: number) => {
-			state.tableData.param.pageNum = val;
-      getTablePageData(state.tableData.param.pageNum,state.tableData.param.pageSize)
+			state.tableData.param.page_num = val;
+      getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size)
 		};
     // 页面加载时
     onMounted(() => {

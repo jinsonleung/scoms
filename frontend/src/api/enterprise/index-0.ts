@@ -3,7 +3,7 @@
  * @Date: 2022-01-14 21:37:44
  * @LastEditors: Jinson.Liang
  * @LastEditTime: 2022-01-14 21:42:41
- * @Description: 企业API接口，使用restfull风格
+ * @Description: 部门api接口
  * @FilePath: /frontend/src/api/department/index.ts
  */
 import request from '/@/utils/request'
@@ -56,8 +56,8 @@ export function getAllEnterprises(params: object){
 export function getPageEnterprises(params:any){
 	return request({
 		// url: '/enterprise/getpagelist?limit='+ params.limit + '&offset=' + params.offset,
-		url: '/enterprise/?page_num='+ params.page_num + '&page_size=' + params.page_size,
-		method: 'GET',
+		url: '/enterprise',
+		method: 'get',
 		data: params,
 	});
 }

@@ -1,46 +1,86 @@
-# 前提：
-# 1）序列化类中不能修改原字段的深度
-# 2）通过 data=请求数据包 得到可以操作orm的序列化对象，instance来明确修改的对象，校验成功后还是走save()来更新
-# 3）必须先校验，才能保存或更新
-from requests import Response
-
-from apps.enterprise.serializer import EnterpriseSerializer
-from rest_framework.views import APIView
-import json
+from rest_framework.response import Response
+from utils.pagination import Pagination
+from apps.enterprise.models import Enterprise
+from apps.enterprise.serializers import EnterpriseSerializer
+from rest_framework import mixins
+from rest_framework import generics
 
 
-# GET     /books/         提供所有记录
-# POST    /books/         新增一条记录
-# GET     /books/<pk>/    提供指定id的记录
-# PUT     /books/<pk>/    修改指定id的记录
-# DELETE  /books/<pk>/    删除指定id的记录
+class EnterpriseList0(generics.ListAPIView):
+    print('ddddd')
+    queryset = Enterprise.objects.all()
+    serializer_class = EnterpriseSerializer
+    pagination_class = Pagination
 
 
-# 增
-class Enterprise(APIView):
+class EnterpriseList(generics.ListAPIView,
+                     mixins.CreateModelMixin,
+                     generics.GenericAPIView):
     """
-    {
-        "name":"水浒传",
-        "price":"88.88",
-        "author":[1, 2, 3 ]
-    }
+    列出所有的记录，或创建一条新的记录。
     """
+    # queryset = Enterprise.objects.all()   # 获取所有记录
+    queryset = Enterprise.custom.all()      # 获取非软删除的记录
+    serializer_class = EnterpriseSerializer     # 序列化
+    pagination_class = Pagination   # 分页
 
-    def get(self, request):
-        print('==aaaaaaa==')
-        queryset = Enterprise.objects.all()
-        serializer = EnterpriseSerializer(instance=queryset, many=True)
-        return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        """获取分页数据"""
+        print('==get all==', request.data)
+        return self.list(request, *args, **kwargs)
 
-    def post(self, request):
-        book_dic = json.loads(request.body)
-        book_dic = book_dic['data']
-        book_json = EnterpriseSerializer(data=book_dic)
-        # 数据的校验
-        if book_json.is_valid():
-            book_json.save()  # 不涉及跨表操作
-        return Response({
-            'status': 0,
-            'msg': 'ok',
-            'results': book_json.data
-        })
+    # @staticmethod
+    # def get(self, request, *args, **kwargs):
+    #     print('==request.data==', request.data)
+    #     queryset = Enterprise.objects.all()
+    #     serializer_class = EnterpriseSerializer
+    #     pagination_class = Pagination
+    #
+    #     # all_objects = self.queryset
+    #     # page_objects = Pagination.paginate_queryset(self=self, queryset=all_objects, request=request, view=self)
+    #     # page_serializer = EnterpriseSerializer(instance=page_objects, many=True)
+    #
+    #
+    #     # return Response(page_serializer.data)
+    #     # all_objects = Enterprise.custom.all()
+    #     # page_objects = Pagination.paginate_queryset(queryset=all_objects, request=request, self=all_objects)
+    #     # page_serializer = EnterpriseSerializer(instance=page_objects, many=True)
+    #     # return Response(page_serializer.data)
+    #     return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+    #     # return self.create(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class EnterpriseDetail(mixins.RetrieveModelMixin,
+                       mixins.UpdateModelMixin,
+                       mixins.DestroyModelMixin,
+                       generics.GenericAPIView):
+    """
+    获取，更新或删除一条记录
+    """
+    # queryset = Enterprise.objects.all()   # 获取所有记录
+    queryset = Enterprise.custom.all()      # 获取非软删除的记录
+    serializer_class = EnterpriseSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        print('==request.data==', request.data)
+        return self.update(request, *args, **kwargs)
+
+    @staticmethod
+    def delete(request, *args, **kwargs):
+        """
+        @func：重写delete，软删除一条记录，DELETE请求，如DELETE enterprise/111，正确
+        @param：id
+        @return：json
+        """
+        pk = kwargs.get('pk')
+        delete_obj = Enterprise.custom.filter(pk=pk).update(is_delete=True)
+        if delete_obj:
+            return Response({'result_message': 'success', 'result_code': 200, 'result_body': 'deleted successfully'})
+        return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+

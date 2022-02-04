@@ -10,7 +10,7 @@ import json
 import time
 # 分页器Paginator,是导入了一个类，在用实列出来的对象调用方法，
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from apps.enterprise.serializer import EnterpriseSerializer
+from apps.enterprise.serializers import EnterpriseSerializer
 from rest_framework.response import Response
 
 

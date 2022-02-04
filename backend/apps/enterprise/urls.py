@@ -1,6 +1,6 @@
-from django.conf.urls import url
-from django.urls import path
 from apps.enterprise import views
+from django.conf.urls import url
+from rest_framework.urlpatterns import format_suffix_patterns
 
 """
 @func：企业记录接口
@@ -26,9 +26,12 @@ urlpatterns = [
     # 修改： /person/[pk]/ put
     # 删除： /person/[pk]/ delete
     # path(r'^enterprise/$', views.Enterprise.as_view()),
-    url(r'enterprise/$', views.Enterprise.as_view()),
+    # url(r'enterprise/$', views.Enterprise.as_view()),
 
+    url(r'^enterprise/$', views.EnterpriseList.as_view()),
+    url(r'^enterprise/(?P<pk>[0-9]+)/$', views.EnterpriseDetail.as_view()),
     ]
+urlpatterns = format_suffix_patterns(urlpatterns)
 
 
 
