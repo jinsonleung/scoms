@@ -50,7 +50,7 @@
           <template #default="scope">
             <el-button size="mini" type="text" @click="onOpenAddEnterprise(scope.row)">新增</el-button>
             <el-button size="mini" type="text" @click="onOpenEditEnterprise(scope.row)">修改</el-button>
-            <el-button size="mini" type="text" @click="onTabelRowDel(scope.row)">删除</el-button>
+            <el-button size="mini" type="text" @click="onTableRowDel(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,8 +68,6 @@
           :total="tableData.total"
       >
       </el-pagination>
-      <el-button size="mini" type="text">删除</el-button>
-
     </el-card>
     <!--添加企业弹窗组件-->
     <AddEnterprise ref="addEnterpriseRef"/>
@@ -152,8 +150,6 @@ export default {
         });
         state.tableData.data = data;
         state.tableData.total = res.count;
-      }).catch(() => {
-        ElMessage.warning('出错啦。。。')
       });
     }
 
@@ -176,27 +172,19 @@ export default {
       editEnterpriseRef.value.openDialog(row);
     };
     // 删除当前行
-    const onTabelRowDel = async (row: object) => {
-      // const account = row.account;
-      ElMessageBox.confirm(`删除账号：${account} 的企业记录, 是否继续?`, '提示', {
+    const onTableRowDel = async (row: any) => {
+      ElMessageBox.confirm(`删除账号：${row.account} 的企业记录, 是否继续?`, '提示', {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => {
-            deleteEnterprises({id: account}).then((res: any) => {
-              if (res.result_code === 200) {
-                console.log('delete res', res)
-                // 刷新表单
-                state.tableData.data = [];
-                initTableData();
-                ElMessage.success('删除成功。');
-              } else {
-                ElMessage.success('删除失败！');
-              }
-            }).catch(() => {
-              ElMessage.success('删除失败！');
-            });
-          })
+      }).then(()=>{
+        return deleteEnterprises({id: row.id});
+      }).then((res) => {
+        console.log('==delete res==', res)
+        state.tableData.data = [];
+        initTableData();
+        ElMessage.success('删除成功。');
+      })
     };
 
 		// 分页改变
@@ -229,7 +217,7 @@ export default {
       onOpenEditEnterprise,
       onHandleSizeChange,
       onHandleCurrentChange,
-      onTabelRowDel,
+      onTableRowDel,
       ...toRefs(state),
     };
   },

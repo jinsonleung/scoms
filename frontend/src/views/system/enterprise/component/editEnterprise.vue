@@ -195,6 +195,7 @@ import {enterpriseArchitectureOptions, enterpriseTypeOptions,industryOptions} fr
 import {Session} from "/@/utils/storage";
 import {updateEnterprise} from "/@/api/enterprise";
 import {ElMessage} from "element-plus";
+import {formatDate} from "/@/utils/formatTime";
 
 
 export default {
@@ -228,6 +229,9 @@ export default {
         business_scope: '', // 经营范围
         remark: '', // 备注
         is_available: false, // 是否启用,默认为还没激活
+        update_datetime: '',  // 更新日期时间
+        create_by: '',  //创建人
+        update_by: '',  //更新人
       },
       enterpriseData: [] as Array<any>, // 企业数据
       // 省市区三级联动
@@ -277,21 +281,28 @@ export default {
     };
 
     const onSubmit = async () => {
-      // 获取分页记录,获取成功
-      console.log('==type(state.ruleForm)==', state.ruleForm)
-      let user_name = Session.get('userInfo').userName;
-      updateEnterprise({data: state.ruleForm, user_name: user_name}).then((res: any) => {
-        // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
-        console.log('==res.result_code==', res.result_code);
-        if (res.result_code == 200) {
-          // 清空表单
-          if (ruleFormRef.value) ruleFormRef.value.resetFields();
-          ElMessage.success('新增企业成功。');
-        } else if (res.result_code == 40001) {
-          ElMessage.warning('新增企业失败，原因：账号' + state.ruleForm.account + '重复！');
-        } else {
-          ElMessage.success('添加企业失败！');
+      // console.log('==row==', row);
+      // state.ruleForm.update_datetime = formatDate(new Date(), 'YYYY-mm-dd HH:MM:SS')
+      state.ruleForm.create_by = Session.get('userInfo').userName;
+      state.ruleForm.update_by = Session.get('userInfo').userName;
+      console.log('==type(state.ruleForm)==', typeof(state.ruleForm))
+      updateEnterprise(state.ruleForm).then((res: any) => {
+        if (res) {
+          // ruleFormRef.value.resetFields();
+          // if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          ElMessage.success('修改企业成功！');
         }
+        // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
+        // console.log('==res.result_code==', res);
+        // if (res.result_code == 200) {
+        //   // 清空表单
+        //   if (ruleFormRef.value) ruleFormRef.value.resetFields();
+        //   ElMessage.success('新增企业成功。');
+        // } else if (res.result_code == 40001) {
+        //   ElMessage.warning('新增企业失败，原因：账号' + state.ruleForm.account + '重复！');
+        // } else {
+        //   ElMessage.success('添加企业失败！');
+        // }
       });
     };
 

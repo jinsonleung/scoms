@@ -30,7 +30,7 @@ models.SET(自定义方法)：当外键数据删除时，指向外键的数据�
 
 字段常用options：
 unique=True # 设置唯一性约束也是唯一索引
-db_index=True # 设置普通索引
+db_index=True # 设置普通索引，给某个字段加索引
 null = True # 允许值为空
 blank = True # 允许键为空，指定的字段可以不传
 choices = ((0,'男'),('1','女'),) # 选项类型
@@ -61,16 +61,16 @@ class BaseModel(models.Model):
     # sort = models.IntegerField(default=1, verbose_name='排序')
     # desc = models.TextField(default='', blank=True, verbose_name='描述')
     # sort_time = models.DateTimeField(auto_now_add=True, verbose_name='排序时间')
-    is_delete = models.BooleanField(default=False, verbose_name='删除标志')  # 默认为标志为False
-    # create_datetime = models.DateTimeField(auto_now_add=True, verbose_name='创建记录日期')   # 创建记录时间，以后不会更新
-    create_datetime = models.DateTimeField(auto_now_add=True, verbose_name='创建记录日期')   # 创建记录时间，以后不会更新
+    is_delete = models.BooleanField(default=False, verbose_name='软删除标志')
+    create_datetime = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='创建记录日期')   # 创建记录时间，以后不会更新
     create_by = models.CharField(max_length=32, blank=False, null=False, verbose_name='创建人')
-    update_datetime = models.DateTimeField(auto_now=True, verbose_name='更新记录日期')   # 每次更新记录时就更新当前时间
+    update_datetime = models.DateTimeField(auto_now=True, db_index=True, verbose_name='更新记录日期')   # 每次更新记录时就更新当前时间
     update_by = models.CharField(max_length=32, blank=False, null=False, verbose_name='更新人')
 
     class Meta:
         """抽象基类，这个基类不会生成对应的数据库表"""
         abstract = True
+
 
 # class BigDataFilterManager(models.Manager):
 #     def all(self, filter_time=None):

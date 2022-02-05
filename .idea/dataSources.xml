@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="omsdb" uuid="bf6bd967-a150-4dd6-aa41-f82c4d439548">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\Jinson\WorkSpace\PythonProject\scoms\backend\db.sqlite3</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="scomsdb" uuid="7498412e-524a-4e3d-94f8-fdf42ea739c9">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>

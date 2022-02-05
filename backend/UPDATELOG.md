@@ -43,8 +43,13 @@
 - 🐞 Bug：修改时出现，django.db.utils.IntegrityError: (1048, "Column 'create_datetime' cannot be null")
 - 🎉 学习：自动记录创建人和修改人，https://blog.csdn.net/zgj0607/article/details/119943187?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_paycolumn_v3&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_paycolumn_v3&utm_relevant_index=5
 
-`2022.02.4`
-- 🐞 Bug：分页还没有返回总记录条数
+`2022.02.04`
+- 🐞 Bug：分页还没有返回总记录条数，02/04已解决
+- 
+`2022.02.05`
+- 🐞 Bug：DELETE请求时产生再次讲请求，一次是OPTIONS，这种OPTIONS应拒绝，如何拒绝OPTIONS请求？
+`2022.02.05`
+- 🐞 Bug：提交前端表单时，PUT提交到后台后，返回需要个别字段是必须的问题，如create_by字段
 
 图标
 - 🎯 优化 

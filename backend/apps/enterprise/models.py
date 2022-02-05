@@ -1,24 +1,25 @@
 from django.db import models
 from apps.common.models import BaseModel
+from apps.common.managers import CommonManager
 
 
-class EnterpriseManager(models.Manager):
-    # 自定义模型管理器，继承了models.Manager
-    def get_queryset(self):
-        # 重写父类的方法get_queryset()，过滤并保留is_delete标志为False的记录
-        return super(EnterpriseManager, self).get_queryset().filter(is_delete=False)
-
-    def is_exist(self, account):
-        # 判断是否有相同账号的记录存在
-        return super(EnterpriseManager, self).get_queryset().filter(account=account)
-
-    # 在这里定义管理器的其他方法,如
-    # def create(self, title):
-    #     # 创建
-    #     enterprise = self.create(title=title)
-    #     # do something with the book
-    #     enterprise.save()
-    #     return enterprise
+# class EnterpriseManager(models.Manager):
+#     # 自定义模型管理器，继承了models.Manager
+#     def get_queryset(self):
+#         # 重写父类的方法get_queryset()，过滤并保留is_delete标志为False的记录
+#         return super(EnterpriseManager, self).get_queryset().filter(is_delete=False)
+#
+#     def is_exist(self, account):
+#         # 判断是否有相同账号的记录存在
+#         return super(EnterpriseManager, self).get_queryset().filter(account=account)
+#
+#     # 在这里定义管理器的其他方法,如
+#     # def create(self, title):
+#     #     # 创建
+#     #     enterprise = self.create(title=title)
+#     #     # do something with the book
+#     #     enterprise.save()
+#     #     return enterprise
 
 
 class Enterprise(BaseModel):
@@ -50,7 +51,8 @@ class Enterprise(BaseModel):
     is_available = models.BooleanField(default=False, verbose_name='是否启用')  # 默认为还没激活
 
     objects = models.Manager()   # 默认模型管理器
-    custom = EnterpriseManager()    # 自定义模型管理器，此管理器为返回的是is_delete=False的queryset
+    # custom = EnterpriseManager()    # 自定义模型管理器，此管理器为返回的是is_delete=False的queryset
+    custom = CommonManager()
 
     class Meta:
         db_table = 'enterprise'  # 修改表名

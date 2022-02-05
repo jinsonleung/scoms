@@ -144,7 +144,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 1、跨域增加忽略
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True    # 允许所有跨域请求，否则会出现OPTIONS请求
+CORS_ORIGIN_ALLOW_ALL = True    # 允许所有跨域请求
 CORS_ORIGIN_WHITELIST = (   # 请求白名单
     ['http://127.0.0.1:*']
 )
@@ -182,4 +182,40 @@ MEDIA_ROOT = (
 )
 
 # 4、日期输入格式
-DATE_INPUT_FORMATS = ['%d/%m/%Y']
+# DATE_INPUT_FORMATS = ['%d/%m/%Y']
+
+# REST_FRAMEWORK 相关配置
+REST_FRAMEWORK = {
+    #     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    #     # 'DEFAULT_PERMISSION_CLASSES': (
+    #     #     # 'rest_framework.permissions.IsAuthenticated',
+    #     #     'enterprise.permissions.DisableOptionsPermission',
+    #     # ),
+    #     # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    #     # ),
+    #     # 'DEFAULT_METADATA_CLASS': None,
+    #     'DEFAULT_RENDERER_CLASSES': (
+    #         'rest_framework.renderers.JSONRenderer',
+    #         'rest_framework.renderers.BrowsableAPIRenderer',
+    #         'drf_renderer_xlsx.renderers.XLSXRenderer',
+    #     ),
+    #     'DEFAULT_PARSER_CLASSES': (
+    #         'rest_framework.parsers.JSONParser',
+    #         'rest_framework.parsers.FormParser',
+    #         'rest_framework.parsers.MultiPartParser',
+    #     ),
+    # 格式化时间
+    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    'DATETIME_INPUT_FORMATS': ('%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'),
+    'DATE_FORMAT': '%Y-%m-%d',
+    'DATE_INPUT_FORMATS': ('%Y-%m-%d',),
+    'TIME_FORMAT': '%H:%M:%S',
+    'TIME_INPUT_FORMATS': ('%H:%M:%S',),
+    #     # DRF异常定制处理方法
+    #     # 'EXCEPTION_HANDLER': 'utils.exceptionHandle.base_exception_handler',
+    #     # DRF返回response定制json
+    #     'DEFAULT_RENDERER_CLASSES': (
+    #         # 'utils.rendererresponse.BaseJsonRenderer',
+    #     ),
+}

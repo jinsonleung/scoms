@@ -1,8 +1,9 @@
+from django.http import QueryDict
 from rest_framework.response import Response
 from utils.pagination import Pagination
 from apps.enterprise.models import Enterprise
 from apps.enterprise.serializers import EnterpriseSerializer
-from rest_framework import mixins
+from rest_framework import mixins, status
 from rest_framework import generics
 
 
@@ -20,7 +21,7 @@ class EnterpriseList(generics.ListAPIView,
     列出所有的记录，或创建一条新的记录。
     """
     # queryset = Enterprise.objects.all()   # 获取所有记录
-    queryset = Enterprise.custom.all()      # 获取非软删除的记录
+    queryset = Enterprise.custom.all()      # 获取非软删、除的记录
     serializer_class = EnterpriseSerializer     # 序列化
     pagination_class = Pagination   # 分页
 
@@ -58,7 +59,7 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
                        mixins.DestroyModelMixin,
                        generics.GenericAPIView):
     """
-    获取，更新或删除一条记录
+    获取、更新或删除一条记录
     """
     # queryset = Enterprise.objects.all()   # 获取所有记录
     queryset = Enterprise.custom.all()      # 获取非软删除的记录
@@ -68,11 +69,25 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
         return self.update(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
-        print('==request.data==', request.data)
-        return self.update(request, *args, **kwargs)
+        # print('==put，request.get_full_path()==', request.get_full_path())
+        # print('==put，request.data==', type(request.data), request.data)
+        # data1 = dict_to_querydict(request.data)
+        # print('==put，data1==', type(data1), data1)
+        # request.QueryDict.dict = data1
+        # print('==put，request.data2==', type(request.data), request.data)
+        # print('==put，request.data[id]==', request.data['id'])
+
+        # 以下更新成功，返回个别字段是必须的问题，如create_by字段
+        enterprise = Enterprise.custom.get(id=request.data['id'])
+        serializer = EnterpriseSerializer(enterprise, data=request.data)
+        # print('==put，serializer==', serializer.is_valid, serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
-    def delete(request, *args, **kwargs):
+    def delete_0(request, *args, **kwargs):
         """
         @func：重写delete，软删除一条记录，DELETE请求，如DELETE enterprise/111，正确
         @param：id
@@ -84,3 +99,14 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
             return Response({'result_message': 'success', 'result_code': 200, 'result_body': 'deleted successfully'})
         return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
 
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+def dict_to_querydict(dict_data):
+    qdict = QueryDict('', mutable=True)
+    for key, value in dict_data.items():
+        if isinstance(value, list):
+            qdict.setlist(key, value)
+        else:
+            qdict[key] = value
+    return qdict

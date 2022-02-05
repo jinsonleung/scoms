@@ -22,55 +22,41 @@ export function addNewEnterprise(params: object){
 }
 
 /**
- * 修改企业记录
- * @param params 要传的参数值
- * @returns 返回接口数据
+ * @func：修改企业记录
+ * @param params: 如{id:id}}
+ * @returns: 返回接口数据
  */
-export function updateEnterprise(params: object){
+export function updateEnterprise(params: any){
 	return request({
-		// url: '/enterprise/update',
-		url: '/enterprise/post',
-		method: 'post',
+		url: `/enterprise/${params.id}/`,
+		method: 'PUT',
 		data: params,
 	});
 }
 
-/**
- * 查询所有企业记录
- * @param params 要传的参数值
- * @returns 返回接口数据
- */
-export function getAllEnterprises(params: object){
-	return request({
-		url: '/enterprise/getall',
-		method: 'get',
-		data: params,
-	});
-}
 
 /**
- * 分页查询企业记录
- * @param params 要传的参数值
- * @returns 返回接口数据
+ * @func：分页查询企业记录
+ * @param params: {page_num:page_num,page_size:page_size}
+ * @returns: 返回接口数据
  */
 export function getPageEnterprises(params:any){
 	return request({
-		// url: '/enterprise/getpagelist?limit='+ params.limit + '&offset=' + params.offset,
-		url: '/enterprise/?page_num='+ params.page_num + '&page_size=' + params.page_size,
+		url: '/enterprise/?page_num=' + params.page_num + '&page_size=' + params.page_size,
 		method: 'GET',
 		data: params,
 	});
 }
 
-/**
+/**id
  * 删除企业记录，软删除
- * @param params 要传的参数值，如{id:xxx}
+ * @param params 要传的参数值，如{id:id}
  * @returns 返回接口数据
  */
 export function deleteEnterprises(params:any){
 	return request({
-		url: '/enterprise/delete',
-		method: 'post',
+		url: `/enterprise/${params.id}/`,
+		method: 'DELETE',
 		data: params,
 	});
 }
