@@ -205,6 +205,7 @@ export default {
     const state = reactive({
       isShowDialog: false,
       ruleForm: {
+        // id: '', // id
         superior_level: '', // 上级企业
         account: '', // 企业账号
         full_name: '', // 企业名全称
@@ -285,7 +286,7 @@ export default {
       // state.ruleForm.update_datetime = formatDate(new Date(), 'YYYY-mm-dd HH:MM:SS')
       state.ruleForm.create_by = Session.get('userInfo').userName;
       state.ruleForm.update_by = Session.get('userInfo').userName;
-      console.log('==type(state.ruleForm)==', typeof(state.ruleForm))
+      console.log('==state.ruleForm==', typeof(state.ruleForm),state.ruleForm)
       updateEnterprise(state.ruleForm).then((res: any) => {
         if (res) {
           // ruleFormRef.value.resetFields();

@@ -6,6 +6,7 @@ import { Session } from '/@/utils/storage';
 const service = axios.create({
 	baseURL: import.meta.env.VITE_API_URL as any,
 	timeout: 50000,
+	// traditional: true,  //加上此项可以传数组， 2/7 by jinson
 	headers: { 'Content-Type': 'application/json' },
 });
 

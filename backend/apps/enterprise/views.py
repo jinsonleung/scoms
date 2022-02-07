@@ -1,10 +1,12 @@
 from django.http import QueryDict
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from utils.pagination import Pagination
 from apps.enterprise.models import Enterprise
 from apps.enterprise.serializers import EnterpriseSerializer
 from rest_framework import mixins, status
 from rest_framework import generics
+import json
 
 
 class EnterpriseList0(generics.ListAPIView):
@@ -68,9 +70,13 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
     def get(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
+    def put_0(self, request, *args, **kwargs):
+        print('==put，request.data==', type(request.data), request.data)
+        return self.update(request, *args, **kwargs)
+
+    def put_1(self, request, *args, **kwargs):
         # print('==put，request.get_full_path()==', request.get_full_path())
-        # print('==put，request.data==', type(request.data), request.data)
+        print('==put，request.data==', type(request.data), request.data)
         # data1 = dict_to_querydict(request.data)
         # print('==put，data1==', type(data1), data1)
         # request.QueryDict.dict = data1
@@ -78,13 +84,28 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
         # print('==put，request.data[id]==', request.data['id'])
 
         # 以下更新成功，返回个别字段是必须的问题，如create_by字段
-        enterprise = Enterprise.custom.get(id=request.data['id'])
-        serializer = EnterpriseSerializer(enterprise, data=request.data)
-        # print('==put，serializer==', serializer.is_valid, serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # enterprise = Enterprise.custom.get(id=request.data['id'])
+        # print('==id==', request.data['id'])
+
+        # serializer = EnterpriseSerializer(enterprise, data=request.data)
+        # # print('==put，serializer==', serializer.is_valid, serializer)
+        # # if serializer.is_valid():
+        # #     serializer.save()
+        # #     return Response(serializer.data)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+
+    def put(self, request, *args, **kwargs):
+        # res1 = json.loads(request.body)
+        # print('==put，res1==', res1)
+        # res1_data = res1['data']  # dict
+        # print('==put，res1_data==', res1_data)
+        # res1_sl = EnterpriseSerializer(data=res1_data)
+        # if res1_sl.is_valid():
+        #     return Response({'message': True})
+        # return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+
+        return self.update(request, *args, **kwargs)
 
     @staticmethod
     def delete_0(request, *args, **kwargs):

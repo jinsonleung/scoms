@@ -1,4 +1,6 @@
 from django.db import models
+from rest_framework.fields import ListField
+
 from apps.common.models import BaseModel
 from apps.common.managers import CommonManager
 
@@ -22,6 +24,20 @@ from apps.common.managers import CommonManager
 #     #     return enterprise
 
 
+class StringArrayField(ListField):
+    """
+    String representation of an array field.
+    """
+    def to_representation(self, obj):
+        obj = super().to_representation(self, obj)
+        # convert list to string
+        return ",".join([str(element) for element in obj])
+
+    def to_internal_value(self, data):
+        data = data.split(",")  # convert string to list
+        return super().to_internal_value(self, data)
+
+
 class Enterprise(BaseModel):
     # 企业信息表，继承抽象基类BaseModel
     id = models.SmallAutoField(primary_key=True, verbose_name='自增主键')
@@ -37,7 +53,8 @@ class Enterprise(BaseModel):
     effective_start_date = models.DateField(blank=True, null=True, default=None, verbose_name='营业期限(起)')
     effective_end_date = models.DateField(blank=True, null=True, default=None, verbose_name='营业期限(止)')
     address = models.CharField(max_length=128, null=True, verbose_name='公司地址')
-    city = models.CharField(max_length=32, null=True, verbose_name='所在城市')
+    # city = models.CharField(max_length=32, null=True, verbose_name='所在城市')
+    city = StringArrayField(max_length=64)
     industry = models.CharField(max_length=32, null=True, verbose_name='所在行业')
     website = models.CharField(max_length=64, blank=True, null=True, verbose_name='企业网站')
     legal_person_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='企业法人姓名')
