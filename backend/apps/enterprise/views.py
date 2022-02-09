@@ -7,7 +7,7 @@ from apps.enterprise.serializers import EnterpriseSerializer
 from rest_framework import mixins, status
 from rest_framework import generics
 import json
-
+from django.views.decorators.csrf import csrf_exempt    # 取消csrf校验
 
 class EnterpriseList0(generics.ListAPIView):
     print('ddddd')
@@ -52,6 +52,7 @@ class EnterpriseList(generics.ListAPIView,
     #     return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
     #     # return self.create(request, *args, **kwargs)
 
+    @csrf_exempt    # 取消csrf认证
     def post(self, request, *args, **kwargs):
         print('==post==', type(request.data),request.data)
         return self.create(request, *args, **kwargs)

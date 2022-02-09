@@ -1,6 +1,5 @@
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from rest_framework.fields import ListField, MultipleChoiceField
+from rest_framework.fields import ListField
 from apps.common.models import BaseModel
 from apps.common.managers import CommonManager
 

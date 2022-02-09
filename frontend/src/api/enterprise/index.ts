@@ -15,7 +15,7 @@ import request from '/@/utils/request'
  */
 export function addNewEnterprise(params: object){
 	return request({
-		url: '/enterprise',
+		url: '/enterprise/',
 		method: 'POST',
 		data: params,
 	});
