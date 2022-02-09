@@ -23,9 +23,9 @@ class EnterpriseList(generics.ListAPIView,
     列出所有的记录，或创建一条新的记录。
     """
     # queryset = Enterprise.objects.all()   # 获取所有记录
-    queryset = Enterprise.custom.all()      # 获取非软删、除的记录
-    serializer_class = EnterpriseSerializer     # 序列化
-    pagination_class = Pagination   # 分页
+    queryset = Enterprise.custom.all()  # 获取非软删、除的记录
+    serializer_class = EnterpriseSerializer  # 序列化
+    pagination_class = Pagination  # 分页
 
     def get(self, request, *args, **kwargs):
         """获取分页数据"""
@@ -53,6 +53,7 @@ class EnterpriseList(generics.ListAPIView,
     #     # return self.create(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        print('==post==', type(request.data),request.data)
         return self.create(request, *args, **kwargs)
 
 
@@ -64,7 +65,7 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
     获取、更新或删除一条记录
     """
     # queryset = Enterprise.objects.all()   # 获取所有记录
-    queryset = Enterprise.custom.all()      # 获取非软删除的记录
+    queryset = Enterprise.custom.all()  # 获取非软删除的记录
     serializer_class = EnterpriseSerializer
 
     def get(self, request, *args, **kwargs):
@@ -96,14 +97,28 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
         return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
 
     def put(self, request, *args, **kwargs):
-        # res1 = json.loads(request.body)
-        # print('==put，res1==', res1)
-        # res1_data = res1['data']  # dict
-        # print('==put，res1_data==', res1_data)
-        # res1_sl = EnterpriseSerializer(data=res1_data)
-        # if res1_sl.is_valid():
-        #     return Response({'message': True})
-        # return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+        print('=====put=======')
+        # # res1 = json.loads(request.body)
+        # # print('==put，res1==', res1)
+        # # res1_data = res1['data']  # dict
+        # # print('==put，res1_data==', res1_data)
+        # # res1_sl = EnterpriseSerializer(data=res1_data)
+        # # if res1_sl.is_valid():
+        # #     return Response({'message': True})
+        # # return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+        # instance = Enterprise.objects.filter(id=kwargs.get('pk')).first()
+        # print('==instance==', instance)
+        #
+        # data = request.data
+        # city1 = data.get('city')
+        # print('==city1==', type(city1), city1)
+        # # request.data['city'] = '[\'' + request.data['city'] + ']\''
+        # # request.data['city'] = '[\'[\'' + '\',\''.join(request.data['city']) +']\']\''
+        # # request.data['city'] = '[\'' + '\',\''.join(request.data['city']) + '\']'
+        # # if request.data['city']: request.data['city'] = ','.join(request.data['city'])
+        #
+        # city2 = data.get('city')
+        # print('==city2==', type(city2), city2)
 
         return self.update(request, *args, **kwargs)
 
@@ -122,6 +137,7 @@ class EnterpriseDetail(mixins.RetrieveModelMixin,
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
 
 def dict_to_querydict(dict_data):
     qdict = QueryDict('', mutable=True)

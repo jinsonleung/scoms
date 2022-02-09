@@ -1,6 +1,6 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from rest_framework.fields import ListField
-
+from rest_framework.fields import ListField, MultipleChoiceField
 from apps.common.models import BaseModel
 from apps.common.managers import CommonManager
 
@@ -24,6 +24,14 @@ from apps.common.managers import CommonManager
 #     #     return enterprise
 
 
+# Bla = ArrayField(
+#         models.CharField,
+#         max_length=32,
+#         blank=True,
+#         null=True,
+#         )
+#
+#
 class StringArrayField(ListField):
     """
     String representation of an array field.
@@ -45,7 +53,8 @@ class Enterprise(BaseModel):
     account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='企业账号')
     full_name = models.CharField(max_length=64, blank=False, null=False, verbose_name='企业名全称')
     abbreviation_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='企业名简称')
-    enterprise_type = models.CharField(max_length=32, blank=False, null=False, verbose_name='企业类型')
+    enterprise_type = models.CharField(max_length=16, blank=False, null=False, verbose_name='企业类型')
+    # enterprise_type = models.IntegerField(blank=False, null=False, verbose_name='企业类型')
     architecture = models.CharField(max_length=64, blank=False, null=False, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  null=True, verbose_name='统一社会信用代码')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
@@ -53,9 +62,11 @@ class Enterprise(BaseModel):
     effective_start_date = models.DateField(blank=True, null=True, default=None, verbose_name='营业期限(起)')
     effective_end_date = models.DateField(blank=True, null=True, default=None, verbose_name='营业期限(止)')
     address = models.CharField(max_length=128, null=True, verbose_name='公司地址')
-    # city = models.CharField(max_length=32, null=True, verbose_name='所在城市')
-    city = StringArrayField(max_length=64)
-    industry = models.CharField(max_length=32, null=True, verbose_name='所在行业')
+    city = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在城市')
+    # city = StringArrayField(max_length=64)
+    # city1 = MultipleChoiceField(allow_null=True, allow_blank=True,choices=[])
+    # city = ArrayField(models.CharField(max_length=32), default=list, verbose_name='所以城市')
+    industry = models.CharField(max_length=32, blank=True, null=True, verbose_name='所在行业')
     website = models.CharField(max_length=64, blank=True, null=True, verbose_name='企业网站')
     legal_person_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='企业法人姓名')
     legal_person_email = models.CharField(max_length=64, blank=True, null=True, verbose_name='企业法人邮箱')

@@ -259,10 +259,14 @@ export default {
     });
     // 打开弹窗
     const openDialog = (row: any) => {
-      console.log('==row==', row);
+      console.log('==openDialog.row0==', row);
       // let cityStr = row.city.replace(/\s/g, '').replace(/\'/g,'')
       // cityStr=cityStr.substring(1,cityStr.length-1);
       // row.city = cityStr.split(',')
+      // 格式化省市区联动格式为list
+      if (row.city) row.city = row.city.split(',')
+      console.log('==openDialog.row1==', row);
+
       state.ruleForm = row;
       state.isShowDialog = true;
     };
@@ -274,23 +278,16 @@ export default {
     const onCancel = () => {
       closeDialog();
     };
-    // 新增
-    const onSubmit_old = () => {
-      //closeDialog();
-      const threeLevelLinkageListKey = ['13','1304','1306'];
-      console.log('==currentCity==', getJsonCity(threeLevelLinkageListKey))
-    };
 
+    // 修改
     const onSubmit = async () => {
-      // console.log('==row==', row);
-      // state.ruleForm.update_datetime = formatDate(new Date(), 'YYYY-mm-dd HH:MM:SS')
       state.ruleForm.create_by = Session.get('userInfo').userName;
       state.ruleForm.update_by = Session.get('userInfo').userName;
-      console.log('==state.ruleForm==', typeof(state.ruleForm),state.ruleForm)
+      if (state.ruleForm.city) state.ruleForm.city = state.ruleForm.city.join(',')
+      console.log('==typeof(state.ruleForm)==', typeof(state.ruleForm),state.ruleForm)
       updateEnterprise(state.ruleForm).then((res: any) => {
         if (res) {
-          // ruleFormRef.value.resetFields();
-          // if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          if (ruleFormRef.value) ruleFormRef.value.resetFields();
           ElMessage.success('修改企业成功！');
         }
         // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
