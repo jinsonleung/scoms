@@ -228,6 +228,8 @@ export default {
         business_scope: '', // 经营范围
         remark: '', // 备注
         is_available: false, // 是否启用,默认为还没激活
+        create_by: '',  //创建人
+        update_by: '',  //更新人
       },
       enterpriseData: [] as Array<any>, // 企业数据
       // 省市区三级联动
@@ -301,21 +303,21 @@ export default {
     };
     // 新增
     const onSubmit = async () => {
-      // 获取分页记录,获取成功
+      state.ruleForm.create_by = Session.get('userInfo').userName;
+      state.ruleForm.update_by = Session.get('userInfo').userName;
+      // 将省市区三级联动list转为字符串，如['220000', '220300', '220322']，转为'220000,220300,220322'
+      console.log('==typeof(state.ruleForm.city)==', typeof(state.ruleForm.city))
+      if (typeof(state.ruleForm.city) === "object") state.ruleForm.city = state.ruleForm.city.join(',')
       console.log('==type(state.ruleForm)==', state.ruleForm)
-      let user_name = Session.get('userInfo').userName;
-      addNewEnterprise({data: state.ruleForm, user_name: user_name}).then((res: any) => {
-        // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {
-        console.log('==res.result_code==', res.result_code);
-        if (res.result_code == 200) {
-          // 清空表单
-          if (ruleFormRef.value) ruleFormRef.value.resetFields();
-          ElMessage.success('新增企业成功。');
-        } else if (res.result_code == 40001) {
-          ElMessage.warning('新增企业失败，原因：账号' + state.ruleForm.account + '重复！');
-        } else {
-          ElMessage.success('添加企业失败！');
+      addNewEnterprise(state.ruleForm).then((res: any) => {
+        console.log('==res==', res)
+        if (res) {
+          // if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          ElMessage.success('修改企业成功！');
         }
+      }).catch((e:any)=>{
+        console.log('==e==', e)
+
       });
     };
 

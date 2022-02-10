@@ -283,6 +283,7 @@ export default {
     const onSubmit = async () => {
       state.ruleForm.create_by = Session.get('userInfo').userName;
       state.ruleForm.update_by = Session.get('userInfo').userName;
+      // 将省市区三级联动list转为字符串，如['220000', '220300', '220322']，转为'220000,220300,220322'
       if (state.ruleForm.city) state.ruleForm.city = state.ruleForm.city.join(',')
       console.log('==typeof(state.ruleForm)==', typeof(state.ruleForm),state.ruleForm)
       updateEnterprise(state.ruleForm).then((res: any) => {

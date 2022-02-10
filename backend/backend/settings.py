@@ -142,9 +142,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ===================自行配置====================
 
-# 1、跨域增加忽略
+# 1、***** 跨域配置 *****
+# CORS_ORIGIN_ALLOW_ALL如果为True，则将不使用白名单，并且将接受所有来源。默认为False
+CORS_ORIGIN_ALLOW_ALL = True
+# 允许cookie, 指明在跨域访问中，后端是否支持对cookie的操作
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True    # 允许所有跨域请求
+# 白名单，CORS_ORIGIN_ALLOW_ALL如果为True，则将不使用白名单
 CORS_ORIGIN_WHITELIST = (   # 请求白名单
     ['http://127.0.0.1:*']
 )

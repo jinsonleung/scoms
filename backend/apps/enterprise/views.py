@@ -1,16 +1,16 @@
-from django.http import QueryDict
+from django.http import QueryDict, JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from utils.pagination import Pagination
 from apps.enterprise.models import Enterprise
 from apps.enterprise.serializers import EnterpriseSerializer
-from rest_framework import mixins, status
+from rest_framework import mixins, status, exceptions
 from rest_framework import generics
 import json
 from django.views.decorators.csrf import csrf_exempt    # 取消csrf校验
 
-class EnterpriseList0(generics.ListAPIView):
-    print('ddddd')
+
+class EnterpriseList_0(generics.ListAPIView):
     queryset = Enterprise.objects.all()
     serializer_class = EnterpriseSerializer
     pagination_class = Pagination
@@ -53,9 +53,87 @@ class EnterpriseList(generics.ListAPIView,
     #     # return self.create(request, *args, **kwargs)
 
     @csrf_exempt    # 取消csrf认证
-    def post(self, request, *args, **kwargs):
+    def post_0(self, request, *args, **kwargs):
         print('==post==', type(request.data),request.data)
         return self.create(request, *args, **kwargs)
+
+    def post_1(self, request, *args, **kwargs):
+        body_json = request.body
+        body_dict = json.loads(body_json)
+        pk = kwargs.get('pk')
+        print('==post.data==', type(body_json), type(body_dict),body_json,body_dict)
+        if pk:
+            obj = Enterprise.objects.filter(id=pk).first()  # 查询所有记录并排序
+            if obj:
+                obj_serial = EnterpriseSerializer(data=request.data, instance=obj)
+                if obj_serial:
+                    obj_serial.save()
+                    return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+        # 将前端传过来的json格式数据转换为字典
+        # res = json.loads(request.body)
+        # data = res['data']
+        # print('==data==', data)
+        # user_name = res['user_name']
+        # 判断企业账号是否存在（企业账号不可重复）
+        # is_exist = Enterprise.objects.filter(account=data['account']).exists()  # 查询所有记录并排序
+        # 企业账号存在，则返回
+        # if is_exist:
+        #     response = {'result_message': 'failure', 'result_body': 'account is existed', 'result_code': 40001}
+        #     # return JsonResponse(response)
+        #     return self.create(request, *args, **kwargs)
+        # # 若前端的日期字段为空，则将从字典中移除，否则执行save()方法时报错
+        # if data['established_date'] == '': del data['established_date']
+        # if data['effective_start_date'] == '': del data['effective_start_date']
+        # if data['effective_end_date'] == '': del data['effective_end_date']
+        # # 将字典转为对象,参考https://www.jb51.net/article/163765.htm
+        # enterprise = Enterprise(create_by=user_name, update_by=user_name, **data)
+        # enterprise.save()
+        # print('==post==', type(request.data),request.data)
+        return self.create(request, *args, **kwargs)
+
+    def post_2(self, request, *args, **kwargs):
+        # body_json = request.body
+        # body_dict = json.loads(body_json)
+        account = kwargs.get('account')
+        # print('==post.data==', type(body_json), type(body_dict),body_json,body_dict)
+        if account:
+            obj = Enterprise.objects.filter(account=account).first()  # 获取记录
+            if obj:  # 已有相同账号记录
+                return Response({'result_message': 'failure', 'result_code': 40002, 'result_body': 'account is existed'})
+            else:   # 序列化及保存
+                obj_serial = EnterpriseSerializer(data=request.data, instance=obj)
+                if obj_serial:
+                    obj_serial.save()
+                    return self.create(request, *args, **kwargs)
+        return self.create(request, *args, **kwargs)
+
+    def post_3(self, request, *args, **kwargs):
+        # 获取记录
+        obj = Enterprise.objects.filter(pk=kwargs.get('pk')).first()
+        # 序列化及保存
+        obj_serial = EnterpriseSerializer(data=request.data, instance=obj)
+        if obj_serial.is_valid():
+            obj_serial.save()
+            return self.create(request, *args, **kwargs)
+        else:
+            return Response({'result_message': 'failure', 'result_code': 404, 'result_body': 'delete failed'})
+            # return self.create(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        request_data = request.data
+        # 单增
+        if isinstance(request_data, dict):
+            many = False
+        # 群增
+        elif isinstance(request_data, list):
+            many = True
+        else:
+            raise exceptions.ValidationError('数据格式不正确')
+        obj_serial = EnterpriseSerializer(data=request_data, many=many)
+        obj_serial.is_valid(raise_exception=True)
+        obj_result = obj_serial.save()
+        book_data = EnterpriseSerializer(instance=obj_result, many=many).data
+        return JsonResponse(book_data)
 
 
 class EnterpriseDetail(mixins.RetrieveModelMixin,

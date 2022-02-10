@@ -50,6 +50,12 @@
 - 🐞 Bug：DELETE请求时产生再次讲请求，一次是OPTIONS，这种OPTIONS应拒绝，如何拒绝OPTIONS请求？
 - 🐞 Bug：提交前端表单时，PUT提交到后台后，返回需要个别字段是必须的问题，如create_by字段
 
+`2022.02.10`
+- 🎯 学习 drf中get/post/delete/put/patch五大接口(mixin方式) https://www.cnblogs.com/asdaa/p/11695099.html 
+
+
+
+
 图标
 - 🎯 优化 
 - 🎯 优化 
