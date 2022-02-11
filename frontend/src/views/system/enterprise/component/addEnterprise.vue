@@ -212,9 +212,9 @@ export default {
         architecture: '', // 体系结构（总部/子公司/办事事/其他）
         unified_social_credit_code: '', // 统一社会信用代码
         registered_capital: '人民币0.0000万',  // 注册资本，默认为:人民币0.0000万
-        established_date: '', // 成立日期
-        effective_start_date: '', // 营业期限(起)
-        effective_end_date: '', // 营业期限(止)
+        established_date: null, // 成立日期
+        effective_start_date: null, // 营业期限(起)
+        effective_end_date: null, // 营业期限(止)
         address: '', // 公司地址
         city: '', // 省市区三级联动
         industry: '', // 所在行业
@@ -306,14 +306,14 @@ export default {
       state.ruleForm.create_by = Session.get('userInfo').userName;
       state.ruleForm.update_by = Session.get('userInfo').userName;
       // 将省市区三级联动list转为字符串，如['220000', '220300', '220322']，转为'220000,220300,220322'
-      console.log('==typeof(state.ruleForm.city)==', typeof(state.ruleForm.city))
       if (typeof(state.ruleForm.city) === "object") state.ruleForm.city = state.ruleForm.city.join(',')
       console.log('==type(state.ruleForm)==', state.ruleForm)
       addNewEnterprise(state.ruleForm).then((res: any) => {
         console.log('==res==', res)
         if (res) {
-          // if (ruleFormRef.value) ruleFormRef.value.resetFields();
-          ElMessage.success('修改企业成功！');
+          if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          closeDialog();
+          ElMessage.success('新增企业成功！');
         }
       }).catch((e:any)=>{
         console.log('==e==', e)

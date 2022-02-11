@@ -214,9 +214,9 @@ export default {
         architecture: '', // 体系结构（总部/子公司/办事事/其他）
         unified_social_credit_code: '', // 统一社会信用代码
         registered_capital: '人民币0.0000万',  // 注册资本，默认为:人民币0.0000万
-        established_date: '', // 成立日期
-        effective_start_date: '', // 营业期限(起)
-        effective_end_date: '', // 营业期限(止)
+        established_date: null, // 成立日期
+        effective_start_date: null, // 营业期限(起)
+        effective_end_date: null, // 营业期限(止)
         address: '', // 公司地址
         city: '', // 省市区三级联动
         industry: '', // 所在行业
@@ -259,14 +259,21 @@ export default {
     });
     // 打开弹窗
     const openDialog = (row: any) => {
-      console.log('==openDialog.row0==', row);
-      // let cityStr = row.city.replace(/\s/g, '').replace(/\'/g,'')
-      // cityStr=cityStr.substring(1,cityStr.length-1);
-      // row.city = cityStr.split(',')
+
+
+      // console.log('==row.established_date==', typeof(row.established_date),row.established_date)
+      // console.log('==row.effective_start_date==', typeof(row.effective_start_date),row.effective_start_date)
+      // console.log('==row.effective_end_date==', typeof(row.effective_end_date),row.effective_end_date)
+      // console.log('==is date==', row.established_date.parse)
+      //
+      // if (row.established_date==='Invalid date') row.effective_start_date='';
+      // if (row.effective_start_date==='Invalid date') row.effective_start_date='';
+      // if (row.effective_end_date==='Invalid date') row.effective_start_date='';
+
       // 格式化省市区联动格式为list
       if (row.city) row.city = row.city.split(',')
-      console.log('==openDialog.row1==', row);
 
+      console.log('==openDialog.row1==', row);
       state.ruleForm = row;
       state.isShowDialog = true;
     };
@@ -283,12 +290,18 @@ export default {
     const onSubmit = async () => {
       state.ruleForm.create_by = Session.get('userInfo').userName;
       state.ruleForm.update_by = Session.get('userInfo').userName;
+      if (state.ruleForm.established_date == 'Invalid date') state.ruleForm.established_date=null;  // 报错~~~~~
+      if (state.ruleForm.effective_start_date == 'Invalid date') state.ruleForm.effective_start_date=null;
+      if (state.ruleForm.effective_end_date == 'Invalid date') state.ruleForm.effective_end_date=null;
+      console.log('==typeof(state.ruleForm)1==', typeof(state.ruleForm),state.ruleForm)
+
       // 将省市区三级联动list转为字符串，如['220000', '220300', '220322']，转为'220000,220300,220322'
       if (state.ruleForm.city) state.ruleForm.city = state.ruleForm.city.join(',')
-      console.log('==typeof(state.ruleForm)==', typeof(state.ruleForm),state.ruleForm)
+      console.log('==typeof(state.ruleForm)2==', typeof(state.ruleForm),state.ruleForm)
       updateEnterprise(state.ruleForm).then((res: any) => {
         if (res) {
           if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          closeDialog();
           ElMessage.success('修改企业成功！');
         }
         // addNewEnterprise(state.ruleForm).then((res<ResponseData<any>>) => {

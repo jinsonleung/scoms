@@ -121,13 +121,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'zh-hans'
-
 TIME_ZONE = 'Asia/Shanghai'
-
 USE_I18N = True
-
 USE_L10N = True
-
+# USE_TZ默认为为True，即有运用时区，设置为False则表示使用本地时间
 USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
