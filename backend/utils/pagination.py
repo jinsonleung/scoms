@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django.conf import settings
@@ -19,20 +21,20 @@ class Pagination(PageNumberPagination):
     max_page_size = 100
 
     def get_my_next(self):
-        # print(8888, self.request.path)
-        # print(8888, settings.SERVER_NAME)
-        # print(8888, self.get_next_link().split(self.request.path))
         return settings.SERVER_NAME + self.request.path + self.get_next_link().split(self.request.path)[1]
     
     def get_my_pre(self):
         return settings.SERVER_NAME + self.request.path + self.get_previous_link().split(self.request.path)[1]
 
     def get_paginated_response(self, data):
-        return Response({
-            'errorCode': 0,
-            'message': 'ok',
-            'count': self.page.paginator.count,
-            'next': self.get_next_link(),
-            'previous': self.get_previous_link(),
-            'data': data
-        })
+        """自定义分页参数"""
+        return Response(OrderedDict([
+            ('count', self.page.paginator.count),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('page', self.page.number),
+            ('total_page', self.page.paginator.num_pages),
+            ('page_size', self.page.paginator.per_page),
+            ('data', data)
+        ]))
+

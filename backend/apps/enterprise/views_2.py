@@ -19,34 +19,33 @@ class EnterpriseList(generics.ListAPIView, mixins.CreateModelMixin, generics.Gen
 
     def get(self, request, *args, **kwargs):
         """群查，获取分页数据"""
-        return self.list(request, *args, **kwargs)
+        json_data = {"message": "ok", "errorCode": 0, "data": {}}
+        objs = Enterprise.custom.all()
+        if not objs:
+            return Response({
+                'status': 1,
+                'msg': '请求资源不存在'
+            })
+        # objs_serial = EnterpriseSerializer(instance=objs, many=True).data
+        json_data = EnterpriseSerializer(instance=objs, many=True).data
+        return Response(json_data)
+        # return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """单增及群增"""
-        try:
-            json_data = {"result_msg": "ok", "result_code": 0, "result_data": ""}
-            request_data = request.data
-            if isinstance(request_data, dict):
-                many = False
-                if Enterprise.custom.filter(account=request_data['account']).first():
-                    # render.ret.result_msg='aaa'
-                    return JsonResponse({"result_msg": "failure", "result_code": 401, "result_data": '重复账号'})
-            elif isinstance(request_data, list):
-                many = True
-            else:
-                raise exceptions.ValidationError('数据格式不正确')
-            Enterprise.custom.get_or_create(account=request_data['account'])
-
-            obj_serial = EnterpriseSerializer(data=request_data, many=many)
-            obj_serial.is_valid(raise_exception=True)
-            # obj_serial.is_valid()
-            obj_result = obj_serial.save()
-            # 获取序列化数据
-            obj_data = EnterpriseSerializer(instance=obj_result, many=many).data
-            return JsonResponse(obj_data)
-        except Exception as e:
-            print('发生错误：', e)
-            return Response({"error_msg": "出现了无法预料的view视图错误：%s" % e, "error_code": 1, "error_data": {}})
+        request_data = request.data
+        if isinstance(request_data, dict):
+            many = False
+        elif isinstance(request_data, list):
+            many = True
+        else:
+            raise exceptions.ValidationError('数据格式不正确')
+        obj_serial = EnterpriseSerializer(data=request_data, many=many)
+        obj_serial.is_valid(raise_exception=True)
+        obj_result = obj_serial.save()
+        # 获取序列化数据
+        obj_data = EnterpriseSerializer(instance=obj_result, many=many).data
+        return JsonResponse(obj_data)
 
 
 class EnterpriseDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
@@ -83,6 +82,48 @@ class EnterpriseDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixin
             'msg': 'ok',
             'results': EnterpriseSerializer(instance=new_obj).data
         })
+
+    # def patch(self, request, *args, **kwargs):
+    #     """提供局部数据，单改或多改"""
+    #     request_data = request.data
+    #     pk = kwargs.get('pk')
+    #     pks = []
+    #     update_data = []
+    #     if pk and isinstance(request_data, dict):
+    #         pks = [pk, ]
+    #         update_data = [request_data, ]
+    #     elif not pk and isinstance(request_data, list):
+    #         for dic in request_data:
+    #             pks.append(dic.pop('pk'))
+    #             update_data.append(dic)
+    #     else:
+    #         return Response({
+    #             'status': 1,
+    #             'msg': '数据格式错误'
+    #         })
+    #     if not pks or not update_data:
+    #         return Response({
+    #             'status': 1,
+    #             'msg': '数据错误'
+    #         })
+    #     book_obj_list = []
+    #     for i in pks:
+    #         current_obj = Enterprise.objects.filter(pk=i, is_delete=False).first()
+    #         if not current_obj:
+    #             return Response({
+    #                 'status': 1,
+    #                 'msg': '数据错误'
+    #             })
+    #         book_obj_list.append(current_obj)
+    #     book_der = EnterpriseSerializer(instance=book_obj_list, data=update_data, many=True, partial=True)
+    #     print(type(book_der))
+    #     book_der.is_valid(raise_exception=True)
+    #     new_objs = book_der.save()
+    #     return Response({
+    #         'status': 0,
+    #         'msg': 'ok',
+    #         'results': EnterpriseSerializer(instance=new_objs, many=True).data
+    #     })
 
     def delete(self, request, *args, **kwargs):
         """单删及群删"""

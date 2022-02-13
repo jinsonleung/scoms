@@ -55,7 +55,7 @@ export function getPageEnterprises(params:any){
  */
 export function deleteEnterprises(params:any){
 	return request({
-		url: `/enterprise/${params.id}/`,
+		url: `/enterprise/${params.id}`,
 		method: 'DELETE',
 		data: params,
 	});

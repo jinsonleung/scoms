@@ -290,7 +290,7 @@ export default {
     const onSubmit = async () => {
       state.ruleForm.create_by = Session.get('userInfo').userName;
       state.ruleForm.update_by = Session.get('userInfo').userName;
-      if (state.ruleForm.established_date == 'Invalid date') state.ruleForm.established_date=null;  // 报错~~~~~
+      if (state.ruleForm.established_date == 'Invalid date') state.ruleForm.established_date=null;
       if (state.ruleForm.effective_start_date == 'Invalid date') state.ruleForm.effective_start_date=null;
       if (state.ruleForm.effective_end_date == 'Invalid date') state.ruleForm.effective_end_date=null;
       console.log('==typeof(state.ruleForm)1==', typeof(state.ruleForm),state.ruleForm)

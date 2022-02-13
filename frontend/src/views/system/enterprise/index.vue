@@ -117,9 +117,9 @@ export default {
         page_num: page_num,
         page_size: page_size
       }).then((res: any) => {
-        // console.log('==res000==', res)
+        console.log('==getTablePageData==', res)
         const data: Array<object> = [];
-        res.data.forEach((item: any) => {
+        res.result_data.data.forEach((item: any) => {
           data.push({
             id: item.id,
             superior_level: item.superior_level,
@@ -149,7 +149,7 @@ export default {
           });
         });
         state.tableData.data = data;
-        state.tableData.total = res.count;
+        state.tableData.total = res.result_data.count;
       });
     }
 
