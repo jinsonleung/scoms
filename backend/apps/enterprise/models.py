@@ -46,7 +46,7 @@ class StringArrayField(ListField):
 
 
 class Enterprise(BaseModel):
-    # 企业信息表，继承抽象基类BaseModel
+    """企业信息表，继承抽象基类BaseModel"""
     id = models.SmallAutoField(primary_key=True, verbose_name='自增主键')
     superior_level = models.CharField(max_length=64, blank=True, null=True, verbose_name='上级企业')
     account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='企业账号')
@@ -79,10 +79,10 @@ class Enterprise(BaseModel):
 
     objects = models.Manager()   # 默认模型管理器
     # custom = EnterpriseManager()    # 自定义模型管理器，此管理器为返回的是is_delete=False的queryset
-    custom = CommonManager()
+    custom = CommonManager()    # 通用模型管理器，去除is_delete记录
 
     class Meta:
-        db_table = 'enterprise'  # 修改表名
+        db_table = 'enterprise'  # 数据库实际表名
         verbose_name = '企业信息表'  # 详细名称
         verbose_name_plural = verbose_name  # 详细名称
         ordering = ['account']  # 排序字段

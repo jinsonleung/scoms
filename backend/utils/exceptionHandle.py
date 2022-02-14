@@ -24,6 +24,6 @@ def base_exception_handler(exc, context):
             else:
                 msg += '%s：%s ' % (key, ';'.join(response.data[key]))
         code = 0 if response.status_code == 200 else 2
-        return JsonResponse({"error_msg": msg, "error_code": code, "error_data": {}}, status=response.status_code)
+        return JsonResponse({"error_msg": msg, "error_code": code, "error_data": {}}, status=response.status_code, json_dumps_params={'ensure_ascii': False})
     return response
 

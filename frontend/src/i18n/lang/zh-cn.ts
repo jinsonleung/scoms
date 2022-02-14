@@ -15,6 +15,8 @@ export default {
 		limitsFrontEndBtn: '按钮权限',
 		limitsBackEnd: '后端控制',
 		limitsBackEndEndPage: '页面权限',
+		freightTools: '货运工具',
+		freightToolsAirport: '机场代码',
 		menu: '菜单嵌套',
 		menu1: '菜单1',
 		menu11: '菜单11',

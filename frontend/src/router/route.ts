@@ -154,6 +154,41 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				],
 			},
 			{
+				path: '/freightTools',
+				name: 'freightTools',
+				component: () => import('/@/layout/routerView/parent.vue'),
+				redirect: '/freightTools/menu',
+				meta: {
+					title: 'message.router.freightTools',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin'],
+					icon: 'iconfont icon-crew_feature',
+				},
+				children: [
+					{
+						path: '/freightTools/airport',
+						name: 'freightToolsAirport',
+						component: () => import('/@/views/freightTools/airport/index.vue'),
+						meta: {
+							title: 'message.router.freightToolsAirport',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-shouye_dongtaihui',
+						},
+					},
+
+				],
+			},
+
+			{
 				path: '/limits',
 				name: 'limits',
 				component: () => import('/@/layout/routerView/parent.vue'),
