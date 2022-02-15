@@ -3,7 +3,7 @@
     <el-card shadow="hover">
       <!--查询栏-->
       <div class="system-dept-search mb15">
-        <el-input v-model="searchText" size="small" placeholder="请输入企业名称" style="max-width: 180px"></el-input>
+        <el-input v-model="queryText" size="small" placeholder="请输入企业名称" style="max-width: 180px"></el-input>
         <el-button size="small" type="primary" class="ml10" @click="onSearchEnterprise">
           <el-icon>
             <elementSearch/>
@@ -96,7 +96,7 @@ export default {
   name: 'systemDept',
   components: {AddEnterprise, EditEnterprise},
   setup() {
-    const searchText = ref('');
+    const queryText = ref('');
     const addEnterpriseRef = ref();
     const editEnterpriseRef = ref();
     const state = reactive({
@@ -206,7 +206,7 @@ export default {
 
 
     return {
-      searchText,
+      queryText,
       enterpriseTypeOptions,
       enterpriseArchitectureOptions,
       industryOptions,

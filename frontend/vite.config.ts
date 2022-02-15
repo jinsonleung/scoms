@@ -48,6 +48,12 @@ const viteConfig: UserConfig = {
                 changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/enterprise/, ''),
                 // rewrite: path => path.replace(/^\/apiBase/, '')
+            },
+			// 机场代码信息代理
+            '/airport': {
+				target: 'http://127.0.0.1:8000',
+                changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/enterprise/, ''),
             }
 		},
 	},

@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import QueryDict, JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -19,6 +20,24 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
 
     def get(self, request, *args, **kwargs):
         """群查，获取分页数据"""
+        # 获取url中的需要查询的内容
+        # print('==request.query_params==', request.query_params.dict())
+        # query_text = request.query_params.get('query')
+        # if query_text == '':
+        #     print('==查询开始==', '*' + query_text + '*')
+        # # if (query_text):
+        # return JsonResponse({'a':'aaa'})
+        query_text = request.query_params.get('query')
+        if query_text != '':
+            query_text = query_text.upper()
+            print('==查询开始==', query_text)
+            query_result = Airport.custom.filter(Q(iata_code__contains=query_text) | Q(icao_code__contains=query_text) | Q(airport_chn_name__contains=query_text) | Q(country_chn_name__contains=query_text) | Q(city_chn_name__contains=query_text))
+            # print('==query_result==', query_result)
+            # obj_data = AirportSerializer(instance=query_result, many=True).data
+            # pg_data = Pagination.paginate_queryset(queryset=query_result, request=request, view=self)
+            pg_data = Pagination.paginate_queryset(queryset=query_result, request=request, self=self)
+            obj_data = AirportSerializer(instance=pg_data, many=True).data
+            return Response(obj_data)
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -58,6 +77,7 @@ class AirportDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 
     def get(self, request, *args, **kwargs):
         """单查"""
+        print('==单查==', **kwargs)
         return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):

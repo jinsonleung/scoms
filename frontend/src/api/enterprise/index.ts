@@ -69,7 +69,7 @@ export function deleteEnterprises(params:any){
 export function getEnterprises(params:any){
 	return request({
 		url: '/enterprise/search',
-		method: 'post',
+		method: 'POST',
 		data: params,
 	});
 }

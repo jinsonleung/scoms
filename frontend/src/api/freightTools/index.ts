@@ -1,12 +1,11 @@
-
 import request from '/@/utils/request'
 
 /**
- * @func：分页查询企业记录
+ * @func：分页查询
  * @param params: {page_num:page_num,page_size:page_size}
  * @returns: 返回接口数据
  */
-export function getPageEnterprises(params:any){
+export function getPageAirport(params:any){
 	return request({
 		url: '/enterprise/?page_num=' + params.page_num + '&page_size=' + params.page_size,
 		method: 'GET',
@@ -14,16 +13,28 @@ export function getPageEnterprises(params:any){
 	});
 }
 
+/**
+ * @func：单查
+ * @param params: {id:id}}
+ * @returns: 返回接口数据
+ */
+export function getAirport(params:any){
+	return request({
+		url: `/enterprise/${params.id}`,
+		method: 'GET',
+		data: params,
+	});
+}
 
 /**
- * 查找企业记录
- * @param params 要传的参数值，如{account:xxx}或{'enterprise_name'}
+ * 模糊查找
+ * @param params 要传的参数值，如{queryText:queryText}
  * @returns 返回接口数据
  */
-export function searchAirport(params:any){
+export function queryAirports(params:any){
 	return request({
-		url: '/airport/search',
-		method: 'post',
+		url: `/airport/?query=${params.queryText}`,
+		method: 'GET',
 		data: params,
 	});
 }
