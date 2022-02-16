@@ -23,13 +23,13 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">机场中文名称</div>
+              <div class="cell-item">机场名称(中文)</div>
             </template>
             {{ruleForm.airport_chn_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">机场英文名称</div>
+              <div class="cell-item">机场名称(英文)</div>
             </template>
               {{ruleForm.airport_eng_name}}
           </el-descriptions-item>
@@ -41,25 +41,25 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区中文名称</div>
+              <div class="cell-item">国家/地区(中文)</div>
             </template>
               {{ruleForm.country_chn_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区英文名称</div>
+              <div class="cell-item">国家/地区(英文)</div>
             </template>
               {{ruleForm.country_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">城市中文名称</div>
+              <div class="cell-item">城市名称(中文)</div>
             </template>
               {{ruleForm.city_chn_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">城市英文名称</div>
+              <div class="cell-item">城市名称(英文)</div>
             </template>
               {{ruleForm.city_eng_name}}
           </el-descriptions-item>
@@ -129,6 +129,6 @@ export default {
 </script>
 <style lang="scss">
   .desc_label {
-    width: 150px;
+    width: 130px;
   }
 </style>

@@ -2,7 +2,7 @@
   <div class="freightTools-Airport-container">
     <el-card shadow="hover" header="机场代码查询">
       <el-input v-model="queryText" size="small" placeholder="输入机场代码/机场名称/国家(地区)/城市" clearable style="max-width: 280px"> </el-input>
-      <el-button type="primary" @click="onQueryAirports" size="small">查询</el-button>
+      <el-button type="primary" @click="onQueryAirports" size="small" style="margin-left: 10px">查询</el-button>
       <el-table :data="tableData.data" style="width: 100%">
         <el-table-column type="index" label="序号" width="50px"></el-table-column>
 				<el-table-column prop="iata_code" label="IATA" sortable></el-table-column>
@@ -12,7 +12,6 @@
 				<el-table-column prop="city_chn_name" label="城市" sortable></el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="140">
           <template #default="scope">
-            <el-button size="mini" type="text" @click="onOpenDetailAirport(scope.row)">详细</el-button>
             <el-button
               size="small"
               type="warning"
@@ -81,14 +80,14 @@ export default {
       })
     }
 
-    // 分长改变
+    // 页长改变事件
 		const onHandleSizeChange = (val: number) => {
 			state.tableData.param.page_size = val;
       state.tableData.param.page_num = 1;
-      queryAirports({queryText: queryText.value, page_num:state.tableData.param.page_num, page_size:state.tableData.param.page_size});
+      getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
 		};
 
-		// 分页改变
+		// 页码改变事件
 		const onHandleCurrentChange = (val: number) => {
 			state.tableData.param.page_num = val;
       getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
