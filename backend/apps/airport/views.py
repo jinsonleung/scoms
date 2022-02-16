@@ -19,6 +19,24 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
     pagination_class = Pagination  # 分页
 
     def get(self, request, *args, **kwargs):
+        query_text = request.query_params.get('query')
+        if query_text != '':
+            query_text = query_text.upper()
+            print('==查询开始==', query_text)
+            # 查询条件Q组合,模糊查询
+            query_criteria = Q(iata_code__contains=query_text) | Q(icao_code__contains=query_text) | Q(airport_chn_name__contains=query_text) | Q(country_chn_name__contains=query_text) | Q(city_chn_name__contains=query_text)
+            query_result = Airport.custom.filter(query_criteria)
+            page = self.paginate_queryset(query_result)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer = self.get_serializer(query_result, many=True)
+            return Response(serializer.data)
+        return self.list(request, *args, **kwargs)
+
+
+
+    def get_0(self, request, *args, **kwargs):
         """群查，获取分页数据"""
         # 获取url中的需要查询的内容
         print('==request.query_params==', request.query_params.dict())

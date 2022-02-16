@@ -1,14 +1,26 @@
 <template>
   <div class="freightTools-Airport-container">
     <el-card shadow="hover" header="机场代码查询">
-      <el-input v-model="queryText" size="small" placeholder="输入机场代码/机场名称/国家(地区)/城市" style="max-width: 280px"> </el-input>
+      <el-input v-model="queryText" size="small" placeholder="输入机场代码/机场名称/国家(地区)/城市" clearable style="max-width: 280px"> </el-input>
       <el-button type="primary" @click="onQueryAirports" size="small">查询</el-button>
       <el-table :data="tableData.data" style="width: 100%">
-				<el-table-column prop="iata_code" label="IATA"></el-table-column>
-				<el-table-column prop="icao_code" label="ICAO"></el-table-column>
-				<el-table-column prop="airport_chn_name" label="机场名称"></el-table-column>
-				<el-table-column prop="country_chn_name" label="国家（地区）"></el-table-column>
-				<el-table-column prop="city_chn_name" label="城市"></el-table-column>
+        <el-table-column type="index" label="序号" width="50px"></el-table-column>
+				<el-table-column prop="iata_code" label="IATA" sortable></el-table-column>
+				<el-table-column prop="icao_code" label="ICAO" sortable></el-table-column>
+				<el-table-column prop="airport_chn_name" label="机场名称" sortable></el-table-column>
+				<el-table-column prop="country_chn_name" label="国家（地区）" sortable></el-table-column>
+				<el-table-column prop="city_chn_name" label="城市" sortable></el-table-column>
+        <el-table-column label="操作" show-overflow-tooltip width="140">
+          <template #default="scope">
+            <el-button size="mini" type="text" @click="onOpenDetailAirport(scope.row)">详细</el-button>
+            <el-button
+              size="small"
+              type="warning"
+              @click="onOpenDetailAirport(scope.row)"
+              >详情</el-button
+            >
+          </template>
+        </el-table-column>
 			</el-table>
       <!--分页导航栏-->
       <el-pagination
@@ -25,6 +37,8 @@
       >
       </el-pagination>
 		</el-card>
+    <!--机场详情弹窗-->
+    <DetailAirport ref="detailAirportRef" />
   </div>
 </template>
 
@@ -32,12 +46,14 @@
 
 import {reactive, ref, toRefs} from "vue";
 import {queryAirports} from "/@/api/freightTools";
+import DetailAirport from "/@/views/freightTools/airport/component/detailAirport.vue"
 
 export default {
   name: 'freightToolsAirport',
-  components: {},
+  components: {DetailAirport},
   setup() {
     const queryText = ref('');
+    const detailAirportRef = ref();
     const state = reactive({
       tableData: {
         data: [] as Array<any>,
@@ -50,35 +66,54 @@ export default {
       },
     });
 
-    		// 分页改变
+    // 初始化表格
+    const initTableData = async () => {
+      state.tableData.data = [];
+      state.tableData.param.page_num = 1;
+      state.tableData.param.page_size = 10;
+    }
+
+    // 获取查询结果，以分页方式返回
+    const getPageAirports = async (query_text:string, page_num: number, page_size: number)=> {
+      queryAirports({query_text,page_num,page_size}).then((res:any)=>{
+        state.tableData.data=res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+    }
+
+    // 分长改变
 		const onHandleSizeChange = (val: number) => {
 			state.tableData.param.page_size = val;
       state.tableData.param.page_num = 1;
-      // getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size)
       queryAirports({queryText: queryText.value, page_num:state.tableData.param.page_num, page_size:state.tableData.param.page_size});
-
 		};
+
 		// 分页改变
 		const onHandleCurrentChange = (val: number) => {
 			state.tableData.param.page_num = val;
-      queryAirports({queryText: queryText.value, page_num:state.tableData.param.page_num, page_size:state.tableData.param.page_size});
-
-      // getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size)
+      getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
 		};
 
-		const onQueryAirports = async () => {
+    // 查询
+		const onQueryAirports = () => {
       console.log('==airport search==', 'searching...',queryText.value);
-      queryAirports({queryText: queryText.value, page_num:state.tableData.param.page_num, page_size:state.tableData.param.page_size}).then((res:any)=>{
-        console.log('==queryAirports.res==', res);
-        state.tableData.data = res.result_data;
-        state.tableData.total = res.result_data.count;
-      })
+      initTableData();
+      let query_text = queryText.value.trim()
+      if (query_text != '') getPageAirports(queryText.value,1,10);
 		};
+
+    // 机场详细情况
+    const onOpenDetailAirport = (row: object) => {
+      console.log('==open==')
+      detailAirportRef.value.openDialog(row);
+    }
 
     return {
       queryText,
+      detailAirportRef,
       onHandleSizeChange,
       onHandleCurrentChange,
+      onOpenDetailAirport,
       onQueryAirports,
       ...toRefs(state),
     };

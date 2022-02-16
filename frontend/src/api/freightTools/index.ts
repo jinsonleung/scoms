@@ -33,7 +33,7 @@ export function getAirport(params:any){
  */
 export function queryAirports(params:any){
 	return request({
-		url: `/airport/?query=${params.queryText}&page_num=${params.page_num}&page_size=${params.page_size}`,
+		url: `/airport/?query=${params.query_text}&page_num=${params.page_num}&page_size=${params.page_size}`,
 		method: 'GET',
 		data: params,
 	});
