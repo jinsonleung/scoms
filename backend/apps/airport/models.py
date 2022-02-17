@@ -16,6 +16,11 @@ class Airport(BaseModel):
     country_eng_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='国家/地区英文名称')
     city_chn_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='城市中文名称')
     city_eng_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='城市英文名称')
+    elevation = models.CharField(max_length=64, blank=True, null=True, verbose_name='海拨高度')
+    longitude = models.CharField(max_length=64, blank=True, null=True, verbose_name='经度')
+    latitude = models.CharField(max_length=64, blank=True, null=True, verbose_name='纬度')
+    time_zone = models.CharField(max_length=64, blank=True, null=True, verbose_name='时区')
+    utc = models.CharField(max_length=16, blank=True, null=True, verbose_name='UTC时差')
     description = models.TextField(max_length=256, blank=True, null=True, verbose_name='描述')
     is_available = models.BooleanField(default=True, verbose_name='是否启用')  # 默认为可使用
 
