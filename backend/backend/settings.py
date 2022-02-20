@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # ==apps==
     'common',    # 公共app
     'enterprise',    # 企业信息
-    'airport',   # 全球机场三字代码
+    'freightTools.airport',   # 全球机场三字代码
     'test0130',     # 用于测试
 ]
 

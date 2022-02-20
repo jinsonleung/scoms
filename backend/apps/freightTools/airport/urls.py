@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from apps.airport import views
+from apps.freightTools.airport import views
 
 # """
 # @func：接口URL

@@ -1,14 +1,11 @@
 from django.db.models import Q
-from django.http import QueryDict, JsonResponse
-from rest_framework.parsers import JSONParser
+from django.http import JsonResponse
 from rest_framework.response import Response
 from utils.pagination import Pagination
-from apps.airport.models import Airport
-from apps.airport.serializers import AirportSerializer
-from rest_framework import mixins, status, exceptions
+from apps.freightTools.airport.models import Airport
+from apps.freightTools.airport.serializers import AirportSerializer
+from rest_framework import mixins, exceptions
 from rest_framework import generics
-import json
-from django.views.decorators.csrf import csrf_exempt  # 取消csrf校验
 
 
 class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.GenericAPIView):
