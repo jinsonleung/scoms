@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework.fields import ListField
-from apps.common.models import BaseModel
-from apps.common.managers import CommonManager
+from apps.public.models import BaseModel
+from apps.public.managers import CommonManager
 
 
 # class EnterpriseManager(models.Manager):

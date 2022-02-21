@@ -40,7 +40,7 @@ export default defineComponent({
 		// 跳转到详情
 		const onGoDetailsClick = () => {
 			router.push({
-				path: '/params/common/details',
+				path: '/params/public/details',
 				query: { id: state.value, name: 'vue-next-admin' },
 			});
 			state.value = '';

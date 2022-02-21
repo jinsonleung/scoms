@@ -17,15 +17,15 @@ const themeConfigModule: Module<ThemeConfigState, RootStateTypes> = {
 			/**
 			 * 全局主题
 			 */
-			// 默认 primary 颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认 primary 颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			primary: '#409eff',
-			// 默认 success 颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认 success 颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			success: '#67c23a',
-			// 默认 info 颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认 info 颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			info: '#909399',
-			// 默认 warning 颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认 warning 颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			warning: '#e6a23c',
-			// 默认 danger 颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认 danger 颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			danger: '#f56c6c',
 
 			/**
@@ -34,17 +34,17 @@ const themeConfigModule: Module<ThemeConfigState, RootStateTypes> = {
 			 * 切换布局需手动设置样式，设置的样式自动同步各布局，
 			 * 代码位置：/@/layout/navBars/breadcrumb/setings.vue
 			 */
-			// 默认顶栏导航背景颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认顶栏导航背景颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			topBar: '#ffffff',
-			// 默认菜单导航背景颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认菜单导航背景颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			menuBar: 'black',	// '#545c64'
-			// 默认分栏菜单背景颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认分栏菜单背景颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			columnsMenuBar: '#545c64',
-			// 默认顶栏导航字体颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认顶栏导航字体颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			topBarColor: '#606266',
-			// 默认菜单导航字体颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认菜单导航字体颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			menuBarColor: '#eaeaea',
-			// 默认分栏菜单字体颜色，请注意：需要同时修改 `/@/theme/common/var.scss` 对应的值
+			// 默认分栏菜单字体颜色，请注意：需要同时修改 `/@/theme/public/var.scss` 对应的值
 			columnsMenuBarColor: '#e6e6e6',
 			// 是否开启顶栏背景颜色渐变
 			isTopBarColorGradual: false,
