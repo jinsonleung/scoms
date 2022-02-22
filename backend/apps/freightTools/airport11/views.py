@@ -2,8 +2,8 @@ from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework.response import Response
 from utils.pagination import Pagination
-from apps.freightTools.airport.models import Airport
-from apps.freightTools.airport.serializers import AirportSerializer
+from apps.freightTools.airport11.models import Airport
+from apps.freightTools.airport11.serializers import AirportSerializer
 from rest_framework import mixins, exceptions
 from rest_framework import generics
 

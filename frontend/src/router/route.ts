@@ -170,7 +170,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/freightTools/airport',
+						path: '/freightTools/airport11',
 						name: 'freightToolsAirport',
 						component: () => import('/@/views/freightTools/airport/index.vue'),
 						meta: {

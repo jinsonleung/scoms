@@ -28,7 +28,7 @@ class Airport(BaseModel):
     custom = CommonManager()
 
     class Meta:
-        db_table = 'airport'  # 数据库实际表名
+        db_table = 'airport11'  # 数据库实际表名
         verbose_name = '全球机场三字码表'  # 详细名称
         verbose_name_plural = verbose_name  # 详细名称
         ordering = ['iata_code']  # 排序字段

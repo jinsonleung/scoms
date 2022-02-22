@@ -8,8 +8,9 @@ from apps.universalCode import views
 
 
 urlpatterns = [
-    path('universalCode/airport/', views.AirportList.as_view()),
-    path('universalCode/airport/<int:pk>', views.AirportDetail.as_view()),
+    path('airport/', views.AirportList.as_view()),
+    path('airport/<int:pk>', views.AirportDetail.as_view()),
+
     ]
 urlpatterns = format_suffix_patterns(urlpatterns)
 

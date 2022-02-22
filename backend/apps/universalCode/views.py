@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework.response import Response
-from apps.universalCode.models import Airport
+from apps.universalCode.models import Country,City,Airport,Airline
 from apps.universalCode.serializers import AirportSerializer
 from utils.pagination import Pagination
 from rest_framework import mixins, exceptions
@@ -31,32 +31,6 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
             return Response(serializer.data)
         return self.list(request, *args, **kwargs)
 
-
-
-    def get_0(self, request, *args, **kwargs):
-        """群查，获取分页数据"""
-        # 获取url中的需要查询的内容
-        print('==request.query_params==', request.query_params.dict())
-        # query_text = request.query_params.get('query')
-        # if query_text == '':
-        #     print('==查询开始==', '*' + query_text + '*')
-        # # if (query_text):
-        # return JsonResponse({'a':'aaa'})
-        query_text = request.query_params.get('query')
-        if query_text != '':
-            query_text = query_text.upper()
-            print('==查询开始==', query_text)
-            query_result = Airport.custom.filter(Q(iata_code__contains=query_text) | Q(icao_code__contains=query_text) | Q(airport_chn_name__contains=query_text) | Q(country_chn_name__contains=query_text) | Q(city_chn_name__contains=query_text))
-            # print('==query_result==', query_result)
-            # obj_data = AirportSerializer(instance=query_result, many=True).data
-            # pg_data = Pagination.paginate_queryset(queryset=query_result, request=request, view=self)
-            # pg_data = Pagination.paginate_queryset(self, queryset=query_result, request=request, view=None)
-            # pg_data = self.paginate_queryset(query_result)
-            # obj_data = AirportSerializer(instance=pg_data, many=True).data
-            obj_data = AirportSerializer(instance=query_result, many=True).data
-            return Response(obj_data)
-        return self.list(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         """单增及群增"""
         try:
@@ -83,7 +57,6 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
         except Exception as e:
             print('发生错误：', e)
             return Response({"error_msg": "出现了无法预料的view视图错误：%s" % e, "error_code": 1, "error_data": {}})
-
 
 class AirportDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                        generics.GenericAPIView):
@@ -139,3 +112,9 @@ class AirportDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
             'status': 1,
             'msg': '删除失败'
         })
+
+
+
+
+
+
