@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'enterprise',    # 企业信息
     # 'freightTools.airport11',   # 全球机场三字代码
     'universalCode',   # 国家/城市/机场代码
-    'test0130',     # 用于测试
+    # 'test0130',     # 用于测试
 ]
 
 MIDDLEWARE = [

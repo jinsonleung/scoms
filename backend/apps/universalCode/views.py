@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework.response import Response
-from apps.universalCode.models import Country,City,Airport,Airline
+from apps.universalCode.models import Country, City, Airport, Airline
 from apps.universalCode.serializers import AirportSerializer
 from utils.pagination import Pagination
 from rest_framework import mixins, exceptions
@@ -18,8 +18,9 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
     def get(self, request, *args, **kwargs):
         query_text = request.query_params.get('query')
         if query_text != '':
-            query_text = query_text.upper()
-            print('==查询开始==', query_text)
+            # query_text = query_text
+            # query_text = query_text.upper()
+            # print('==查询开始==', query_text)
             # 查询条件Q组合,模糊查询
             query_criteria = Q(iata_code__contains=query_text) | Q(icao_code__contains=query_text) | Q(airport_chn_name__contains=query_text) | Q(country_chn_name__contains=query_text) | Q(city_chn_name__contains=query_text)
             query_result = Airport.custom.filter(query_criteria)
@@ -58,6 +59,7 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
             print('发生错误：', e)
             return Response({"error_msg": "出现了无法预料的view视图错误：%s" % e, "error_code": 1, "error_data": {}})
 
+
 class AirportDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                        generics.GenericAPIView):
     """获取、更新或删除一条记录"""
@@ -67,7 +69,7 @@ class AirportDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 
     def get(self, request, *args, **kwargs):
         """单查"""
-        print('==单查==', **kwargs)
+        # print('==单查==', **kwargs)
         return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):

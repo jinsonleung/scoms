@@ -19,7 +19,8 @@ class CitySerializer(serializers.ModelSerializer):
 class AirportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Airport   # 序列化的对象名
-        exclude = ['is_delete', 'create_datetime', 'create_by', 'update_datetime', 'update_by']
+        fields = '__all__'  # 序列化所有字段
+        # exclude = ['is_delete', 'create_datetime', 'create_by', 'update_datetime', 'update_by']
 
 
 class AirlineSerializer(serializers.ModelSerializer):

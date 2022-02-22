@@ -173,7 +173,7 @@ export default {
 
     // 查询
 		const onQueryAirports = () => {
-      console.log('==airport11 search==', 'searching...',queryText.value);
+      console.log('==airport search==', 'searching...',queryText.value);
       initTableData();
       let query_text = queryText.value.trim()
       if (query_text != '') getPageAirports(queryText.value,1,10);
