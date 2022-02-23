@@ -2,7 +2,10 @@ from rest_framework import serializers
 from apps.universalCode.models import Country, City, Airport, Airline
 
 
-# 序列化器
+class UniversalCodeSerializer(serializers.ModelSerializer):
+    pass
+
+
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country   # 序列化的对象名
@@ -17,10 +20,15 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class AirportSerializer(serializers.ModelSerializer):
+    """
+    参考：https://www.5axxw.com/questions/content/xbebfr
+    """
+    country = CountrySerializer()
+
     class Meta:
         model = Airport   # 序列化的对象名
-        fields = '__all__'  # 序列化所有字段
-        # exclude = ['is_delete', 'create_datetime', 'create_by', 'update_datetime', 'update_by']
+        # fields = '__all__'  # 序列化所有字段
+        exclude = ['is_delete', 'create_datetime', 'create_by', 'update_datetime', 'update_by']
 
 
 class AirlineSerializer(serializers.ModelSerializer):

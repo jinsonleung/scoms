@@ -32,11 +32,12 @@ class Country(BaseModel):
 class City(BaseModel):
     """
     全球城市三字码表，继承抽象基类BaseModel
-    country_code：外键，关联country.country_code
+    country：外键，关联country
     国家：城市=1：N
     """
     code = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='城市三字码')
-    country_code = models.ForeignKey(to='Country', to_field='code', blank=True, null=True, on_delete=models.CASCADE, verbose_name='国家两字码')
+    country_code = models.CharField(max_length=16, blank=True, null=True, verbose_name='国家二字码')
+    country = models.ForeignKey(Country, blank=True, null=True, on_delete=models.CASCADE, verbose_name='所在国家')
     eng_name = models.CharField(max_length=128, blank=True, null=True, verbose_name='城市英文全称')
     chn_name = models.CharField(max_length=128, blank=True, null=True, verbose_name='城市中文全称')
     time_zone = models.CharField(max_length=32, blank=True, null=True, verbose_name='时区')
@@ -65,7 +66,8 @@ class Airport(BaseModel):
     icao_code = models.CharField(max_length=16, blank=True, null=True, verbose_name='ICAO机场代码')
     chn_name = models.CharField(max_length=128, blank=True, null=True, verbose_name='机场中文名称')
     eng_name = models.CharField(max_length=128, blank=True, null=True, verbose_name='机场英文名称')
-    country_code = models.ForeignKey(to='Country', to_field='code', on_delete=models.CASCADE, blank=True, null=True, verbose_name='所在国家')
+    country_code = models.CharField(max_length=16, blank=True, null=True, verbose_name='国家二字码')
+    country = models.ForeignKey(Country, blank=True, null=True, on_delete=models.CASCADE, verbose_name='所在国家')
     city_code = models.CharField(max_length=16, blank=True, null=True, verbose_name='城市三字码')
     city_chn_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='城市中文名称')
     city_eng_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='城市英文名称')
@@ -103,7 +105,8 @@ class Airline(BaseModel):
     chn_name = models.CharField(max_length=128, blank=True, null=True, verbose_name='机场中文名称')
     eng_name = models.CharField(max_length=128, blank=True, null=True, verbose_name='机场英文名称')
     call_sign = models.CharField(max_length=64, blank=True, null=True, verbose_name='机场英文名称')
-    country_code = models.ForeignKey(to='Country', to_field='code', on_delete=models.CASCADE, max_length=16, blank=True, null=True, verbose_name='所在国家')
+    country_code = models.CharField(max_length=16, blank=True, null=True, verbose_name='国家二字码')
+    country = models.ForeignKey(Country, blank=True, null=True, on_delete=models.CASCADE, verbose_name='所在国家')
     city_code = models.ForeignKey(to='City', to_field='code', on_delete=models.CASCADE, max_length=16, blank=True, null=True, verbose_name='城市三字码')
     description = models.TextField(max_length=256, blank=True, null=True, verbose_name='描述')
 
