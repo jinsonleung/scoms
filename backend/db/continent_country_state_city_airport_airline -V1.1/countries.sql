@@ -21,7 +21,7 @@ create table countries
     is_delete       tinyint default 0 null,
     create_datetime datetime          null,
     create_by       varchar(64)       not null,
-    update_datetime datetime          not null on update CURRENT_TIMESTAMP,
+    update_datetime datetime          not null,
     update_by       varchar(64)       not null,
     constraint countries_continent__fk
         foreign key (continent_id) references continents (id)
