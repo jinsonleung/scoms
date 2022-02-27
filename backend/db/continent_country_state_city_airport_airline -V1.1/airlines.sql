@@ -1,3 +1,4 @@
+drop table if exists `airlines`;
 create table airlines
 (
     id                  bigint auto_increment
