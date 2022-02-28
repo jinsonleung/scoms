@@ -22,45 +22,27 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">机场名称(中文)</div>
+              <div class="cell-item">机场名称</div>
             </template>
-            {{ruleForm.airport_chn_name}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">机场名称(英文)</div>
-            </template>
-              {{ruleForm.airport_eng_name}}
+            {{ruleForm.chn_name}}，{{ruleForm.eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">国家/地区代码</div>
             </template>
-              {{ruleForm.country_code}}
+              {{ruleForm.country.iso2_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区(中文)</div>
+              <div class="cell-item">国家/地区名称</div>
             </template>
-              {{ruleForm.country_chn_name}}
+              {{ruleForm.country.chn_name}}，{{ruleForm.country.eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区(英文)</div>
+              <div class="cell-item">城市名称</div>
             </template>
-              {{ruleForm.country_eng_name}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">城市名称(中文)</div>
-            </template>
-              {{ruleForm.city_chn_name}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">城市名称(英文)</div>
-            </template>
-              {{ruleForm.city_eng_name}}
+              {{ruleForm.city_chn_name}}，{{ruleForm.city_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -118,24 +100,30 @@ export default {
     // const ruleFormRef = ref(null);
     const state = reactive({
       isShowDialog: false,
-      ruleForm: {
-        iata_code: '', // IATA机场代码
-        icao_code: '', // ICAO机场代码
-        airport_chn_name: '', // 机场中文名称
-        airport_eng_name: '', // 机场英文名称
-        country_code: '', // 国家/地区代码
-        country_chn_name: '', // 国家/地区中文名称
-        country_eng_name: '', // 国家/地区英文名称
-        city_chn_name: '',  // 城市中文名称
-        city_eng_name: '', // 城市英文名称
-        elevation: '', // 海拨高度
-        longitude: '', // 经度
-        latitude: '', // 纬度
-        time_zone: '', // 时区
-        utc: '', // UTC时差
-        description: '', // 机场描述
-      },
-    });
+      ruleForm: {}
+    })
+    // const state1 = reactive({
+    //   isShowDialog: false,
+    //   ruleForm: {
+    //     iata_code: '', // IATA机场代码
+    //     icao_code: '', // ICAO机场代码
+    //     chn_name: '', // 机场中文名称
+    //     eng_name: '', // 机场英文名称
+    //     country:{
+    //       iso2_code: '', // 国家二字代码
+    //       chn_name: '', // 国家中文名称
+    //       eng_name: '', // 国家英文名称
+    //     },
+    //     city_chn_name: '',  // 城市中文名称
+    //     city_eng_name: '', // 城市英文名称
+    //     elevation: '', // 海拨高度
+    //     longitude: '', // 经度
+    //     latitude: '', // 纬度
+    //     time_zone: '', // 时区
+    //     utc: '', // UTC时差
+    //     description: '', // 机场描述
+    //   },
+    // });
     // 打开弹窗
     const openDialog = (row: any) => {
       console.log('==openDialog.row1==', row);

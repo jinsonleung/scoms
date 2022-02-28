@@ -91,6 +91,7 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default': {  # 配置mysql数据库
+        # 'OPTIONS': {'charset': 'utf8mb4'},  #mb4字符集支持emoji表情
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
         'NAME': 'scomsdb',  # 数据库名，自己本地创建
         'USER': 'root',  # 数据库用户名

@@ -16,19 +16,12 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
     pagination_class = Pagination  # 分页
 
     def get(self, request, *args, **kwargs):
+        print('==多查/条件查询==', request)
         query_text = request.query_params.get('query')
-        print('==查询开始==', query_text)
         if query_text != '':
-            # query_text = query_text
-            # query_text = query_text.upper()
-            # 查询条件Q组合,模糊查询
-
-            query_criteria = Q(iata_code__contains=query_text) | Q(icao_code__contains=query_text) | Q(chn_name__contains=query_text)
-            # query_criteria = "iata_code__contains=query_text"
-            print("==query_criteria==", query_criteria)
-
+            # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
+            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text)
             query_result = Airport.custom.filter(query_criteria)
-            print("==query_result==", query_result.count())  # 返回0？
             page = self.paginate_queryset(query_result)
             if page is not None:
                 serializer = self.get_serializer(page, many=True)
@@ -74,7 +67,7 @@ class AirportDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 
     def get(self, request, *args, **kwargs):
         """单查"""
-        # print('==单查==', request)
+        print('==单查==', request)
         return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):

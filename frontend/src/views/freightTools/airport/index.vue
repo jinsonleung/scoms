@@ -39,8 +39,8 @@
         <el-table-column type="index" label="序号" width="50px"></el-table-column>
 				<el-table-column prop="iata_code" label="IATA" sortable></el-table-column>
 				<el-table-column prop="icao_code" label="ICAO" sortable></el-table-column>
-				<el-table-column prop="airport_chn_name" label="机场名称" sortable></el-table-column>
-				<el-table-column prop="country_chn_name" label="国家（地区）" sortable></el-table-column>
+				<el-table-column prop="chn_name" label="机场名称" sortable></el-table-column>
+				<el-table-column prop="country.chn_name" label="国家（地区）" sortable></el-table-column>
 				<el-table-column prop="city_chn_name" label="城市" sortable></el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="140">
           <template #default="scope">
@@ -204,8 +204,16 @@ export default {
 };
 </script>
 <style lang="scss">
-  active{
+  .active{
     color: red;
     background-color: #1BAEAE;
   }
+
+  	//active {
+    //  background: #409EFF;
+    //}
+    //active:hover {
+    //  background: #66b1ff;
+    //}
+
 </style>
