@@ -52,15 +52,15 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">经度</div>
-            </template>
-              {{ruleForm.longitude}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
               <div class="cell-item">纬度</div>
             </template>
               {{ruleForm.latitude}}
+          </el-descriptions-item>
+          <el-descriptions-item>
+            <template #label>
+              <div class="cell-item">经度</div>
+            </template>
+              {{ruleForm.longitude}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>

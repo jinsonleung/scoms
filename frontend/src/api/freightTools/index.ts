@@ -38,3 +38,17 @@ export function queryAirports(params:any){
 		data: params,
 	});
 }
+
+
+/**
+ * 模糊查找
+ * @param params 要传的参数值，如{queryText:queryText}
+ * @returns 返回接口数据
+ */
+export function queryAirlines(params:any){
+	return request({
+		url: `/airline/?query=${params.query_text}&page_num=${params.page_num}&page_size=${params.page_size}`,
+		method: 'GET',
+		data: params,
+	});
+}

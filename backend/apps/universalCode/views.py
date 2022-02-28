@@ -2,10 +2,33 @@ from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework.response import Response
 from apps.universalCode.models import Country, City, Airport, Airline
-from apps.universalCode.serializers import AirportSerializer
+from apps.universalCode.serializers import AirportSerializer, AirlineSerializer
 from utils.pagination import Pagination
 from rest_framework import mixins, exceptions
 from rest_framework import generics
+
+
+class AirlineList(generics.ListAPIView):
+    """列出所有的记录，或创建一条新的记录"""
+    # # queryset = Airport.objects.all()   # 获取所有记录
+    # queryset = Airport.custom.all()  # 获取非软删、除的记录
+    serializer_class = AirlineSerializer  # 序列化
+    # pagination_class = Pagination  # 分页
+
+    def get(self, request, *args, **kwargs):
+        print('==航司多查/条件查询==', request)
+        query_text = request.query_params.get('query')
+        if query_text != '':
+            # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
+            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text)
+            query_result = Airline.custom.filter(query_criteria)
+            page = self.paginate_queryset(query_result)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer = self.get_serializer(query_result, many=True)
+            return Response(serializer.data)
+        return self.list(request, *args, **kwargs)
 
 
 class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.GenericAPIView):

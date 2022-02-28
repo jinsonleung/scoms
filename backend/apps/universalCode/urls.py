@@ -10,6 +10,8 @@ from apps.universalCode import views
 urlpatterns = [
     path('airport/', views.AirportList.as_view()),
     path('airport/<int:pk>', views.AirportDetail.as_view()),
+    path('airline/', views.AirlineList.as_view()),
+    # path('airport/<int:pk>', views.AirportDetail.as_view()),
 
     ]
 urlpatterns = format_suffix_patterns(urlpatterns)

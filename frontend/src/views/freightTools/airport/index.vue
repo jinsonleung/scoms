@@ -29,7 +29,7 @@
           <el-row>
             <el-input v-model="queryText" size="small" :placeholder=queryPlaceholder clearable
                       style="max-width: 360px"></el-input>
-            <el-button type="primary" @click="onQueryAirports" size="small" style="margin-left: 10px"><el-icon>
+            <el-button type="primary" @click="onQuery(queryButtonIndex)" size="small" style="margin-left: 10px"><el-icon>
                   <elementSearch/>
                 </el-icon>查询</el-button>
           </el-row>
@@ -95,7 +95,7 @@
 <script lang="ts">
 
 import {reactive, ref, toRefs} from "vue";
-import {queryAirports} from "/@/api/freightTools";
+import {queryAirports,queryAirlines} from "/@/api/freightTools";
 import DetailAirport from "/@/views/freightTools/airport/component/detailAirport.vue"
 
 export default {
@@ -129,6 +129,15 @@ export default {
     // 获取查询结果，以分页方式返回
     const getPageAirports = async (query_text:string, page_num: number, page_size: number)=> {
       queryAirports({query_text,page_num,page_size}).then((res:any)=>{
+        state.tableData.data=res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+    };
+
+    // 获取查询结果，以分页方式返回
+    const getPageAirlines = async (query_text:string, page_num: number, page_size: number)=> {
+      queryAirlines({query_text,page_num,page_size}).then((res:any)=>{
+        console.log('==rest==', res)
         state.tableData.data=res.result_data.data;
         state.tableData.total = res.result_data.count;
       })
@@ -172,11 +181,19 @@ export default {
 		};
 
     // 查询
-		const onQueryAirports = () => {
-      console.log('==airport search==', 'searching...',queryText.value);
+		const onQuery = (buttonIndex: number) => {
+      console.log('==searching==',buttonIndex, queryText.value);
       initTableData();
       let query_text = queryText.value.trim()
-      if (query_text != '') getPageAirports(queryText.value,1,10);
+      if (query_text != '') {
+        if (buttonIndex === 0) {
+          getPageAirports(query_text, 1, 10);
+        }else if (buttonIndex ===1) {
+          getPageAirlines(query_text, 1, 10);
+        }else if (buttonIndex ===2 ) {
+          // getPageAirports(queryText.value, 1, 10);
+        }
+      }
 		};
 
     // 机场详细情况
@@ -197,7 +214,7 @@ export default {
       onHandleSizeChange,
       onHandleCurrentChange,
       onOpenDetailAirport,
-      onQueryAirports,
+      onQuery,
       ...toRefs(state),
     };
   },
