@@ -11,12 +11,12 @@ from rest_framework import generics
 class AirlineList(generics.ListAPIView):
     """列出所有的记录，或创建一条新的记录"""
     # # queryset = Airport.objects.all()   # 获取所有记录
-    # queryset = Airport.custom.all()  # 获取非软删、除的记录
+    queryset = Airline.custom.all()  # 获取非软删、除的记录
     serializer_class = AirlineSerializer  # 序列化
-    # pagination_class = Pagination  # 分页
+    pagination_class = Pagination  # 分页
 
     def get(self, request, *args, **kwargs):
-        print('==航司多查/条件查询==', request)
+        print('==航司多条件查询==', request)
         query_text = request.query_params.get('query')
         if query_text != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
@@ -39,7 +39,7 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
     pagination_class = Pagination  # 分页
 
     def get(self, request, *args, **kwargs):
-        print('==多查/条件查询==', request)
+        print('==机场多条件查询==', request)
         query_text = request.query_params.get('query')
         if query_text != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写

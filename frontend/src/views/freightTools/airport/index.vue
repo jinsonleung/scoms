@@ -35,6 +35,7 @@
           </el-row>
         </div>
         <!--查询结果表格数据展示-->
+      <!--机场查询列表-->
         <el-table :data="tableData.data" style="width: 100%" v-show="queryButtonIndex===0">
         <el-table-column type="index" label="序号" width="50px"></el-table-column>
 				<el-table-column prop="iata_code" label="IATA" sortable></el-table-column>
@@ -53,14 +54,14 @@
           </template>
         </el-table-column>
 			</el-table>
-
+      <!--航空公司查询列表-->
       <el-table :data="tableData.data" style="width: 100%" v-show="queryButtonIndex===1">
         <el-table-column type="index" label="序号" width="50px"></el-table-column>
-				<el-table-column prop="iata_code" label="航司代码" sortable></el-table-column>
-				<el-table-column prop="icao_code" label="航司名称" sortable></el-table-column>
-				<el-table-column prop="airport_chn_name" label="机场名称" sortable></el-table-column>
-				<el-table-column prop="country_chn_name" label="国家（地区）" sortable></el-table-column>
-				<el-table-column prop="city_chn_name" label="城市" sortable></el-table-column>
+				<el-table-column prop="iata_code" label="IATA" sortable></el-table-column>
+				<el-table-column prop="icao_code" label="ICAO" sortable></el-table-column>
+				<el-table-column prop="eng_name" label="航司名称" sortable></el-table-column>
+				<el-table-column prop="country.chn_name" label="国家（地区）" sortable></el-table-column>
+				<el-table-column prop="city.chn_name" label="城市" sortable></el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="140">
           <template #default="scope">
             <el-button
@@ -110,6 +111,7 @@ export default {
     const state = reactive({
       tableData: {
         data: [] as Array<any>,
+        // data: Object,
         total: 0,
         loading: false,
         param: {
@@ -121,7 +123,7 @@ export default {
 
     // 初始化表格
     const initTableData = async () => {
-      state.tableData.data = [];
+      state.tableData.data = [];   // 清空数据
       state.tableData.param.page_num = 1;
       state.tableData.param.page_size = 10;
     };
@@ -137,9 +139,10 @@ export default {
     // 获取查询结果，以分页方式返回
     const getPageAirlines = async (query_text:string, page_num: number, page_size: number)=> {
       queryAirlines({query_text,page_num,page_size}).then((res:any)=>{
-        console.log('==rest==', res)
+        console.log('==airline res==', res)
         state.tableData.data=res.result_data.data;
         state.tableData.total = res.result_data.count;
+        console.log("==state.tableData.data==", state.tableData.data)
       })
     };
 
@@ -147,7 +150,6 @@ export default {
     const onHandleAirportCodeQuery = (row: object) => {
       queryButtonIndex.value=0;
       queryPlaceholder.value = '输入机场代码/机场名称/国家(地区)/城市';
-
       console.log('==onHandleAirportCodeQuery==')
 
     };
@@ -163,27 +165,35 @@ export default {
       queryButtonIndex.value=2;
       queryPlaceholder.value = '输入国家代码';
       console.log('==onHandleCountryCodeQuery==')
-
     };
 
 
     // 页长改变事件
-		const onHandleSizeChange = (val: number) => {
+		const onHandleSizeChange = (buttonIndex: number, val: number) => {
 			state.tableData.param.page_size = val;
       state.tableData.param.page_num = 1;
-      getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+      if (buttonIndex === 0) {
+        getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+      } else if (buttonIndex === 1) {
+        getPageAirlines(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+      }
 		};
 
 		// 页码改变事件
-		const onHandleCurrentChange = (val: number) => {
+		const onHandleCurrentChange = (buttonIndex: number, val: number) => {
 			state.tableData.param.page_num = val;
       getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+            if (buttonIndex === 0) {
+        getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+      } else if (buttonIndex === 1) {
+        getPageAirlines(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+      }
 		};
 
     // 查询
 		const onQuery = (buttonIndex: number) => {
       console.log('==searching==',buttonIndex, queryText.value);
-      initTableData();
+      initTableData();  // 初始化表格
       let query_text = queryText.value.trim()
       if (query_text != '') {
         if (buttonIndex === 0) {
@@ -191,7 +201,7 @@ export default {
         }else if (buttonIndex ===1) {
           getPageAirlines(query_text, 1, 10);
         }else if (buttonIndex ===2 ) {
-          // getPageAirports(queryText.value, 1, 10);
+
         }
       }
 		};
