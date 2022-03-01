@@ -5,19 +5,19 @@
           <!--查询选项（机场代码查询/航司代码查询/国家代码查询）-->
           <el-row style="margin-bottom: 10px">
             <el-button-group style="margin-right: 20px" size="small">
-              <el-button type="warning" plain autofocus :class="{active: test==='1'}" @click="onHandleAirportCodeQuery">
+              <el-button type="warning" plain autofocus :class="{active: test==='1'}" @click="onHandleButtonGroupClick(0)">
                 <el-icon>
                   <elementPosition/>
                 </el-icon>
                 机场代码查询
               </el-button>
-              <el-button type="warning" plain @click="onHandleAirlineCodeQuery">
+              <el-button type="warning" plain @click="onHandleButtonGroupClick(1)">
                 <el-icon>
                   <elementVan/>
                 </el-icon>
                 航司代码查询
               </el-button>
-              <el-button type="warning" plain @click="onHandleCountryCodeQuery">
+              <el-button type="warning" plain @click="onHandleButtonGroupClick(2)">
                 <el-icon>
                   <elementLocation/>
                 </el-icon>
@@ -29,7 +29,7 @@
           <el-row>
             <el-input v-model="queryText" size="small" :placeholder=queryPlaceholder clearable
                       style="max-width: 360px"></el-input>
-            <el-button type="primary" @click="onQuery(queryButtonIndex)" size="small" style="margin-left: 10px"><el-icon>
+            <el-button type="primary" @click="onHandleQuery(queryButtonIndex)" size="small" style="margin-left: 10px"><el-icon>
                   <elementSearch/>
                 </el-icon>查询</el-button>
           </el-row>
@@ -67,7 +67,7 @@
             <el-button
               size="small"
               type="warning"
-              @click="onOpenDetailAirport(scope.row)"
+              @click="onOpenDetailAirline(scope.row)"
               >详情</el-button
             >
           </template>
@@ -90,25 +90,30 @@
 		</el-card>
     <!--机场详情弹窗-->
     <DetailAirport ref="detailAirportRef" />
+    <DetailAirline ref="detailAirlineRef" />
   </div>
 </template>
 
 <script lang="ts">
 
-import {reactive, ref, toRefs} from "vue";
+import {onMounted, reactive, ref, toRefs} from "vue";
 import {queryAirports,queryAirlines} from "/@/api/freightTools";
 import DetailAirport from "/@/views/freightTools/airport/component/detailAirport.vue"
+import DetailAirline from "/@/views/freightTools/airport/component/detailAirline"
 
 export default {
   name: 'freightToolsAirport',
-  components: {DetailAirport},
+  components: {DetailAirport,DetailAirline},
   setup() {
     const test = ref('1')
-    const queryPlaceholder = ref('')
-    const queryButtonIndex = ref(0)
+    const queryPlaceholder = ref('');
+    const queryButtonIndex = ref(0);
+    // const queryTextPlaceHolder = reactive(['输入机场代码/机场名称/国家(地区)/城市','输入航司代码/国家(地区)/城市','输入国家代码']);
     const queryText = ref('');
     const detailAirportRef = ref();
+    const detailAirlineRef = ref();
     const state = reactive({
+      queryTextPlaceHolder: ['输入机场代码/机场名称/国家(地区)/城市','输入航司代码/国家(地区)/城市','输入国家代码'],
       tableData: {
         data: [] as Array<any>,
         // data: Object,
@@ -146,27 +151,13 @@ export default {
       })
     };
 
-    // 机场代码查询
-    const onHandleAirportCodeQuery = (row: object) => {
-      queryButtonIndex.value=0;
-      queryPlaceholder.value = '输入机场代码/机场名称/国家(地区)/城市';
-      console.log('==onHandleAirportCodeQuery==')
-
+    // 分类查询按钮单击事件
+    const onHandleButtonGroupClick = (index: number) => {
+      queryText.value = '';
+      queryButtonIndex.value = index;
+      queryPlaceholder.value = state.queryTextPlaceHolder[index];
+      initTableData();
     };
-    // 航司代码查询
-    const onHandleAirlineCodeQuery = (row: object) => {
-      queryButtonIndex.value=1;
-      queryPlaceholder.value = '输入航司代码/国家(地区)/城市';
-      console.log('==onHandleAirlineCodeQuery==')
-
-    };
-    // 国家代码查询
-    const onHandleCountryCodeQuery = (row: object) => {
-      queryButtonIndex.value=2;
-      queryPlaceholder.value = '输入国家代码';
-      console.log('==onHandleCountryCodeQuery==')
-    };
-
 
     // 页长改变事件
 		const onHandleSizeChange = (buttonIndex: number, val: number) => {
@@ -191,7 +182,7 @@ export default {
 		};
 
     // 查询
-		const onQuery = (buttonIndex: number) => {
+		const onHandleQuery = (buttonIndex: number) => {
       console.log('==searching==',buttonIndex, queryText.value);
       initTableData();  // 初始化表格
       let query_text = queryText.value.trim()
@@ -212,19 +203,30 @@ export default {
       detailAirportRef.value.openDialog(row);
     };
 
+    // 航空公司详细情况
+    const onOpenDetailAirline = (row: object) => {
+      detailAirlineRef.value.openDialog(row);
+    };
+    onMounted(()=>{
+      queryPlaceholder.value = state.queryTextPlaceHolder[0];
+    })
+
     return {
       test,
       queryPlaceholder,
       queryButtonIndex,
       queryText,
       detailAirportRef,
-      onHandleAirportCodeQuery,
-      onHandleAirlineCodeQuery,
-      onHandleCountryCodeQuery,
+      detailAirlineRef,
+      // onHandleAirportCodeQuery,
+      // onHandleAirlineCodeQuery,
+      // onHandleCountryCodeQuery,
+      onHandleButtonGroupClick,
       onHandleSizeChange,
       onHandleCurrentChange,
       onOpenDetailAirport,
-      onQuery,
+      onOpenDetailAirline,
+      onHandleQuery,
       ...toRefs(state),
     };
   },
