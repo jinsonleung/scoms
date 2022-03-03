@@ -53,6 +53,10 @@
 `2022.02.10`
 - 🎯 学习 drf中get/post/delete/put/patch五大接口(mixin方式) https://www.cnblogs.com/asdaa/p/11695099.html 
 
+`2022.03.03`
+- 🎯 优化 更新完continent、country、state、city、airport、airline数据库
+- 
+
 
 
 

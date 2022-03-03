@@ -99,7 +99,7 @@
 import {onMounted, reactive, ref, toRefs} from "vue";
 import {queryAirports,queryAirlines} from "/@/api/freightTools";
 import DetailAirport from "/@/views/freightTools/airport/component/detailAirport.vue"
-import DetailAirline from "/@/views/freightTools/airport/component/detailAirline"
+import DetailAirline from "/@/views/freightTools/airport/component/detailAirline.vue"
 
 export default {
   name: 'freightToolsAirport',
@@ -171,13 +171,14 @@ export default {
 		};
 
 		// 页码改变事件
-		const onHandleCurrentChange = (buttonIndex: number, val: number) => {
-			state.tableData.param.page_num = val;
-      getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+		const onHandleCurrentChange = (buttonIndex: number, page_num: number) => {
+			state.tableData.param.page_num = page_num;
+      const page_size = state.tableData.param.page_size;
+      getPageAirports(queryText.value,page_num,page_size);
             if (buttonIndex === 0) {
-        getPageAirports(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+        getPageAirports(queryText.value,page_num,page_size);
       } else if (buttonIndex === 1) {
-        getPageAirlines(queryText.value,state.tableData.param.page_num,state.tableData.param.page_size);
+        getPageAirlines(queryText.value,page_num,page_size);
       }
 		};
 
