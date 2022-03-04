@@ -4,26 +4,32 @@
         <div class="query-container">
           <!--查询选项（机场代码查询/航司代码查询/国家代码查询）-->
           <el-row style="margin-bottom: 10px">
-            <el-button-group style="margin-right: 20px" size="small">
-              <el-button type="warning" plain autofocus :class="{active: test==='1'}" @click="onHandleButtonGroupClick(0)">
-                <el-icon>
-                  <elementPosition/>
-                </el-icon>
-                机场代码查询
-              </el-button>
-              <el-button type="warning" plain @click="onHandleButtonGroupClick(1)">
-                <el-icon>
-                  <elementVan/>
-                </el-icon>
-                航司代码查询
-              </el-button>
-              <el-button type="warning" plain @click="onHandleButtonGroupClick(2)">
-                <el-icon>
-                  <elementLocation/>
-                </el-icon>
-                国家代码查询
-              </el-button>
-            </el-button-group>
+<!--            <el-button-group style="margin-right: 20px" size="small">-->
+<!--              <el-button type="warning" plain autofocus :class="{active: test==='1'}" @click="onHandleButtonGroupClick(0)">-->
+<!--                <el-icon>-->
+<!--                  <elementPosition/>-->
+<!--                </el-icon>-->
+<!--                机场代码查询-->
+<!--              </el-button>-->
+<!--              <el-button type="warning" plain @click="onHandleButtonGroupClick(1)">-->
+<!--                <el-icon>-->
+<!--                  <elementVan/>-->
+<!--                </el-icon>-->
+<!--                航司代码查询-->
+<!--              </el-button>-->
+<!--              <el-button type="warning" plain @click="onHandleButtonGroupClick(2)">-->
+<!--                <el-icon>-->
+<!--                  <elementLocation/>-->
+<!--                </el-icon>-->
+<!--                国家代码查询-->
+<!--              </el-button>-->
+<!--            </el-button-group>-->
+            <el-radio-group v-model="tabPosition" size="small" style="margin-bottom: 30px">
+              <el-radio-button label="top"><el-icon><elementPosition/></el-icon>机场代码查询</el-radio-button>
+              <el-radio-button label="right"><el-icon><elementVan/></el-icon>航司代码查询</el-radio-button>
+              <el-radio-button label="bottom"><el-icon><elementLocation/></el-icon>国家代码查询</el-radio-button>
+              <el-radio-button label="left"><el-icon><elementPosition/></el-icon>其他查询</el-radio-button>
+            </el-radio-group>
           </el-row>
           <!--查询条件-->
           <el-row>
@@ -59,7 +65,7 @@
         <el-table-column type="index" label="序号" width="50px"></el-table-column>
 				<el-table-column prop="iata_code" label="IATA" sortable></el-table-column>
 				<el-table-column prop="icao_code" label="ICAO" sortable></el-table-column>
-				<el-table-column prop="eng_name" label="航司名称" sortable></el-table-column>
+				<el-table-column prop="chn_name" label="航司名称" sortable></el-table-column>
 				<el-table-column prop="country.chn_name" label="国家（地区）" sortable></el-table-column>
 				<el-table-column prop="city.chn_name" label="城市" sortable></el-table-column>
         <el-table-column label="操作" show-overflow-tooltip width="140">
@@ -91,7 +97,21 @@
     <!--机场详情弹窗-->
     <DetailAirport ref="detailAirportRef" />
     <DetailAirline ref="detailAirlineRef" />
+
+
+
+
+    <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
+      <el-tab-pane label="User">User</el-tab-pane>
+      <el-tab-pane label="Config">Config</el-tab-pane>
+      <el-tab-pane label="Role">Role</el-tab-pane>
+      <el-tab-pane label="Task">Task</el-tab-pane>
+  </el-tabs>
+
+
   </div>
+
+
 </template>
 
 <script lang="ts">
@@ -105,6 +125,8 @@ export default {
   name: 'freightToolsAirport',
   components: {DetailAirport,DetailAirline},
   setup() {
+    const tabPosition = ref('left')
+
     const test = ref('1')
     const queryPlaceholder = ref('');
     const queryButtonIndex = ref(0);
@@ -213,6 +235,7 @@ export default {
     })
 
     return {
+      tabPosition,
       test,
       queryPlaceholder,
       queryButtonIndex,
