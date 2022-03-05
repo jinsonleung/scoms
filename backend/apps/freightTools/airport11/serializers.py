@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.freightTools.airport11.models import Airport
+from apps.universalCode.airport.models import Airport
 
 
 # 序列化器

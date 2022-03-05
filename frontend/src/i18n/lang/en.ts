@@ -16,7 +16,7 @@ export default {
 		limitsBackEnd: 'BackEnd',
 		limitsBackEndEndPage: 'BackEndEndPage',
 		freightTools: 'FreightTools',
-		freightToolsAirport: 'Airport',
+		freightToolsUniversalCode: 'UniversalCode',
 		menu: 'menu',
 		menu1: 'menu1',
 		menu11: 'menu11',

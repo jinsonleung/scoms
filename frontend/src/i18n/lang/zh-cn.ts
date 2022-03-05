@@ -16,7 +16,7 @@ export default {
 		limitsBackEnd: '后端控制',
 		limitsBackEndEndPage: '页面权限',
 		freightTools: '货运工具',
-		freightToolsAirport: '机场代码',
+		freightToolsUniversalCode: '代码查询',
 		menu: '菜单嵌套',
 		menu1: '菜单1',
 		menu11: '菜单11',

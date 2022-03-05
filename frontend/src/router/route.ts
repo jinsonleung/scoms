@@ -170,11 +170,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/freightTools/airport',
-						name: 'freightToolsAirport',
-						component: () => import('/@/views/freightTools/airport/index.vue'),
+						path: '/freightTools/universalCode',
+						name: 'freightToolsUniversalCode',
+						component: () => import('/@/views/universalCode/index.vue'),
 						meta: {
-							title: 'message.router.freightToolsAirport',
+							title: 'message.router.freightToolsUniversalCode',
 							isLink: '',
 							isHide: false,
 							isKeepAlive: true,

@@ -187,13 +187,13 @@ export default {
       })
     };
 
-		// 分页改变
+		// 页长改变
 		const onHandleSizeChange = (val: number) => {
 			state.tableData.param.page_size = val;
       state.tableData.param.page_num = 1;
       getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size)
 		};
-		// 分页改变
+		// 页码改变
 		const onHandleCurrentChange = (val: number) => {
 			state.tableData.param.page_num = val;
       getTablePageData(state.tableData.param.page_num,state.tableData.param.page_size)

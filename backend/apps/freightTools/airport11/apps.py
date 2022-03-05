@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class AirportConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.freightTools.airport11'
+    name = 'apps.universalCode.airport11'
