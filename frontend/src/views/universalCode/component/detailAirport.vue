@@ -30,7 +30,7 @@
             <template #label>
               <div class="cell-item">国家/地区代码</div>
             </template>
-              {{ruleForm.country.iso2_code}}
+              {{ruleForm.country.iso2_code}} <span v-html="countryEmoji" style="width: 30px; height: 40px" />
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -92,7 +92,9 @@
 </template>
 
 <script lang="ts">
-import {reactive, toRefs} from 'vue';
+import {computed, reactive, toRefs} from 'vue';
+import countryEmojiJson from '/@/mock/countryEmoji.json';
+import {JsonQuery} from '/@/utils/josonHelper.ts'
 
 export default {
   name: 'freightToolsDetailAirport',
@@ -100,10 +102,13 @@ export default {
     // const ruleFormRef = ref(null);
     const state = reactive({
       isShowDialog: false,
+      // countryEmoji: '',
       ruleForm: {}
     })
     const openDialog = (row: any) => {
       state.ruleForm = row;
+      // let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.country.iso2_code});
+      // if (countryInfo) state.countryEmoji = countryInfo[0].emoji;
       state.isShowDialog = true;
     };
     // 关闭弹窗
@@ -115,7 +120,14 @@ export default {
       closeDialog();
     };
 
+    const countryEmoji = computed(() => {
+      let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.country.iso2_code});
+      if (countryInfo) return countryInfo[0].emoji;
+    })
+
+
     return {
+      countryEmoji,
       openDialog,
       closeDialog,
       onCancel,
