@@ -43,7 +43,7 @@
         <el-table :data="tableData.data" style="width:100%">
           <el-table-column type="index" label="No" width="50px"></el-table-column>
           <el-table-column v-for="(item,index) in tableHeader" :key="index" :prop="item.prop" :label="item.label"
-                           sortable></el-table-column>
+                           sortable>{{isShow}}</el-table-column>
           <el-table-column label="操作" show-overflow-tooltip width="140">
             <template #default="scope">
               <el-button
@@ -71,7 +71,11 @@
         >
         </el-pagination>
       </div>
-
+      aaaaaa
+      <country-flag country='cn' size='big'/>
+      <country-flag country='cn' size='normal'/>
+      <country-flag country='cn' size='small'/>
+      <country-flag country='CHN'/>
     </el-card>
 
     <!--机场详情弹窗-->
@@ -85,13 +89,14 @@
 
 import {onMounted, reactive, ref, toRefs} from "vue";
 import {queryAirports, queryAirlines} from "/@/api/universalCode";
-import DetailAirport from "/@/views/universalCode/component/detailAirport.vue"
-import DetailAirline from "/@/views/universalCode/component/detailAirline.vue"
-import internal from "stream";
+import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
+import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
+import CountryFlag from "vue-country-flag-next";
+
 
 export default {
   name: 'freightToolsAirport',
-  components: {DetailAirport, DetailAirline},
+  components: {DetailAirport, DetailAirline,CountryFlag},
   setup() {
     const isShow = ref(false);
     const tabPosition = ref(0);
