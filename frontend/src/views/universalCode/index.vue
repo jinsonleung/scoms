@@ -43,7 +43,7 @@
         <el-table :data="tableData.data" style="width:100%">
           <el-table-column type="index" label="No" width="50px"></el-table-column>
           <el-table-column v-for="(item,index) in tableHeader" :key="index" :prop="item.prop" :label="item.label"
-                           sortable>{{isShow}}</el-table-column>
+                           sortable></el-table-column>
           <el-table-column label="操作" show-overflow-tooltip width="140">
             <template #default="scope">
               <el-button
