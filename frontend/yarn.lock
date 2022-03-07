@@ -1787,6 +1787,11 @@ vue-clipboard3@^1.0.1:
   dependencies:
     clipboard "^2.0.6"
 
+vue-country-flag-next@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.npmmirror.com/vue-country-flag-next/-/vue-country-flag-next-2.3.2.tgz#c35d283f83b7631be414c720391a8363991557c2"
+  integrity sha512-Lv12L1VTwlBgizpZ3xPEPO3zuIETaJmeSiPuLOWLLgu2EakwU/o72iKYiKcdZ6BXiSkfss+Ski5fDzjuxZ1DcA==
+
 vue-demi@*:
   version "0.12.1"
   resolved "https://registry.npmmirror.com/vue-demi/download/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"

@@ -41,9 +41,20 @@
       <!--查询结果表格数据展示-->
       <div v-show="isShow">
         <el-table :data="tableData.data" style="width:100%">
-          <el-table-column type="index" label="No" width="50px"></el-table-column>
-          <el-table-column v-for="(item,index) in tableHeader" :key="index" :prop="item.prop" :label="item.label"
-                           sortable></el-table-column>
+          <el-table-column type="index" label="No" width="50px">
+
+          </el-table-column>
+          <el-table-column v-for="(item,index) in tableHeader" :key="index" :prop="item.prop" :label="item.label" sortable>
+
+            <template #default="scope" >
+              <div v-if="isShow">
+<!--              {{isCountryCode}}-->
+              {{scope.row.country.iso2_code}}
+              <country-flag :country='scope.row.country.iso2_code' size='normal'/> {{scope.row.country.chn_name}}
+                </div>
+            </template>
+
+          </el-table-column>
           <el-table-column label="操作" show-overflow-tooltip width="140">
             <template #default="scope">
               <el-button
@@ -87,7 +98,7 @@
 
 <script lang="ts">
 
-import {onMounted, reactive, ref, toRefs} from "vue";
+import {computed, onMounted, reactive, ref, toRefs} from "vue";
 import {queryAirports, queryAirlines} from "/@/api/universalCode";
 import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
 import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
@@ -235,9 +246,14 @@ export default {
       // initTableData();
     });
 
+    const isCountryCode = computed(()=>{
+      console.log('==state.tableData.data.country.iso2_code.length==', state.tableData.data.country.iso2_code.length)
+      return state.tableData.data.country.iso2_code.length = 2 ? true:false;
+    })
 
     return {
       isShow,
+      isCountryCode,
       tabPosition,
       queryLabels,
       queryPlaceholder,
