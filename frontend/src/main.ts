@@ -28,6 +28,7 @@ app
 	.use(screenShort, { enableWebRtc: false })
 	.use(VueGridLayout)
 	.use(dialogDrag) //注册自定义可拖拽dialog组件
+	.use(realImage)
 	.mount('#app');
 
 // 全局挂载组件

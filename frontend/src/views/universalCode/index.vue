@@ -86,8 +86,10 @@
           <el-table-column prop="chn_name" label="航司名称" min-width="120">
             <template #default="scope" >
 <!--              <img :src="getAirlineLogo('CA.PNG')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
-              <img :src="getAirlineLogo(`${scope.row.iata_code}`)" :onerror="getAirlineLogo('_default')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}
-              <img src="images/logoError.png" v-realimage="images/logo.png">
+<!--              <img :src="getAirlineLogo(`${scope.row.iata_code}`)" :onerror="getAirlineLogo('_default')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
+<!--              <img :src="getAirlineLogo('_default')" v-realimage="getAirlineLogo(`${scope.row.iata_code}`)" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
+              <img :src="getAirlineLogo('_default')" v-realimage="getAirlineLogo(`${scope.row.iata_code}`)" style="width: 20px; height: 20px; padding-top: 5px" /> {{scope.row.chn_name}}
+<!--              <img src="images/logoError.png" v-realimage="images/logo.png">-->
 
             </template>
           </el-table-column>

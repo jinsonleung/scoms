@@ -4,8 +4,10 @@
 // import Vue from 'vue';
 // const app = Vue.createApp({});
 
-const realImage = (app: any) => {
-    app.directive('realimage', async function (el, binding) {//指令名称为：real-img
+import {consoleLog} from "echarts/types/src/util/log";
+
+const realImage = (app: any, options: any) => {
+    app.directive('realimage', async function (el: any, binding: any) {//指令名称为：v-realimage
         let imgURL = binding.value;//获取图片地址
         if (imgURL) {
             let exist = await imageIsExist(imgURL);
@@ -14,24 +16,28 @@ const realImage = (app: any) => {
             }
         }
     })
-}
+};
+
 
 /**
  * 检测图片是否存在
  * @param url
  */
-let imageIsExist = function(url) {
+let imageIsExist = function(url:any) {
     return new Promise((resolve) => {
-        var img = new Image();
+        let img = new Image();
+        console.log('==img==', img)
         img.onload = function () {
-            if (this.complete){
+            if (this.complete == true){
                 resolve(true);
                 img = null;
             }
+            console.log('==img.onload==')
         }
         img.onerror = function () {
             resolve(false);
             img = null;
+            console.log('==img.onerror==')
         }
         img.src = url;
     })
