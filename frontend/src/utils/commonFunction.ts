@@ -53,6 +53,25 @@ export default function () {
 			}
 		});
 	};
+
+	/**
+	 * 获取本地图
+	 * @param name // 文件名 如 doc.png
+	 * @returns {*|string}
+	 */
+	const getAssetsImages = (name: string) => {
+		return new URL(`/src/assets/images/${name}`, import.meta.url).href;
+	};
+
+	/**
+	 * 获取航空公司logo
+	 * @param name // 文件名 如 ca.png
+	 * @returns {*|string}
+	 */
+	const getAirlineLogo = (name: string) => {
+		return new URL(`/src/assets/images/airlines-logo/${name}`, import.meta.url).href;
+	};
+
 	return {
 		percentFormat,
 		dateFormatYMD,
@@ -61,5 +80,7 @@ export default function () {
 		scaleFormat,
 		scale2Format,
 		copyText,
+		getAssetsImages,
+		getAirlineLogo,
 	};
 }

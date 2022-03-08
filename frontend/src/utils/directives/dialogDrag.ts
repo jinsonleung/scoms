@@ -14,7 +14,6 @@ const dialogDrag = (app: any, options: any) => {
     app.directive('dialogdrag', {
         mounted(el: any, binding: DirectiveBinding<any>) {
             const dialogHeaderEl = el.querySelector('.el-dialog__header');
-
             const dragDom = binding.value && binding.value.dragSelf ? el : el.querySelector('.el-dialog');
             dialogHeaderEl.style = 'cursor:move;';
 

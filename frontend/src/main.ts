@@ -12,7 +12,8 @@ import '/@/theme/index.scss';
 import mitt from 'mitt';
 import screenShort from 'vue-web-screen-shot';
 import VueGridLayout from 'vue-grid-layout';
-import dialogDrag from "/@/utils/directives/dialogDrag"  //引入二将封装的可拖拽dialog组件
+import dialogDrag from "/@/utils/directives/dialogDrag"  //引入二将封装的可拖拽自定义dialog指令
+import realImage from "/@/utils/directives/imageIsExist" //用于判断当前图片是否能够加载成功自定义指令
 
 const app = createApp(App);
 

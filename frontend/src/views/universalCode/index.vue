@@ -39,22 +39,18 @@
         </el-row>
       </div>
       <!--查询结果表格数据展示-->
-      <div v-show="isShow">
+      <div v-if="isShow">
         <el-table :data="tableData.data" style="width:100%">
-          <el-table-column type="index" label="No" width="50px">
-
-          </el-table-column>
-          <el-table-column v-for="(item,index) in tableHeader" :key="index" :prop="item.prop" :label="item.label" sortable>
-
+          <el-table-column type="index" label="No" width="50px"></el-table-column>
+          <el-table-column prop="iata_code" label="IATA" min-width="50px"></el-table-column>
+          <el-table-column prop="icao_code" label="ICAO" min-width="50px"></el-table-column>
+          <el-table-column prop="chn_name" label="机场名称" min-width="120"></el-table-column>
+          <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
             <template #default="scope" >
-              <div v-if="isShow">
-<!--              {{isCountryCode}}-->
-              {{scope.row.country.iso2_code}}
-              <country-flag :country='scope.row.country.iso2_code' size='normal'/> {{scope.row.country.chn_name}}
-                </div>
+              <country-flag :country='scope.row.country.iso2_code' size='small'/> {{scope.row.country.chn_name}}
             </template>
-
           </el-table-column>
+          <el-table-column prop="city_chn_name" label="城市名称" min-width="120"></el-table-column>
           <el-table-column label="操作" show-overflow-tooltip width="140">
             <template #default="scope">
               <el-button
@@ -69,8 +65,8 @@
         </el-table>
         <!--分页导航栏-->
         <el-pagination
-            @size-change="onHandleSizeChange"
-            @current-change="onHandleCurrentChange"
+            @size-change="onHandlePageSizeChange"
+            @current-change="onHandlePageNumChange"
             class="mt15"
             :pager-count="5"
             :page-sizes="[10, 20, 30]"
@@ -82,11 +78,54 @@
         >
         </el-pagination>
       </div>
-      aaaaaa
-      <country-flag country='cn' size='big'/>
-      <country-flag country='cn' size='normal'/>
-      <country-flag country='cn' size='small'/>
-      <country-flag country='CHN'/>
+      <div v-else>
+        <el-table :data="tableData.data" style="width:100%">
+          <el-table-column type="index" label="No" width="50px"></el-table-column>
+          <el-table-column prop="iata_code" label="IATA" min-width="50px"></el-table-column>
+          <el-table-column prop="icao_code" label="ICAO" min-width="50px"></el-table-column>
+          <el-table-column prop="chn_name" label="航司名称" min-width="120">
+            <template #default="scope" >
+<!--              <img :src="getAirlineLogo('CA.PNG')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
+              <img :src="getAirlineLogo(`${scope.row.iata_code}`)" :onerror="getAirlineLogo('_default')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}
+              <img src="images/logoError.png" v-realimage="images/logo.png">
+
+            </template>
+          </el-table-column>
+          <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
+            <template #default="scope" >
+              <country-flag :country='scope.row.country_iso2_code' size='small'/> {{scope.row.country.chn_name}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="scope.row.city.chn_name" label="城市名称" min-width="120"></el-table-column>
+          <el-table-column label="操作" show-overflow-tooltip width="140">
+            <template #default="scope">
+              <el-button
+                  size="small"
+                  type="warning"
+                  @click="onOpenDetailDialog(scope.row)"
+              >详情
+              </el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--分页导航栏-->
+        <el-pagination
+            @size-change="onHandlePageSizeChange"
+            @current-change="onHandlePageNumChange"
+            class="mt15"
+            :pager-count="5"
+            :page-sizes="[10, 20, 30]"
+            v-model:current-page="tableData.param.page_num"
+            background
+            v-model:page-size="tableData.param.page_size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="tableData.total"
+        >
+        </el-pagination>
+      </div>
+      <el-button type="warning" @click="swch()">切换</el-button>
+
     </el-card>
 
     <!--机场详情弹窗-->
@@ -103,13 +142,13 @@ import {queryAirports, queryAirlines} from "/@/api/universalCode";
 import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
 import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
 import CountryFlag from "vue-country-flag-next";
-
+// import { getAirlineLogo } from "/@/utils/commonFunction";
 
 export default {
   name: 'freightToolsAirport',
   components: {DetailAirport, DetailAirline,CountryFlag},
   setup() {
-    const isShow = ref(false);
+    const isShow = ref(true);
     const tabPosition = ref(0);
     const queryLabels = ref([{icon: 'elementPosition', label: '机场代码查询'}, {
       icon: 'elementVan',
@@ -154,7 +193,6 @@ export default {
 
     // 初始化表格
     const initTableData = async () => {
-      isShow.value = false;
       queryText.value = '';
       state.tableData.data = [];   // 清空数据
       state.tableData.param.page_num = 1;
@@ -179,13 +217,14 @@ export default {
 
     // 分类查询按钮单击事件
     const onHandleRadioGroupChange = (index: number) => {
+      isShow.value = !isShow.value;
       queryButtonIndex.value = index;
       queryPlaceholder.value = state.queryTextPlaceHolder[index];
       initTableData();
     };
 
     // 页长改变事件
-    const onHandleSizeChange = (page_size: number) => {
+    const onHandlePageSizeChange = (page_size: number) => {
       state.tableData.param.page_size = page_size;
       state.tableData.param.page_num = 1;
       let idx = Number(queryButtonIndex.value);
@@ -197,7 +236,7 @@ export default {
     };
 
     // 页码改变事件
-    const onHandleCurrentChange = (page_num: number) => {
+    const onHandlePageNumChange = (page_num: number) => {
       state.tableData.param.page_num = page_num;
       let page_size = state.tableData.param.page_size;
       let idx = Number(queryButtonIndex.value);
@@ -220,9 +259,7 @@ export default {
       } else {
         console.log("==else==")
       }
-      // if (state.tableData.data.length===0) return;
       state.tableHeader = state.tableHeaders[idx]
-      isShow.value = true;
     };
 
     // 详细情况弹窗
@@ -246,14 +283,46 @@ export default {
       // initTableData();
     });
 
-    const isCountryCode = computed(()=>{
-      console.log('==state.tableData.data.country.iso2_code.length==', state.tableData.data.country.iso2_code.length)
-      return state.tableData.data.country.iso2_code.length = 2 ? true:false;
+    const countryCodeLen = computed(()=>{
+      console.log('==state.tableData.data.country.iso2_code.length==', state.tableData.data.country_iso2_code.length)
+      // return state.tableData.data.country.iso2_code.length = 2 ? true:false;
+      return state.tableData.data.country_iso2_code.length
     })
 
+    const swch = ()=>{
+      state.tableData.data = [];
+      isShow.value = !isShow.value;
+      console.log('==isShow==', isShow.value,state.tableData.data)
+    };
+
+    // 获取航空公司logo
+    const getAirlineLogo_old = (name: string) => {
+      if (typeof(name) ==='undefined' || name === 'undefined') return;
+      console.log('typeof(name)===', typeof(name));
+
+      // let logoPath = `/src/assets/images/airlines-logo/${name}.png`;
+      let logoPath = "/src/assets/images/airlines-logo/";
+      try {
+        import(logoPath);
+        console.log('logoPath =true==', logoPath);
+      } catch {
+        logoPath = `/src/assets/images/airlines-logo/_default.png`;
+        console.log('logoPath=false==', logoPath);
+      }
+      return new URL(logoPath, import.meta.url).href;
+    };
+
+    const getAirlineLogo = (name: string) => {
+      if (typeof(name) ==='undefined' || name === 'undefined') return;
+      let logoPath = `/src/assets/images/airlines-logo/${name}.png`;
+      return new URL(logoPath, import.meta.url).href;
+    };
+
     return {
+      swch,
+      getAirlineLogo,
       isShow,
-      isCountryCode,
+      countryCodeLen,
       tabPosition,
       queryLabels,
       queryPlaceholder,
@@ -262,8 +331,8 @@ export default {
       detailAirportRef,
       detailAirlineRef,
       onHandleRadioGroupChange,
-      onHandleSizeChange,
-      onHandleCurrentChange,
+      onHandlePageSizeChange,
+      onHandlePageNumChange,
       onOpenDetailDialog,
       onOpenDetailAirline,
       onHandleQuery,
