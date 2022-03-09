@@ -22,19 +22,19 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">航空公司名称</div>
+              <div class="cell-item">航司名称</div>
             </template>
             {{ruleForm.chn_name}}，{{ruleForm.eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区代码</div>
+              <div class="cell-item">国家/地区</div>
             </template>
               {{ruleForm.country.iso2_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区名称</div>
+              <div class="cell-item">国家/地区全称</div>
             </template>
               {{ruleForm.country.chn_name}}，{{ruleForm.country.eng_name}}
           </el-descriptions-item>
@@ -46,7 +46,7 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">航空公司描述</div>
+              <div class="cell-item">航司描述</div>
             </template>
               {{ruleForm.description}}
           </el-descriptions-item>

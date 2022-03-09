@@ -39,6 +39,7 @@
         </el-row>
       </div>
       <!--查询结果表格数据展示-->
+      <!--机场代码查询列表-->
       <div v-if="isShow">
         <el-table :data="tableData.data" style="width:100%">
           <el-table-column type="index" label="No" width="50px"></el-table-column>
@@ -78,6 +79,7 @@
         >
         </el-pagination>
       </div>
+      <!--航司代码查询列表-->
       <div v-else>
         <el-table :data="tableData.data" style="width:100%">
           <el-table-column type="index" label="No" width="50px"></el-table-column>
@@ -85,12 +87,8 @@
           <el-table-column prop="icao_code" label="ICAO" min-width="50px"></el-table-column>
           <el-table-column prop="chn_name" label="航司名称" min-width="120">
             <template #default="scope" >
-<!--              <img :src="getAirlineLogo('CA.PNG')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
-<!--              <img :src="getAirlineLogo(`${scope.row.iata_code}`)" :onerror="getAirlineLogo('_default')" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
-<!--              <img :src="getAirlineLogo('_default')" v-realimage="getAirlineLogo(`${scope.row.iata_code}`)" style="width: 25px; height: 25px" /> {{scope.row.chn_name}}-->
-              <img :src="getAirlineLogo('_default')" v-realimage="getAirlineLogo(`${scope.row.iata_code}`)" style="width: 20px; height: 20px; padding-top: 5px" /> {{scope.row.chn_name}}
-<!--              <img src="images/logoError.png" v-realimage="images/logo.png">-->
-
+            <!--如果航司Logo不存在，则使用默认Logo取代-->
+              <img :src="getAssetsFile('images/airlinesLogo/_default1.png')" v-realimage="getAssetsFile(`images/airlinesLogo/${scope.row.iata_code}.png`)" style="width: 30px; height: 30px; " /> {{scope.row.chn_name}}
             </template>
           </el-table-column>
           <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
@@ -126,10 +124,7 @@
         >
         </el-pagination>
       </div>
-      <el-button type="warning" @click="swch()">切换</el-button>
-
     </el-card>
-
     <!--机场详情弹窗-->
     <DetailAirport ref="detailAirportRef"/>
     <!--航司详情弹窗-->
@@ -144,7 +139,7 @@ import {queryAirports, queryAirlines} from "/@/api/universalCode";
 import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
 import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
 import CountryFlag from "vue-country-flag-next";
-// import { getAirlineLogo } from "/@/utils/commonFunction";
+import commonFunction from "/@/utils/commonFunction";
 
 export default {
   name: 'freightToolsAirport',
@@ -162,11 +157,11 @@ export default {
     const queryText = ref('');
     const detailAirportRef = ref();
     const detailAirlineRef = ref();
+    const { getAssetsFile } = commonFunction();
     const state = reactive({
       queryTextPlaceHolder: ['输入机场代码/机场名称/国家(地区)/城市', '输入航司代码/国家(地区)/城市', '输入国家代码'],
       tableData: {
         data: [] as Array<any>,
-        // data: Object,
         total: 0,
         loading: false,
         param: {
@@ -199,6 +194,7 @@ export default {
       state.tableData.data = [];   // 清空数据
       state.tableData.param.page_num = 1;
       state.tableData.param.page_size = 10;
+      state.tableData.total = 0;
     };
 
     // 获取查询结果，以分页方式返回
@@ -291,38 +287,8 @@ export default {
       return state.tableData.data.country_iso2_code.length
     })
 
-    const swch = ()=>{
-      state.tableData.data = [];
-      isShow.value = !isShow.value;
-      console.log('==isShow==', isShow.value,state.tableData.data)
-    };
-
-    // 获取航空公司logo
-    const getAirlineLogo_old = (name: string) => {
-      if (typeof(name) ==='undefined' || name === 'undefined') return;
-      console.log('typeof(name)===', typeof(name));
-
-      // let logoPath = `/src/assets/images/airlines-logo/${name}.png`;
-      let logoPath = "/src/assets/images/airlines-logo/";
-      try {
-        import(logoPath);
-        console.log('logoPath =true==', logoPath);
-      } catch {
-        logoPath = `/src/assets/images/airlines-logo/_default.png`;
-        console.log('logoPath=false==', logoPath);
-      }
-      return new URL(logoPath, import.meta.url).href;
-    };
-
-    const getAirlineLogo = (name: string) => {
-      if (typeof(name) ==='undefined' || name === 'undefined') return;
-      let logoPath = `/src/assets/images/airlines-logo/${name}.png`;
-      return new URL(logoPath, import.meta.url).href;
-    };
-
     return {
-      swch,
-      getAirlineLogo,
+      getAssetsFile,
       isShow,
       countryCodeLen,
       tabPosition,

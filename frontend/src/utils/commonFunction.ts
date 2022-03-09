@@ -55,21 +55,12 @@ export default function () {
 	};
 
 	/**
-	 * 获取本地图
-	 * @param name // 文件名 如 doc.png
+	 * 获取静态资源（如图片文件）
+	 * @param url: 如 src/assets/下的路径，如"images/airlinesLogo/ca.png"
 	 * @returns {*|string}
 	 */
-	const getAssetsImages = (name: string) => {
-		return new URL(`/src/assets/images/${name}`, import.meta.url).href;
-	};
-
-	/**
-	 * 获取航空公司logo
-	 * @param name // 文件名 如 ca.png
-	 * @returns {*|string}
-	 */
-	const getAirlineLogo = (name: string) => {
-		return new URL(`/src/assets/images/airlines-logo/${name}`, import.meta.url).href;
+	const getAssetsFile = (url: string) => {
+		return new URL(`/src/assets/${url}`, import.meta.url).href;
 	};
 
 	return {
@@ -80,7 +71,6 @@ export default function () {
 		scaleFormat,
 		scale2Format,
 		copyText,
-		getAssetsImages,
-		getAirlineLogo,
+		getAssetsFile,
 	};
 }

@@ -10,13 +10,13 @@
         >
           <el-descriptions-item label-class-name="desc_label">
             <template #label>
-              <div class="cell-item">IATA机场代码</div>
+              <div class="cell-item">IATA代码</div>
             </template>
             {{ruleForm.iata_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">ICAO机场代码</div>
+              <div class="cell-item">ICAO代码</div>
             </template>
             {{ruleForm.icao_code}}
           </el-descriptions-item>
@@ -34,7 +34,7 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区名称</div>
+              <div class="cell-item">国家/地区全称</div>
             </template>
               {{ruleForm.country.chn_name}}，{{ruleForm.country.eng_name}}
           </el-descriptions-item>
