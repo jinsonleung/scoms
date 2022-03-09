@@ -2,10 +2,32 @@ from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework.response import Response
 from apps.universalCode.models import Country, City, Airport, Airline
-from apps.universalCode.serializers import AirportSerializer, AirlineSerializer
+from apps.universalCode.serializers import AirportSerializer, AirlineSerializer, CountrySerializer
 from utils.pagination import Pagination
 from rest_framework import mixins, exceptions
 from rest_framework import generics
+
+
+class CountryList(generics.ListAPIView):
+    """列出所有的记录，或创建一条新的记录"""
+    queryset = Country.custom.all()  # 获取非软删、除的记录
+    serializer_class = CountrySerializer  # 序列化
+    pagination_class = Pagination  # 分页
+
+    def get(self, request, *args, **kwargs):
+        print('==国家多条件查询==', request)
+        query_text = request.query_params.get('query')
+        if query_text != '':
+            # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
+            query_criteria = Q(iso2_code__icontains=query_text) | Q(iso3_code__icontains=query_text) | Q(chn_name__icontains=query_text) | Q(continent__chn_name__icontains=query_text)
+            query_result = Country.custom.filter(query_criteria)
+            page = self.paginate_queryset(query_result)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer = self.get_serializer(query_result, many=True)
+            return Response(serializer.data)
+        return self.list(request, *args, **kwargs)
 
 
 class AirlineList(generics.ListAPIView):
@@ -20,7 +42,7 @@ class AirlineList(generics.ListAPIView):
         query_text = request.query_params.get('query')
         if query_text != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
-            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text)
+            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text) | Q(country__chn_name__icontains=query_text)
             query_result = Airline.custom.filter(query_criteria)
             page = self.paginate_queryset(query_result)
             if page is not None:
@@ -43,7 +65,7 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
         query_text = request.query_params.get('query')
         if query_text != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
-            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text)
+            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text) | Q(country__chn_name__icontains=query_text) | Q(city__chn_name__icontains=query_text)
             query_result = Airport.custom.filter(query_criteria)
             page = self.paginate_queryset(query_result)
             if page is not None:

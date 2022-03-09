@@ -88,7 +88,7 @@
           <el-table-column prop="chn_name" label="航司名称" min-width="120">
             <template #default="scope" >
             <!--如果航司Logo不存在，则使用默认Logo取代-->
-              <img :src="getAssetsFile('images/airlinesLogo/_default1.png')" v-realimage="getAssetsFile(`images/airlinesLogo/${scope.row.iata_code}.png`)" style="width: 30px; height: 30px; " /> {{scope.row.chn_name}}
+              <img :src="getAssetsFile('images/airlinesLogo/_default1.png')" v-realimage="getAssetsFile(`images/airlinesLogo/${scope.row.iata_code}.png`)" style="width: 20px; height: 20px; " /> {{scope.row.chn_name}}
             </template>
           </el-table-column>
           <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
@@ -124,6 +124,47 @@
         >
         </el-pagination>
       </div>
+      <!--国家代码查询列表-->
+      <div v-else>
+        <el-table :data="tableData.data" style="width:100%">
+          <el-table-column type="index" label="No" width="50px"></el-table-column>
+          <el-table-column prop="iso2_code" label="IATA" min-width="50px"></el-table-column>
+          <el-table-column prop="iso3_code" label="ICAO" min-width="50px"></el-table-column>
+          <el-table-column prop="chn_name" label="国家名称" min-width="120px">
+            <template #default="scope" >
+              <country-flag :country='scope.row.iso2_code' size='small'/> {{scope.row.chn_name}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="continent.chn_name" label="洲名" min-width="120">
+          </el-table-column>
+          <el-table-column label="操作" show-overflow-tooltip width="140">
+            <template #default="scope">
+              <el-button
+                  size="small"
+                  type="warning"
+                  @click="onOpenDetailDialog(scope.row)"
+              >详情
+              </el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--分页导航栏-->
+        <el-pagination
+            @size-change="onHandlePageSizeChange"
+            @current-change="onHandlePageNumChange"
+            class="mt15"
+            :pager-count="5"
+            :page-sizes="[10, 20, 30]"
+            v-model:current-page="tableData.param.page_num"
+            background
+            v-model:page-size="tableData.param.page_size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="tableData.total"
+        >
+        </el-pagination>
+      </div>
+
     </el-card>
     <!--机场详情弹窗-->
     <DetailAirport ref="detailAirportRef"/>
@@ -135,7 +176,7 @@
 <script lang="ts">
 
 import {computed, onMounted, reactive, ref, toRefs} from "vue";
-import {queryAirports, queryAirlines} from "/@/api/universalCode";
+import {queryAirports, queryAirlines, queryCountries} from "/@/api/universalCode";
 import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
 import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
 import CountryFlag from "vue-country-flag-next";
@@ -213,6 +254,14 @@ export default {
       })
     };
 
+    // 获取查询结果，以分页方式返回
+    const getPageCountries = async (query_text: string, page_num: number, page_size: number) => {
+      queryCountries({query_text, page_num, page_size}).then((res: any) => {
+        state.tableData.data = res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+    };
+
     // 分类查询按钮单击事件
     const onHandleRadioGroupChange = (index: number) => {
       isShow.value = !isShow.value;
@@ -255,7 +304,7 @@ export default {
       } else if (idx === 1) {
         getPageAirlines(query_text, 1, 10);
       } else {
-        console.log("==else==")
+        getPageCountries(query_text, 1, 10);
       }
       state.tableHeader = state.tableHeaders[idx]
     };
@@ -319,6 +368,11 @@ export default {
 //深度iconfont图标字体以适应el-radio-button type="small"大小
 :deep(.iconfont) {
   font-size: 14px
+}
+
+:deep(.el-table .cell img){
+  //display: table-cell;
+  text-align: center;
 }
 
 </style>

@@ -11,6 +11,7 @@ urlpatterns = [
     path('airport/', views.AirportList.as_view()),
     path('airport/<int:pk>', views.AirportDetail.as_view()),
     path('airline/', views.AirlineList.as_view()),
+    path('country/', views.CountryList.as_view()),
     # path('airport/<int:pk>', views.AirportDetail.as_view()),
 
     ]
