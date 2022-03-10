@@ -190,8 +190,8 @@
 
 import { onMounted, reactive, ref, toRefs} from "vue";
 import {queryAirports, queryAirlines, queryCountries} from "/@/api/universalCode";
-import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
-import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
+import DetailAirport from "/@/views/universalCode/component/airportDetail.vue";
+import DetailAirline from "/@/views/universalCode/component/airlineDetail.vue";
 import CountryFlag from "vue-country-flag-next";
 import commonFunction from "/@/utils/commonFunction";
 

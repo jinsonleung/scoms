@@ -1,29 +1,27 @@
 <template>
   <div class="universalCode-airportTable-container">
-    <h1>====机场信息====</h1>
-    来自父组件的值：{{queryText}}
     <el-table :data="tableData.data" style="width:100%">
       <el-table-column type="index" label="No" min-width="40px"></el-table-column>
       <el-table-column prop="iata_code" label="IATA" min-width="60px"></el-table-column>
       <el-table-column prop="icao_code" label="ICAO" min-width="60px"></el-table-column>
-      <el-table-column prop="chn_name" label="机场名称" min-width="120">
+      <el-table-column prop="chn_name" label="机场名称" min-width="180px">
         <template #default="scope">
           {{ scope.row.chn_name }}<br/>{{ scope.row.eng_name }}
         </template>
       </el-table-column>
-      <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
+      <el-table-column prop="country.chn_name" label="国家/地区" min-width="120px">
         <template #default="scope">
           <country-flag :country='scope.row.country.iso2_code' size='small'/>
           {{ scope.row.country.chn_name }}
           <br/>{{ scope.row.country.eng_name }}
         </template>
       </el-table-column>
-      <el-table-column prop="city_chn_name" label="城市名称" min-width="120">
+      <el-table-column prop="city_chn_name" label="城市名称" min-width="120px">
         <template #default="scope">
           {{ scope.row.city_chn_name }}<br/>{{ scope.row.city_eng_name }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" show-overflow-tooltip width="140">
+      <el-table-column label="操作" show-overflow-tooltip min-width="120px">
         <template #default="scope">
           <el-button
               size="small"
@@ -49,23 +47,22 @@
         :total="tableData.total"
     >
     </el-pagination>
-
-
     <!--机场详情弹窗-->
-    <DetailAirport ref="detailAirportRef"/>
+    <AirportDetail ref="airportDetailRef"/>
   </div>
 </template>
 
 <script lang="ts">
-import {inject, reactive, toRefs} from "vue";
-import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
+import {inject, reactive, ref, toRefs} from "vue";
+import AirportDetail from "/@/views/universalCode/component/airportDetail.vue";
 import {queryAirports} from "/@/api/universalCode";
 import CountryFlag from "vue-country-flag-next";
 
 export default {
   name: 'freightToolsAirportTable',
-  components: {CountryFlag,DetailAirport},
+  components: {CountryFlag, AirportDetail},
   setup() {
+    const airportDetailRef = ref();
     const state = reactive({
       tableData: {
         data: [] as Array<any>,
@@ -87,7 +84,7 @@ export default {
       getPageAirports(queryText.value, 1, pageSize);
     };
 
-        // 页码改变事件
+    // 页码改变事件
     const onHandlePageNumChange = (pageNum: number) => {
       state.tableData.param.pageNum = pageNum;
       let pageSize = state.tableData.param.pageSize;
@@ -97,7 +94,7 @@ export default {
 
     // 详细情况弹窗
     const onOpenDetailDialog = (row: object) => {
-      console.log('==dialog here==', row);
+      airportDetailRef.value.openDialog(row);
     };
 
     const getPageAirports = async (queryText: any, pageNum: number, pageSize: number) => {
@@ -111,6 +108,7 @@ export default {
 
     return {
       queryText,
+      airportDetailRef,
       getPageAirports,
       onHandlePageSizeChange,
       onHandlePageNumChange,

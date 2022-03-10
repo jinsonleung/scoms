@@ -1,7 +1,7 @@
 <template>
   <div class="universalCode-airport-container">
     <div v-dialogdrag>
-      <el-dialog title="机场详细情况" v-model="isShowDialog" width="800px">
+      <el-dialog title="国家详细情况" v-model="isShowDialog" width="800px">
         <el-descriptions
             class="margin-top"
             title=""
@@ -10,73 +10,55 @@
         >
           <el-descriptions-item label-class-name="desc_label">
             <template #label>
-              <div class="cell-item">IATA代码</div>
+              <div class="cell-item">ISO2代码</div>
             </template>
-            {{ruleForm.iata_code}}
+            {{ruleForm.iso2_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">ICAO代码</div>
+              <div class="cell-item">ISO3代码</div>
             </template>
-            {{ruleForm.icao_code}}
+            {{ruleForm.iso3_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">机场名称</div>
+              <div class="cell-item">国家名称</div>
             </template>
-            {{ruleForm.chn_name}}，{{ruleForm.eng_name}}
+            <span v-html="countryEmoji" style="width: 30px; height: 40px" /> {{ruleForm.chn_name}} {{ruleForm.full_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区代码</div>
+              <div class="cell-item">首都</div>
             </template>
-              {{ruleForm.country.iso2_code}} <span v-html="countryEmoji" style="width: 30px; height: 40px" />
+              {{ruleForm.capital}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家/地区全称</div>
+              <div class="cell-item">货币代码</div>
             </template>
-              {{ruleForm.country.chn_name}}，{{ruleForm.country.eng_name}}
+              {{ruleForm.currency}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">城市名称</div>
+              <div class="cell-item">所在洲名称</div>
             </template>
-              {{ruleForm.city_chn_name}}，{{ruleForm.city_eng_name}}
+              {{ruleForm.continent.chn_name}} {{ruleForm.continent.eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">海拨高度</div>
+              <div class="cell-item">使用语言</div>
             </template>
-              {{ruleForm.elevation}}
+              {{ruleForm.language}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">纬度</div>
+              <div class="cell-item">国际电话区号</div>
             </template>
-              {{ruleForm.latitude}}
+              {{ruleForm.phone_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">经度</div>
-            </template>
-              {{ruleForm.longitude}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">时区</div>
-            </template>
-              {{ruleForm.time_zone}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">UTC时差</div>
-            </template>
-              {{ruleForm.utc}}
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <template #label>
-              <div class="cell-item">机场描述</div>
+              <div class="cell-item">国家描述</div>
             </template>
               {{ruleForm.description}}
           </el-descriptions-item>
@@ -97,18 +79,16 @@ import countryEmojiJson from '/@/mock/countryEmoji.json';
 import {JsonQuery} from '/@/utils/josonHelper.ts'
 
 export default {
-  name: 'freightToolsDetailAirport',
+  name: 'freightToolsCountryDetail',
   setup() {
-    // const ruleFormRef = ref(null);
     const state = reactive({
       isShowDialog: false,
       // countryEmoji: '',
       ruleForm: {}
     })
     const openDialog = (row: any) => {
+      console.log('==row==', row)
       state.ruleForm = row;
-      // let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.country.iso2_code});
-      // if (countryInfo) state.countryEmoji = countryInfo[0].emoji;
       state.isShowDialog = true;
     };
     // 关闭弹窗
@@ -121,7 +101,7 @@ export default {
     };
 
     const countryEmoji = computed(() => {
-      let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.country.iso2_code});
+      let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.iso2_code});
       if (countryInfo) return countryInfo[0].emoji;
     })
 
