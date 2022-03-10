@@ -16,10 +16,10 @@ class CountryList(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         print('==国家多条件查询==', request)
-        query_text = request.query_params.get('query')
-        if query_text != '':
+        queryText = request.query_params.get('queryText')
+        if queryText != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
-            query_criteria = Q(iso2_code__icontains=query_text) | Q(iso3_code__icontains=query_text) | Q(chn_name__icontains=query_text) | Q(continent__chn_name__icontains=query_text)
+            query_criteria = Q(iso2_code__icontains=queryText) | Q(iso3_code__icontains=queryText) | Q(chn_name__icontains=queryText) | Q(continent__chn_name__icontains=queryText)
             query_result = Country.custom.filter(query_criteria)
             page = self.paginate_queryset(query_result)
             if page is not None:
@@ -39,10 +39,10 @@ class AirlineList(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         print('==航司多条件查询==', request)
-        query_text = request.query_params.get('query')
-        if query_text != '':
+        queryText = request.query_params.get('queryText')
+        if queryText != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
-            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text) | Q(country__chn_name__icontains=query_text)
+            query_criteria = Q(iata_code__icontains=queryText) | Q(icao_code__icontains=queryText) | Q(chn_name__icontains=queryText) | Q(country__chn_name__icontains=queryText)
             query_result = Airline.custom.filter(query_criteria)
             page = self.paginate_queryset(query_result)
             if page is not None:
@@ -62,10 +62,10 @@ class AirportList(generics.ListAPIView, mixins.CreateModelMixin, generics.Generi
 
     def get(self, request, *args, **kwargs):
         print('==机场多条件查询==', request)
-        query_text = request.query_params.get('query')
-        if query_text != '':
+        queryText = request.query_params.get('queryText')
+        if queryText != '':
             # Q组合模糊查询，icontains中的’i’表示忽略大小写；contains则区分大小写
-            query_criteria = Q(iata_code__icontains=query_text) | Q(icao_code__icontains=query_text) | Q(chn_name__icontains=query_text) | Q(country__chn_name__icontains=query_text) | Q(city__chn_name__icontains=query_text)
+            query_criteria = Q(iata_code__icontains=queryText) | Q(icao_code__icontains=queryText) | Q(chn_name__icontains=queryText) | Q(country__chn_name__icontains=queryText) | Q(city__chn_name__icontains=queryText)
             query_result = Airport.custom.filter(query_criteria)
             page = self.paginate_queryset(query_result)
             if page is not None:

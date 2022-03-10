@@ -39,130 +39,18 @@
         </el-row>
       </div>
       <!--查询结果表格数据展示-->
+      <el-divider></el-divider>
       <!--机场代码查询列表-->
-      <div v-if="isShow">
-        <el-table :data="tableData.data" style="width:100%">
-          <el-table-column type="index" label="No" width="50px"></el-table-column>
-          <el-table-column prop="iata_code" label="IATA" min-width="50px"></el-table-column>
-          <el-table-column prop="icao_code" label="ICAO" min-width="50px"></el-table-column>
-          <el-table-column prop="chn_name" label="机场名称" min-width="120"></el-table-column>
-          <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
-            <template #default="scope" >
-              <country-flag :country='scope.row.country.iso2_code' size='small'/> {{scope.row.country.chn_name}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="city_chn_name" label="城市名称" min-width="120"></el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip width="140">
-            <template #default="scope">
-              <el-button
-                  size="small"
-                  type="warning"
-                  @click="onOpenDetailDialog(scope.row)"
-              >详情
-              </el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-        <!--分页导航栏-->
-        <el-pagination
-            @size-change="onHandlePageSizeChange"
-            @current-change="onHandlePageNumChange"
-            class="mt15"
-            :pager-count="5"
-            :page-sizes="[10, 20, 30]"
-            v-model:current-page="tableData.param.page_num"
-            background
-            v-model:page-size="tableData.param.page_size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.total"
-        >
-        </el-pagination>
+      <div v-if="isShow==0">
+        <AirportTable ref="airportTableRef" />
       </div>
       <!--航司代码查询列表-->
-      <div v-else>
-        <el-table :data="tableData.data" style="width:100%">
-          <el-table-column type="index" label="No" width="50px"></el-table-column>
-          <el-table-column prop="iata_code" label="IATA" min-width="50px"></el-table-column>
-          <el-table-column prop="icao_code" label="ICAO" min-width="50px"></el-table-column>
-          <el-table-column prop="chn_name" label="航司名称" min-width="120">
-            <template #default="scope" >
-            <!--如果航司Logo不存在，则使用默认Logo取代-->
-              <img :src="getAssetsFile('images/airlinesLogo/_default1.png')" v-realimage="getAssetsFile(`images/airlinesLogo/${scope.row.iata_code}.png`)" style="width: 20px; height: 20px; " /> {{scope.row.chn_name}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="country.chn_name" label="国家/地区" min-width="120">
-            <template #default="scope" >
-              <country-flag :country='scope.row.country_iso2_code' size='small'/> {{scope.row.country.chn_name}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="scope.row.city.chn_name" label="城市名称" min-width="120"></el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip width="140">
-            <template #default="scope">
-              <el-button
-                  size="small"
-                  type="warning"
-                  @click="onOpenDetailDialog(scope.row)"
-              >详情
-              </el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-        <!--分页导航栏-->
-        <el-pagination
-            @size-change="onHandlePageSizeChange"
-            @current-change="onHandlePageNumChange"
-            class="mt15"
-            :pager-count="5"
-            :page-sizes="[10, 20, 30]"
-            v-model:current-page="tableData.param.page_num"
-            background
-            v-model:page-size="tableData.param.page_size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.total"
-        >
-        </el-pagination>
+      <div v-else-if="isShow==1">
+        <AirlineTable ref="airlineTableRef" />
       </div>
       <!--国家代码查询列表-->
-      <div v-else>
-        <el-table :data="tableData.data" style="width:100%">
-          <el-table-column type="index" label="No" width="50px"></el-table-column>
-          <el-table-column prop="iso2_code" label="IATA" min-width="50px"></el-table-column>
-          <el-table-column prop="iso3_code" label="ICAO" min-width="50px"></el-table-column>
-          <el-table-column prop="chn_name" label="国家名称" min-width="120px">
-            <template #default="scope" >
-              <country-flag :country='scope.row.iso2_code' size='small'/> {{scope.row.chn_name}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="continent.chn_name" label="洲名" min-width="120">
-          </el-table-column>
-          <el-table-column label="操作" show-overflow-tooltip width="140">
-            <template #default="scope">
-              <el-button
-                  size="small"
-                  type="warning"
-                  @click="onOpenDetailDialog(scope.row)"
-              >详情
-              </el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-        <!--分页导航栏-->
-        <el-pagination
-            @size-change="onHandlePageSizeChange"
-            @current-change="onHandlePageNumChange"
-            class="mt15"
-            :pager-count="5"
-            :page-sizes="[10, 20, 30]"
-            v-model:current-page="tableData.param.page_num"
-            background
-            v-model:page-size="tableData.param.page_size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.total"
-        >
-        </el-pagination>
+      <div v-else-if="isShow==2">
+        <CountryTable ref="countryTableRef" />
       </div>
 
     </el-card>
@@ -175,18 +63,21 @@
 
 <script lang="ts">
 
-import {computed, onMounted, reactive, ref, toRefs} from "vue";
-import {queryAirports, queryAirlines, queryCountries} from "/@/api/universalCode";
+import { provide, reactive, ref, toRefs} from "vue";
 import DetailAirport from "/@/views/universalCode/component/detailAirport.vue";
 import DetailAirline from "/@/views/universalCode/component/detailAirline.vue";
-import CountryFlag from "vue-country-flag-next";
+import AirportTable from "/@/views/universalCode/component/airportTable.vue";
+import AirlineTable from "/@/views/universalCode/component/airlineTable.vue";
+import CountryTable from "/@/views/universalCode/component/countryTable.vue";
+
 import commonFunction from "/@/utils/commonFunction";
+
 
 export default {
   name: 'freightToolsAirport',
-  components: {DetailAirport, DetailAirline,CountryFlag},
+  components: {DetailAirport, DetailAirline, AirportTable, AirlineTable, CountryTable},
   setup() {
-    const isShow = ref(true);
+    const isShow = ref(0);
     const tabPosition = ref(0);
     const queryLabels = ref([{icon: 'elementPosition', label: '机场代码查询'}, {
       icon: 'elementVan',
@@ -194,10 +85,13 @@ export default {
     }, {icon: 'elementPosition', label: '国家代码查询'}, {icon: 'elementPosition', label: '其他查询'},]);
     const queryButtonIndex = ref(0);
     const queryPlaceholder = ref('');
-    // const queryTextPlaceHolder = reactive(['输入机场代码/机场名称/国家(地区)/城市','输入航司代码/国家(地区)/城市','输入国家代码']);
     const queryText = ref('');
     const detailAirportRef = ref();
     const detailAirlineRef = ref();
+    const airportTableRef = ref();
+    const airlineTableRef = ref();
+    const countryTableRef = ref();
+
     const { getAssetsFile } = commonFunction();
     const state = reactive({
       queryTextPlaceHolder: ['输入机场代码/机场名称/国家(地区)/城市', '输入航司代码/国家(地区)/城市', '输入国家代码'],
@@ -229,117 +123,29 @@ export default {
       ],
     });
 
-    // 初始化表格
-    const initTableData = async () => {
-      queryText.value = '';
-      state.tableData.data = [];   // 清空数据
-      state.tableData.param.page_num = 1;
-      state.tableData.param.page_size = 10;
-      state.tableData.total = 0;
-    };
-
-    // 获取查询结果，以分页方式返回
-    const getPageAirports = async (query_text: string, page_num: number, page_size: number) => {
-      queryAirports({query_text, page_num, page_size}).then((res: any) => {
-        state.tableData.data = res.result_data.data;
-        state.tableData.total = res.result_data.count;
-      })
-    };
-
-    // 获取查询结果，以分页方式返回
-    const getPageAirlines = async (query_text: string, page_num: number, page_size: number) => {
-      queryAirlines({query_text, page_num, page_size}).then((res: any) => {
-        state.tableData.data = res.result_data.data;
-        state.tableData.total = res.result_data.count;
-      })
-    };
-
-    // 获取查询结果，以分页方式返回
-    const getPageCountries = async (query_text: string, page_num: number, page_size: number) => {
-      queryCountries({query_text, page_num, page_size}).then((res: any) => {
-        state.tableData.data = res.result_data.data;
-        state.tableData.total = res.result_data.count;
-      })
-    };
+    provide("parentQueryText", queryText)   // 向子组件转值
 
     // 分类查询按钮单击事件
     const onHandleRadioGroupChange = (index: number) => {
-      isShow.value = !isShow.value;
+      // console.log('==onHandleRadioGroupChange.index==', index)
+      isShow.value = index;
       queryButtonIndex.value = index;
       queryPlaceholder.value = state.queryTextPlaceHolder[index];
-      initTableData();
-    };
-
-    // 页长改变事件
-    const onHandlePageSizeChange = (page_size: number) => {
-      state.tableData.param.page_size = page_size;
-      state.tableData.param.page_num = 1;
-      let idx = Number(queryButtonIndex.value);
-      if (idx === 0) {
-        getPageAirports(queryText.value, 1, page_size);
-      } else if (idx === 1) {
-        getPageAirlines(queryText.value, 1, page_size);
-      }
-    };
-
-    // 页码改变事件
-    const onHandlePageNumChange = (page_num: number) => {
-      state.tableData.param.page_num = page_num;
-      let page_size = state.tableData.param.page_size;
-      let idx = Number(queryButtonIndex.value);
-      if (idx === 0) {
-        getPageAirports(queryText.value, page_num, page_size);
-      } else if (idx === 1) {
-        getPageAirlines(queryText.value, page_num, page_size);
-      }
     };
 
     // 查询
-    const onHandleQuery = (idx: number) => {
+    const onHandleQuery = (index: number) => {
       let query_text = queryText.value.trim()
       if (query_text === '') return;
-      idx = Number(idx);
-      if (idx === 0) {
-        getPageAirports(query_text, 1, 10);
-      } else if (idx === 1) {
-        getPageAirlines(query_text, 1, 10);
-      } else {
-        getPageCountries(query_text, 1, 10);
-      }
-      state.tableHeader = state.tableHeaders[idx]
+      airportTableRef.value.getPageAirports(query_text,1,10);
+      // console.log('==onHandleQuery==', index);
+
     };
 
-    // 详细情况弹窗
-    const onOpenDetailDialog = (row: object) => {
-      let idx = Number(queryButtonIndex.value);
-      if (idx === 0) {
-        detailAirportRef.value.openDialog(row);
-      } else if (idx === 1) {
-        detailAirlineRef.value.openDialog(row);
-      }
-    };
-
-    // 航空公司详细情况
-    const onOpenDetailAirline = (row: object) => {
-      detailAirlineRef.value.openDialog(row);
-    };
-    onMounted(() => {
-      // console.log('==state.tableHeaders[0]==', state.tableHeaders[0])
-      // state.tableHeader = state.tableHeaders[0];
-      queryPlaceholder.value = state.queryTextPlaceHolder[0];
-      // initTableData();
-    });
-
-    const countryCodeLen = computed(()=>{
-      console.log('==state.tableData.data.country.iso2_code.length==', state.tableData.data.country_iso2_code.length)
-      // return state.tableData.data.country.iso2_code.length = 2 ? true:false;
-      return state.tableData.data.country_iso2_code.length
-    })
 
     return {
       getAssetsFile,
       isShow,
-      countryCodeLen,
       tabPosition,
       queryLabels,
       queryPlaceholder,
@@ -347,11 +153,10 @@ export default {
       queryText,
       detailAirportRef,
       detailAirlineRef,
+      airportTableRef,
+      airlineTableRef,
+      countryTableRef,
       onHandleRadioGroupChange,
-      onHandlePageSizeChange,
-      onHandlePageNumChange,
-      onOpenDetailDialog,
-      onOpenDetailAirline,
       onHandleQuery,
       ...toRefs(state),
     };

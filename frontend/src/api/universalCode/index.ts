@@ -2,12 +2,12 @@ import request from '/@/utils/request'
 
 /**
  * @func：分页查询
- * @param params: {page_num:page_num,page_size:page_size}
+ * @param params: {pageNum:pageNum,pageSize:pageSize}
  * @returns: 返回接口数据
  */
 export function getPageAirport(params:any){
 	return request({
-		url: '/enterprise/?page_num=' + params.page_num + '&page_size=' + params.page_size,
+		url: '/enterprise/?pageNum=' + params.pageNum + '&pageSize=' + params.pageSize,
 		method: 'GET',
 		data: params,
 	});
@@ -33,7 +33,7 @@ export function getAirport(params:any){
  */
 export function queryAirports(params:any){
 	return request({
-		url: `/airport/?query=${params.query_text}&page_num=${params.page_num}&page_size=${params.page_size}`,
+		url: `/airport/?queryText=${params.queryText}&pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
 		method: 'GET',
 		data: params,
 	});
@@ -47,7 +47,7 @@ export function queryAirports(params:any){
  */
 export function queryAirlines(params:any){
 	return request({
-		url: `/airline/?query=${params.query_text}&page_num=${params.page_num}&page_size=${params.page_size}`,
+		url: `/airline/?queryText=${params.queryText}&pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
 		method: 'GET',
 		data: params,
 	});
@@ -60,7 +60,7 @@ export function queryAirlines(params:any){
  */
 export function queryCountries(params:any){
 	return request({
-		url: `/country/?query=${params.query_text}&page_num=${params.page_num}&page_size=${params.page_size}`,
+		url: `/country/?queryText=${params.queryText}&pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
 		method: 'GET',
 		data: params,
 	});
