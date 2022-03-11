@@ -22,15 +22,15 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
-              <div class="cell-item">国家名称</div>
+              <div class="cell-item">国家/地区全称</div>
             </template>
-            <span v-html="countryEmoji" style="width: 30px; height: 40px" /> {{ruleForm.chn_name}} {{ruleForm.full_eng_name}}
+            {{ruleForm.chn_name}} {{ruleForm.full_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">首都</div>
             </template>
-              {{ruleForm.capital}}
+              {{ruleForm.capital_chn_name}} {{ruleForm.capital_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -74,20 +74,18 @@
 </template>
 
 <script lang="ts">
-import {computed, reactive, toRefs} from 'vue';
-import countryEmojiJson from '/@/mock/countryEmoji.json';
-import {JsonQuery} from '/@/utils/josonHelper.ts'
+import {reactive, toRefs} from 'vue';
+import CountryFlag from "vue-country-flag-next";
 
 export default {
   name: 'freightToolsCountryDetail',
+  components: {CountryFlag},
   setup() {
     const state = reactive({
       isShowDialog: false,
-      // countryEmoji: '',
       ruleForm: {}
     })
     const openDialog = (row: any) => {
-      console.log('==row==', row)
       state.ruleForm = row;
       state.isShowDialog = true;
     };
@@ -100,14 +98,7 @@ export default {
       closeDialog();
     };
 
-    const countryEmoji = computed(() => {
-      let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.iso2_code});
-      if (countryInfo) return countryInfo[0].emoji;
-    })
-
-
     return {
-      countryEmoji,
       openDialog,
       closeDialog,
       onCancel,

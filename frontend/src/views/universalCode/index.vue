@@ -57,7 +57,7 @@
 </template>
 <script lang="ts">
 
-import {provide, reactive, ref, toRefs} from "vue";
+import {provide, reactive, ref} from "vue";
 import AirportTable from "/@/views/universalCode/component/airportTable.vue";
 import AirlineTable from "/@/views/universalCode/component/airlineTable.vue";
 import CountryTable from "/@/views/universalCode/component/countryTable.vue";
@@ -79,7 +79,6 @@ export default {
 
     // 分类查询按钮单击事件
     const onHandleRadioGroupChange = (index: number) => {
-      // console.log('==onHandleRadioGroupChange.index==', index)
       isShow.value = index;
       queryButtonIndex.value = index;
       queryText.value = '';
@@ -88,7 +87,6 @@ export default {
 
     // 查询
     const onHandleQuery = (index: number) => {
-      // console.log('==onHandleQuery==', index);
       let query_text = queryText.value.trim()
       if (query_text === '') return;
       if (index == 0) {

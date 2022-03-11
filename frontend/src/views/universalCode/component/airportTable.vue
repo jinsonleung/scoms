@@ -6,19 +6,25 @@
       <el-table-column prop="icao_code" label="ICAO" min-width="60px"></el-table-column>
       <el-table-column prop="chn_name" label="机场名称" min-width="180px">
         <template #default="scope">
+          <div class="countryFlag">
           {{ scope.row.chn_name }}<br/>{{ scope.row.eng_name }}
+          </div>
         </template>
       </el-table-column>
-      <el-table-column prop="country.chn_name" label="国家/地区" min-width="120px">
+      <el-table-column prop="country.chn_name" label="国家/地区" min-width="150px">
         <template #default="scope">
-          <country-flag :country='scope.row.country.iso2_code' size='small'/>
+          <div class="countryFlag">
+          <country-flag :country='scope.row.country.iso2_code' size='normal' style="margin: -0.4em"/>
           {{ scope.row.country.chn_name }}
           <br/>{{ scope.row.country.eng_name }}
+          </div>
         </template>
       </el-table-column>
-      <el-table-column prop="city_chn_name" label="城市名称" min-width="120px">
+      <el-table-column prop="city_chn_name" label="城市名称" min-width="150px">
         <template #default="scope">
+          <div class="countryFlag">
           {{ scope.row.city_chn_name }}<br/>{{ scope.row.city_eng_name }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip min-width="120px">
@@ -89,7 +95,6 @@ export default {
       state.tableData.param.pageNum = pageNum;
       let pageSize = state.tableData.param.pageSize;
       getPageAirports(queryText.value, pageNum, pageSize);
-      console.log('onHandlePageNumChange', state.tableData.data.length)
     };
 
     // 详细情况弹窗
@@ -99,7 +104,6 @@ export default {
 
     const getPageAirports = async (queryText: any, pageNum: number, pageSize: number) => {
       queryAirports({queryText, pageNum, pageSize}).then((res: any) => {
-        console.log('==res==', res)
         state.tableData.data = res.result_data.data;
         state.tableData.total = res.result_data.count;
       })
@@ -118,6 +122,14 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-
+<style lang="scss" scoped>
+.countryFlag { //图片垂直居中
+  display: flex;
+  align-items: center;
+  line-height: 1.2; //行矩
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
 </style>

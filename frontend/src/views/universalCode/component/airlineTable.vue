@@ -5,18 +5,21 @@
       <el-table-column prop="iata_code" label="IATA" min-width="60px"></el-table-column>
       <el-table-column prop="icao_code" label="ICAO" min-width="60px"></el-table-column>
       <el-table-column prop="airline_prefix_code" label="前缀代码" min-width="80px"></el-table-column>
-      <el-table-column prop="chn_name" label="航司名称" min-width="200px">
+      <el-table-column prop="chn_name" label="航司名称" min-width="250px">
         <template #default="scope">
           <!--如果航司Logo不存在，则使用默认Logo取代-->
-          <img :src="getAssetsFile('images/airlinesLogo/_default1.png')"
-               v-realimage="getAssetsFile(`images/airlinesLogo/${scope.row.iata_code}.png`)"
-               style="width: 20px; height: 20px; "/> {{ scope.row.chn_name }}<br/>{{ scope.row.eng_name }}
+          <div class="countryFlag">
+            <img v-realimage="getAssetsFile(`images/airlinesLogo/${scope.row.iata_code}.png`)" :default-image="getAssetsFile('images/airlinesLogo/_default1.png')"
+            alt=""/>{{ scope.row.chn_name }}<br/>{{ scope.row.eng_name }}
+          </div>
         </template>
       </el-table-column>
-      <el-table-column prop="country.chn_name" label="国家/地区" min-width="100px">
+      <el-table-column prop="country.chn_name" label="国家/地区" min-width="150px">
         <template #default="scope">
-          <country-flag :country='scope.row.country_iso2_code' size='small'/>
-          {{ scope.row.country.chn_name }}<br/>{{ scope.row.country.eng_name }}
+          <div class="countryFlag">
+            <country-flag :country='scope.row.country_iso2_code' size='normal' style="margin: -0.4em"/>
+            {{ scope.row.country.chn_name }}<br/>{{ scope.row.country.eng_name }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip width="120px">
@@ -88,18 +91,15 @@ export default {
       state.tableData.param.pageNum = pageNum;
       let pageSize = state.tableData.param.pageSize;
       getPageAirlines(queryText.value, pageNum, pageSize);
-      console.log('onHandlePageNumChange', state.tableData.data.length)
     };
 
     // 详细情况弹窗
     const onOpenDetailDialog = (row: object) => {
       airlineDetailRef.value.openDialog(row);
-      console.log('==dialog here==', row);
     };
 
     const getPageAirlines = async (queryText: any, pageNum: number, pageSize: number) => {
       queryAirlines({queryText, pageNum, pageSize}).then((res: any) => {
-        console.log('==res==', res)
         state.tableData.data = res.result_data.data;
         state.tableData.total = res.result_data.count;
       })
@@ -118,6 +118,14 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-
+<style lang="scss" scoped>
+.countryFlag { //图片垂直居中
+  display: flex;
+  align-items: center;
+  line-height: 1.2; //行矩
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
 </style>

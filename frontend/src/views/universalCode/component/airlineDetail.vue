@@ -36,7 +36,7 @@
             <template #label>
               <div class="cell-item">国家/地区全称</div>
             </template>
-              {{ruleForm.country.chn_name}}，{{ruleForm.country.eng_name}}
+              {{ruleForm.country.chn_name}}，{{ruleForm.country.full_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>

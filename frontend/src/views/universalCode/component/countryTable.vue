@@ -6,13 +6,17 @@
       <el-table-column prop="iso3_code" label="ISO3" min-width="60px"></el-table-column>
       <el-table-column prop="chn_name" label="国家名称" min-width="120px">
         <template #default="scope">
-          <country-flag :country='scope.row.iso2_code' size='small'/>
-          {{ scope.row.chn_name }}<br/>{{ scope.row.full_eng_name }}
+          <div class="countryFlag">
+          <country-flag :country='scope.row.iso2_code' size='normal' style="margin: -0.4em"/>
+          {{ scope.row.chn_name }}<br/>{{ scope.row.eng_name }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="continent.chn_name" label="洲名" min-width="80px">
         <template #default="scope">
+          <div class="countryFlag">
           {{ scope.row.continent.chn_name }}<br/>{{ scope.row.continent.eng_name }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="操作" show-overflow-tooltip width="120px">
@@ -84,7 +88,6 @@ export default {
       state.tableData.param.pageNum = pageNum;
       let pageSize = state.tableData.param.pageSize;
       getPageCountries(queryText.value, pageNum, pageSize);
-      console.log('onHandlePageNumChange', state.tableData.data.length)
     };
 
     // 详细情况弹窗
@@ -113,6 +116,14 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-
+<style lang="scss" scoped>
+.countryFlag { //图片垂直居中
+  display: flex;
+  align-items: center;
+  line-height: 1.2; //行矩
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
 </style>

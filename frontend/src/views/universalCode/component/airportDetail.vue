@@ -24,25 +24,25 @@
             <template #label>
               <div class="cell-item">机场名称</div>
             </template>
-            {{ruleForm.chn_name}}，{{ruleForm.eng_name}}
+            {{ruleForm.chn_name}} {{ruleForm.eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">国家/地区代码</div>
             </template>
-              {{ruleForm.country.iso2_code}} <span v-html="countryEmoji" style="width: 30px; height: 40px" />
+              {{ruleForm.country.iso2_code}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">国家/地区全称</div>
             </template>
-              {{ruleForm.country.chn_name}}，{{ruleForm.country.eng_name}}
+              {{ruleForm.country.chn_name}} {{ruleForm.country.full_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">城市名称</div>
             </template>
-              {{ruleForm.city_chn_name}}，{{ruleForm.city_eng_name}}
+              {{ruleForm.city_chn_name}} {{ruleForm.city_eng_name}}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -92,16 +92,15 @@
 </template>
 
 <script lang="ts">
-import {computed, reactive, toRefs} from 'vue';
-import countryEmojiJson from '/@/mock/countryEmoji.json';
-import {JsonQuery} from '/@/utils/josonHelper.ts'
+import {reactive, toRefs} from 'vue';
+import CountryFlag from "vue-country-flag-next";
 
 export default {
   name: 'freightToolsAirportDetail',
+  components: {CountryFlag},
   setup() {
     const state = reactive({
       isShowDialog: false,
-      // countryEmoji: '',
       ruleForm: {}
     })
     const openDialog = (row: any) => {
@@ -117,14 +116,7 @@ export default {
       closeDialog();
     };
 
-    // 计算属性获取国旗图标
-    const countryEmoji = computed(() => {
-      let countryInfo = JsonQuery(countryEmojiJson, {"countryCode": state.ruleForm.country.iso2_code});
-      if (countryInfo) return countryInfo[0].emoji;
-    })
-
     return {
-      countryEmoji,
       openDialog,
       closeDialog,
       onCancel,
