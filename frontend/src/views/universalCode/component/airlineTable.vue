@@ -1,9 +1,9 @@
 <template>
   <div class="universalCode-airportTable-container">
-    <el-table :data="tableData.data" style="width:100%">
-      <el-table-column type="index" label="No" min-width="40px"></el-table-column>
-      <el-table-column prop="iata_code" label="IATA" min-width="60px"></el-table-column>
-      <el-table-column prop="icao_code" label="ICAO" min-width="60px"></el-table-column>
+    <el-table :data="tableData.data" stripe>
+      <el-table-column align="center" type="index" label="No" min-width="40px"></el-table-column>
+      <el-table-column align="center" prop="iata_code" label="IATA" min-width="60px"></el-table-column>
+      <el-table-column align="center" prop="icao_code" label="ICAO" min-width="60px"></el-table-column>
       <el-table-column prop="airline_prefix_code" label="前缀代码" min-width="80px"></el-table-column>
       <el-table-column prop="chn_name" label="航司名称" min-width="250px">
         <template #default="scope">
@@ -22,7 +22,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" show-overflow-tooltip width="120px">
+      <el-table-column align="center" label="操作" show-overflow-tooltip width="120px">
         <template #default="scope">
           <el-button
               size="small"

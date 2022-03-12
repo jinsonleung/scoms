@@ -25,7 +25,7 @@ class Continent(BaseModel):
 
 class Country(BaseModel):
     """
-    全球国家两表，继承抽象基类BaseModel
+    全球国家表，继承抽象基类BaseModel
     """
     iso2_code = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='国家两字码')
     iso3_code = models.CharField(max_length=16, blank=True, null=True, verbose_name='国家三字码')

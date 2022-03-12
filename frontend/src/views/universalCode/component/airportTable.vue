@@ -1,8 +1,8 @@
 <template>
   <div class="universalCode-airportTable-container">
-    <el-table :data="tableData.data" style="width:100%">
-      <el-table-column type="index" label="No" min-width="40px"></el-table-column>
-      <el-table-column prop="iata_code" label="IATA" min-width="60px"></el-table-column>
+    <el-table :data="tableData.data" stripe>
+      <el-table-column align="center" type="index" label="No" min-width="40px"></el-table-column>
+      <el-table-column align="center" prop="iata_code" label="IATA" min-width="60px"></el-table-column>
       <el-table-column prop="icao_code" label="ICAO" min-width="60px"></el-table-column>
       <el-table-column prop="chn_name" label="机场名称" min-width="180px">
         <template #default="scope">
@@ -27,7 +27,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" show-overflow-tooltip min-width="120px">
+      <el-table-column align="center" label="操作" min-width="120px">
         <template #default="scope">
           <el-button
               size="small"
@@ -109,7 +109,6 @@ export default {
       })
     };
 
-
     return {
       queryText,
       airportDetailRef,
@@ -123,13 +122,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.countryFlag { //图片垂直居中
+:deep(.countryFlag) { //图片垂直居中
   display: flex;
   align-items: center;
   line-height: 1.2; //行矩
+  vertical-align: center;
+  horiz-align: center;
   img {
-    width: 40px;
-    height: 40px;
   }
 }
+
+
 </style>

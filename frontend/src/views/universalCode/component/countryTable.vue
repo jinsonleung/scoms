@@ -1,9 +1,9 @@
 <template>
   <div class="universalCode-countryTable-container">
-    <el-table :data="tableData.data" style="width:100%">
-      <el-table-column type="index" label="No" min-width="40px"></el-table-column>
-      <el-table-column prop="iso2_code" label="ISO2" min-width="60px"></el-table-column>
-      <el-table-column prop="iso3_code" label="ISO3" min-width="60px"></el-table-column>
+    <el-table :data="tableData.data" stripe>
+      <el-table-column align="center" type="index" label="No" min-width="40px"></el-table-column>
+      <el-table-column align="center" prop="iso2_code" label="ISO2" min-width="60px"></el-table-column>
+      <el-table-column align="center" prop="iso3_code" label="ISO3" min-width="60px"></el-table-column>
       <el-table-column prop="chn_name" label="国家名称" min-width="120px">
         <template #default="scope">
           <div class="countryFlag">
@@ -19,7 +19,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" show-overflow-tooltip width="120px">
+      <el-table-column align="center" label="操作" show-overflow-tooltip width="120px">
         <template #default="scope">
           <el-button
               size="small"
