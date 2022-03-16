@@ -1,3 +1,4 @@
+from django.template.defaulttags import url
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from apps.supplier import views
@@ -10,5 +11,7 @@ from apps.supplier import views
 urlpatterns = [
     path('supplier/', views.SupplierList.as_view()),
     path('supplier/<int:pk>', views.SupplierDetail.as_view()),
+
+
     ]
 urlpatterns = format_suffix_patterns(urlpatterns)

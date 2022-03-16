@@ -44,11 +44,11 @@ INSTALLED_APPS = [
     'django_filters',   # django过滤器
     'corsheaders',  # 允许跨域请求
     # ==apps==
-    'public',    # 公共app
+    'student',     # 用于测试
+    'public',      # 公共app
     'enterprise',    # 企业信息
-    'supplier',   # 供应商
-    'universalCode',   # 国家/城市/机场代码
-    # 'test0130',     # 用于测试
+    'supplier',      # 供应商
+    'universalCode',  # 国家/城市/机场代码
 ]
 
 MIDDLEWARE = [
@@ -198,8 +198,8 @@ REST_FRAMEWORK = {
     #     # ),
     #     # 'DEFAULT_METADATA_CLASS': None,
     #     'DEFAULT_RENDERER_CLASSES': (
-    #         'rest_framework.renderers.JSONRenderer',
-    #         'rest_framework.renderers.BrowsableAPIRenderer',
+    #         'rest_framework.renderers.JSONRenderer',  # json渲染器，返回json数据
+    #         'rest_framework.renderers.BrowsableAPIRenderer',  #浏览器API渲染器，返回调试界面
     #         'drf_renderer_xlsx.renderers.XLSXRenderer',
     #     ),
     #     'DEFAULT_PARSER_CLASSES': (
@@ -207,17 +207,17 @@ REST_FRAMEWORK = {
     #         'rest_framework.parsers.FormParser',
     #         'rest_framework.parsers.MultiPartParser',
     #     ),
-    # 格式化时间
+    # 1.格式化时间
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
     'DATETIME_INPUT_FORMATS': ('%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'),
     'DATE_FORMAT': '%Y-%m-%d',
     'DATE_INPUT_FORMATS': ('%Y-%m-%d',),
     'TIME_FORMAT': '%H:%M:%S',
     'TIME_INPUT_FORMATS': ('%H:%M:%S',),
-    # DRF异常定制处理方法
-    'EXCEPTION_HANDLER': 'utils.exceptionHandle.base_exception_handler',
-    # DRF返回response定制json
-    'DEFAULT_RENDERER_CLASSES': (
-        'utils.rendererResponse.BaseJsonRenderer',
-    ),
+    # 2.DRF异常定制处理方法
+    # 'EXCEPTION_HANDLER': 'utils.exceptionHandle.base_exception_handler',
+    # 3.DRF返回response定制json，注释掉刚使用默认django调试界面
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'utils.rendererResponse.BaseJsonRenderer',
+    # ),
 }

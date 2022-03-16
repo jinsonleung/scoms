@@ -42,7 +42,7 @@ class Supplier(BaseModel):
         ordering = ['account']  # 排序字段
 
     def __str__(self):
-        return self.account
+        return '%s,%s' (self.account, self.full_name)
 
 
 class SupplierContact(models.Model):
@@ -78,4 +78,4 @@ class SupplierContact(models.Model):
         ordering = ['classification']  # 排序字段
 
     def __str__(self):
-        return self.name
+        return '%s,%s' (self.classification, self.name)
