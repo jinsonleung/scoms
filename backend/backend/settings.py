@@ -18,6 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 该语句的作用：让django到apps目录下寻找app
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+# 该语句的作用：让django到demo目录下寻找，用于测试
+# sys.path.insert(0, os.path.join(BASE_DIR, 'demo'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -44,7 +46,7 @@ INSTALLED_APPS = [
     'django_filters',   # django过滤器
     'corsheaders',  # 允许跨域请求
     # ==apps==
-    'student',     # 用于测试
+    'demo.student',     # 用于测试
     'public',      # 公共app
     'enterprise',    # 企业信息
     'supplier',      # 供应商
@@ -180,7 +182,7 @@ IMG_UPLOAD = os.path.join(BASE_DIR, 'static/uploads')
 # 3、保存商品图片路径
 MEDIA_URL = '/media/'   # 保存文件时将放在这个目录下，以app名开始，如/media/goods/pic5-1.jpg
 MEDIA_ROOT = (
-    os.path.join(BASE_DIR, 'book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
+    os.path.join(BASE_DIR, 'demo/book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
 )
 
 # 4、日期输入格式
@@ -216,7 +218,7 @@ REST_FRAMEWORK = {
     'TIME_INPUT_FORMATS': ('%H:%M:%S',),
     # 2.DRF异常定制处理方法
     # 'EXCEPTION_HANDLER': 'utils.exceptionHandle.base_exception_handler',
-    # 3.DRF返回response定制json，注释掉刚使用默认django调试界面
+    # 3.DRF返回response定制json，注释掉刚使用默认django调试界面，前台统一使用此定制返回方式，若注释掉则前台获取数据错误
     # 'DEFAULT_RENDERER_CLASSES': (
     #     'utils.rendererResponse.BaseJsonRenderer',
     # ),

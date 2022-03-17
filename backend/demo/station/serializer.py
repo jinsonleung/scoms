@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.station.models import Station
+from demo.station.models import Station
 
 
 # 图书类序列货器

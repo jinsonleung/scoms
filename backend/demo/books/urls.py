@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.books import views
+from demo.books import views
 
 # router = DefaultRouter()
 # router.register('books', views.BooksViewSet)

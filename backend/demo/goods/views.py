@@ -1,6 +1,6 @@
 import random
 import base64
-from apps.goods.models import Goods
+from demo.goods.models import Goods
 from django.http import JsonResponse
 import os
 import time

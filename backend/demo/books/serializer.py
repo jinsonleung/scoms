@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.books.models import Books
+from demo.books.models import Books
 
 
 # 图书类序列货器

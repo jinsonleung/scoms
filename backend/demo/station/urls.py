@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.station import views
+from demo.station import views
 
 urlpatterns = [
     path('getall', views.get_all),

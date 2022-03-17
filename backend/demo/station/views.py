@@ -1,8 +1,8 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets, serializers
-from apps.station.models import Station
-from apps.station.serializer import StationSerializer
+from demo.station.models import Station
+from demo.station.serializer import StationSerializer
 from django.core import serializers
 import json
 
