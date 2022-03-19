@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'rest_framework',  # rest框架
     'django_filters',   # django过滤器
     'corsheaders',  # 允许跨域请求
-    # ==apps==
+    # ==测试demo==
     'demo.student',     # 用于测试
+    'demo.school',     # 用于测试
+    # ==apps==
     'public',      # 公共app
     'enterprise',    # 企业信息
     'supplier',      # 供应商
