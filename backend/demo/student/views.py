@@ -408,11 +408,24 @@ class StudentReadOnlyModelViewSet(ReadOnlyModelViewSet, CreateModelMixin, Update
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
 
 
 class StudentModelViewSet(ModelViewSet):
+    """
+    list:
+    返回列表数据
+    """
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    # 过滤查询
+    #filter_fields = ['age', 'name']  # 过滤查询，http://127.0.0.1:8000/demo/student10/?age=18
+    # list方法中进行调用->调用了Generic_APIView中的filter_queryset方法->配置中的过滤器类filter_queryset->filter_fields
+    # 单个查询，http://127.0.0.1:8000/demo/student10/?age=18
+    # 多个查询，http://127.0.0.1:8000/demo/student10/?age=18&name=小李
+
+    # 排序
+    ordering_fields = ['age', 'name']
 
     # ● 路由对象给视图集生成路由信息时，只会生成5个基本api接口，这主要是router只识别5个混入类的原因
     # ● 我们开发中自定义的视图方法，路由对象不会自动生成路由信息

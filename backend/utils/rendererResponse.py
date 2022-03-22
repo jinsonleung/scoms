@@ -14,6 +14,7 @@ class BaseJsonRenderer(JSONRenderer):
                 'result_code': 0,
                 'result_data': data,
             }
+            # print('==BaseJsonRenderer===', ret)
             return super().render(ret, accepted_media_type, renderer_context)
         else:
             return super().render(data, accepted_media_type, renderer_context)

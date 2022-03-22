@@ -4,7 +4,7 @@ from demo.student import views
 
 
 """ 
-1. 普通总路由
+1. 普通路由
 """
 # urlpatterns = [
 #     # 1.基本视图APIView的路由
@@ -85,17 +85,34 @@ from demo.student import views
 - SimpleRouter与DefaultRouter没什么区别
 """
 
+# from rest_framework.routers import SimpleRouter
+# # 2.1 实例化路由类
+# router = SimpleRouter()
+# # 2.2 注册路由，参数prefix必须是字符串不能是正则表达式，basename一般与prefix一样即可
+# router.register('student10', views.StudentModelViewSet, basename='student10')
+# # router.register('student11', views.StudentModelViewSet, basename='student11')
+# print(router.urls)
+# # 2.3 把生成的路由绑定给urlpatterns
+# urlpatterns = router.urls
+
+
+
+
+"""
+3. 路由集 Routers + 自动API接口文档生成
+- 自动生成路由信息，与视图集一起使用，不能跟非视图集一起使用
+- SimpleRouter与DefaultRouter没什么区别
+"""
+
 
 from rest_framework.routers import SimpleRouter
-# 2.1 实例化路由类
+# 3.1 实例化路由类
 router = SimpleRouter()
-# 2.2 注册路由，参数prefix必须是字符串不能是正则表达式，basename一般与prefix一样即可
-router.register('student10', views.StudentModelViewSet, basename='student10')
-# router.register('student11', views.StudentModelViewSet, basename='student11')
+# 3.2 注册路由，参数prefix必须是字符串不能是正则表达式，basename一般与prefix一样即可
+router.register('student10', views.StudentModelViewSet, basename='student10'),
+
 print(router.urls)
-# 2.3 把生成的路由绑定给urlpatterns
+# 3.3 把生成的路由绑定给urlpatterns
 urlpatterns = router.urls
-
-
 
 

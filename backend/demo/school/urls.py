@@ -2,7 +2,7 @@ from django.urls import path
 from demo.school import views
 from rest_framework.routers import SimpleRouter
 
-# 1.实例化路由集
+# 1.实例化路由集，SimpleRouter与DefaultRouter可以说是一样的
 router = SimpleRouter()
 # 2.注册路由
 router.register(prefix='students', viewset=views.StudentModelViewSet, basename='students')

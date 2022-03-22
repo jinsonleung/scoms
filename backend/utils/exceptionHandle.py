@@ -5,10 +5,15 @@ import logging
 
 def base_exception_handler(exc, context):
     """
-    用于处理drf的异常定制返回，目的是统一返回信息，只有drf出现异常时才会执行，其他情况不执行
+    用于处理DRF的异常定制返回，目的是统一返回信息，只有DRF出现异常时才会执行，其他情况不执行
+    exc: 是个对象，本次发生的异常对象
+    context：是个字典，本次发生异常时的上下文环境信息
+            所谓的上下文就是python解释器在执行代码时保存在内存当中的变量、函数、类、对象、模块等一系列信息组件的环境信息
     """
+    # 1.先让DRF把自己能处理的异常，先处理完成
     logging.debug('DRF主动提示异常')
     response = exception_handler(exc, context)
+    # 2.如果response返回在是None，则当前异常DRF无法处理，就需要自定义处理异常的逻辑代码
     if not response:
         pass
         # print('+' * 128)

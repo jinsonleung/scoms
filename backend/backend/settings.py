@@ -14,6 +14,8 @@ import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import rest_framework.filters
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 该语句的作用：让django到apps目录下寻找app
@@ -130,8 +132,7 @@ LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 USE_L10N = True
-# USE_TZ默认为为True，即有运用时区，设置为False则表示使用本地时间
-USE_TZ = False
+USE_TZ = False  # USE_TZ默认为为True，默认时使用UTC格式时间，设置为False则表示使用本地时间
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -181,7 +182,7 @@ CORS_ORIGIN_WHITELIST = (   # 请求白名单
 # 2、保存图片路径
 IMG_UPLOAD = os.path.join(BASE_DIR, 'static/uploads')
 
-# 3、保存商品图片路径
+# 3、# 媒体文件位置，保存商品图片路径
 MEDIA_URL = '/media/'   # 保存文件时将放在这个目录下，以app名开始，如/media/goods/pic5-1.jpg
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'demo/book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
@@ -192,36 +193,50 @@ MEDIA_ROOT = (
 
 # REST_FRAMEWORK 相关配置
 REST_FRAMEWORK = {
-    #     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    #     # 'DEFAULT_PERMISSION_CLASSES': (
-    #     #     # 'rest_framework.permissions.IsAuthenticated',
-    #     #     'enterprise.permissions.DisableOptionsPermission',
-    #     # ),
-    #     # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    #     # ),
-    #     # 'DEFAULT_METADATA_CLASS': None,
-    #     'DEFAULT_RENDERER_CLASSES': (
-    #         'rest_framework.renderers.JSONRenderer',  # json渲染器，返回json数据
-    #         'rest_framework.renderers.BrowsableAPIRenderer',  #浏览器API渲染器，返回调试界面
-    #         'drf_renderer_xlsx.renderers.XLSXRenderer',
-    #     ),
-    #     'DEFAULT_PARSER_CLASSES': (
-    #         'rest_framework.parsers.JSONParser',
-    #         'rest_framework.parsers.FormParser',
-    #         'rest_framework.parsers.MultiPartParser',
-    #     ),
-    # 1.格式化时间
+    # REST_FRAMEWORK配置均为[全局配置]
+    # 1.过滤查询配置（过滤与排序使用同一公用配置项）
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'django_filters.rest_framework.DjangoFilterBackend',    # 过滤
+    #     rest_framework.filters.OrderingFilter,  # 排序
+    # ),
+    # # 2.认证配置
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     # 'rest_framework.permissions.IsAuthenticated',
+    #     'enterprise.permissions.DisableOptionsPermission',
+    # ),
+    # # 3.权限配置
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    # ),
+    # # 4.元数据类配置
+    # 'DEFAULT_METADATA_CLASS': None,
+    # # 5.渲染器配置
+    'DEFAULT_RENDERER_CLASSES': (
+        # 'utils.rendererResponse.BaseJsonRenderer',    # 自定义响应结果处理配置,本项目使用此配置
+        # 'rest_framework.renderers.JSONRenderer',  # json渲染器，返回json数据
+        # 'rest_framework.renderers.BrowsableAPIRenderer',  # 浏览器API渲染器，返回调试界面
+        # 'drf_renderer_xlsx.renderers.XLSXRenderer',
+    ),
+    # # 6.转换类
+    # 'DEFAULT_PARSER_CLASSES': (
+    #     'rest_framework.parsers.JSONParser',
+    #     'rest_framework.parsers.FormParser',
+    #     'rest_framework.parsers.MultiPartParser',
+    # ),
+    # 7.自定义DRF异常处理配置
+    # 'EXCEPTION_HANDLER': 'utils.exceptionHandle.base_exception_handler',
+    # 8.自定义响应结果处理配置，DRF返回response定制json，注释掉刚使用默认django调试界面，
+    #   前台统一使用此定制返回方式，若注释掉则前台获取数据错误
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'utils.rendererResponse.BaseJsonRenderer',
+    # ),
+    # 9.日期时间格式化
     'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
     'DATETIME_INPUT_FORMATS': ('%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M'),
     'DATE_FORMAT': '%Y-%m-%d',
     'DATE_INPUT_FORMATS': ('%Y-%m-%d',),
     'TIME_FORMAT': '%H:%M:%S',
     'TIME_INPUT_FORMATS': ('%H:%M:%S',),
-    # 2.DRF异常定制处理方法
-    # 'EXCEPTION_HANDLER': 'utils.exceptionHandle.base_exception_handler',
-    # 3.DRF返回response定制json，注释掉刚使用默认django调试界面，前台统一使用此定制返回方式，若注释掉则前台获取数据错误
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'utils.rendererResponse.BaseJsonRenderer',
-    # ),
+    # 10.自动生成API接口文档CoreApi组件,DRF3.11.1用不了coreApi
+    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }

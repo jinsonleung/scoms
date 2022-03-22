@@ -67,7 +67,8 @@ class SupplierContact(models.Model):
     phone = models.CharField(max_length=64, blank=True, null=True, verbose_name='联系人手机')
     email = models.CharField(max_length=64, blank=True, null=True, verbose_name='联系人邮箱')
     remark = models.TextField(max_length=256, blank=True, null=True, verbose_name='备注')
-    supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.CASCADE, verbose_name='供应商id(外键)')
+    supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.CASCADE, related_name='contact',
+                                 verbose_name='供应商id(外键)')
 
     objects = models.Manager()  # 默认模型管理器
 

@@ -8,5 +8,5 @@ class StudentModelViewSet(ModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentModelSerializer
 
-    def get(self, request):
-        return Response({'msg': '获取成功'})
+    # def get(self, request):
+    #     return Response({'msg': '获取成功'})
