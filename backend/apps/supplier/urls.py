@@ -21,6 +21,6 @@ from rest_framework.routers import SimpleRouter
 # 1.创建SimpleRouter实例对象
 router = SimpleRouter()
 # 2.注册路由
-router.register('supplier', views.SuppliverModelViewSet, basename='supplier')
+router.register('supplier', views.SupplierModelViewSet, basename='supplier')
 # 3.挂载到urlpatters
 urlpatterns = router.urls

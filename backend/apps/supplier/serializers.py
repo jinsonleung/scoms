@@ -8,7 +8,6 @@ class SupplierContactSerializer(serializers.ModelSerializer):
         fields = '__all__'  # 序列化所有字段
 
 
-
 class SupplierSerializer(serializers.ModelSerializer):
     # contact变量名必须是SupplierContact模型中外键的related_name
     contact = SupplierContactSerializer(many=True)

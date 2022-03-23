@@ -1,19 +1,40 @@
 <template>
   <div class="universalCode-Airport-container">
-    <el-table
-        :data="tableData"
-        style="width: 100%; margin-bottom: 20px"
-        row-key="id"
-        border
-    >
-      <el-table-column prop="date" label="date" sortable width="180"/>
-      <el-table-column prop="name" label="Name" sortable width="180"/>
+    <el-table :data="tableData.data" stripe row-key="id">
+
+
+<!--            <el-table-column width="50">-->
+<!--              <template #default="scope">-->
+<!--                <i class="iconfont icon-crew_feature" @click="toogleExpand(scope.row)"></i>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+            <el-table-column class="sectable" type="expand" width="100">
+              <template #default="scope">
+                <el-table :data="scope.row.contact" stripe style="width: 100%">
+                  <el-table-column type="index"></el-table-column>
+                  <el-table-column prop="department" label="部门"></el-table-column>
+                  <el-table-column prop="title" label="职位"></el-table-column>
+                  <el-table-column prop="chn_name" label="中文名"></el-table-column>
+                  <el-table-column prop="tel" label="电话"></el-table-column>
+                </el-table>
+              </template>
+            </el-table-column>
+
+
+
+      <el-table-column align="center" type="index" label="No" min-width="40px"></el-table-column>
+      <el-table-column align="center" prop="account" label="账号" min-width="60px"></el-table-column>
+      <el-table-column align="center" prop="abbreviation_name" label="简称" min-width="60px"></el-table-column>
+      <el-table-column align="center" prop="full_name" label="全称" min-width="80px"></el-table-column>
+      <el-table-column align="center" prop="registered_capital" label="注册资本" min-width="80px"></el-table-column>
+      <el-table-column align="center" prop="office_address" label="办公地址" min-width="80px"></el-table-column>
+      <el-table-column align="center" prop="industry" label="所在行业" min-width="80px"></el-table-column>
     </el-table>
   </div>
 </template>
 <script lang="ts">
 
-import {} from "vue";
+import {onMounted, reactive, toRefs} from "vue";
 
 interface User {
   id: number
@@ -25,48 +46,46 @@ interface User {
 
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
+import {getPageSuppliers} from '/@/api/supplier/index'
+import {queryAirlines} from "/@/api/universalCode";
 
 export default {
   name: 'supplierSupplierInfo',
   components: {},
   setup() {
-    const tableData: User[] = [
-      {
-        id: 1,
-        date: '2016-05-02',
-        name: 'wangxiaohu',
+    const state = reactive({
+      tableData: {
+        data: [] as Array<any>,
+        total: 0,
+        loading: false,
+        param: {
+          pageNum: 1,
+          pageSize: 10,
+        },
       },
-      {
-        id: 2,
-        date: '2016-05-04',
-        name: 'wangxiaohu',
-      },
-      {
-        id: 3,
-        date: '2016-05-01',
-        name: 'wangxiaohu',
-        children: [
-          {
-            id: 31,
-            date: '2016-05-01',
-            name: 'wangxiaohu',
-          },
-          {
-            id: 32,
-            date: '2016-05-01',
-            name: 'wangxiaohu',
-          },
-        ],
-      },
-      {
-        id: 4,
-        date: '2016-05-03',
-        name: 'wangxiaohu',
-      },
-    ]
+      childTable: [],
+    });
+
+    const toogleExpand = (row: any) => {
+      let childTable = state.childTable;
+      childTable.toggleRowExpansion(row);
+      // console.log(this.$route.params.taskId)
+    };
+
+
+    onMounted(()=>{
+      let pageNum = 1;
+      let pageSize = 10;
+      getPageSuppliers({pageNum, pageSize}).then((res: any) => {
+        console.log('==res==', res)
+        state.tableData.data = res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+    });
 
     return {
-      tableData,
+      ...toRefs(state),
+      toogleExpand,
     };
   },
 };
