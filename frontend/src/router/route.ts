@@ -153,6 +153,42 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 					},
 				],
 			},
+
+			{
+				path: '/supplier',
+				name: 'supplier',
+				component: () => import('/@/layout/routerView/parent.vue'),
+				redirect: '/supplier/menu',
+				meta: {
+					title: 'message.router.supplier',
+					isLink: '',
+					isHide: false,
+					isKeepAlive: true,
+					isAffix: false,
+					isIframe: false,
+					roles: ['admin'],
+					icon: 'iconfont icon-xingqiu',
+				},
+				children: [
+					{
+						path: '/supplier/supplierInfo',
+						name: 'supplierSupplierInfo',
+						component: () => import('/@/views/supplier/supplierInfo/index.vue'),
+						meta: {
+							title: 'message.router.supplierSupplierInfo',
+							isLink: '',
+							isHide: false,
+							isKeepAlive: true,
+							isAffix: false,
+							isIframe: false,
+							roles: ['admin'],
+							icon: 'iconfont icon-siweidaotu',
+						},
+					},
+
+				],
+			},
+
 			{
 				path: '/freightTools',
 				name: 'freightTools',

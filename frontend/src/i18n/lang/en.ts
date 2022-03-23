@@ -15,6 +15,8 @@ export default {
 		limitsFrontEndBtn: 'FrontEndBtn',
 		limitsBackEnd: 'BackEnd',
 		limitsBackEndEndPage: 'BackEndEndPage',
+		supplier: 'supplier',
+		supplierSupplierInfo: 'supplierInfo',
 		freightTools: 'FreightTools',
 		freightToolsUniversalCode: 'UniversalCode',
 		menu: 'menu',

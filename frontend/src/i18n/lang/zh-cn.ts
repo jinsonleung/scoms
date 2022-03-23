@@ -15,6 +15,8 @@ export default {
 		limitsFrontEndBtn: '按钮权限',
 		limitsBackEnd: '后端控制',
 		limitsBackEndEndPage: '页面权限',
+		supplier: '供应商管理',
+		supplierSupplierInfo: '供应商信息',
 		freightTools: '货运工具',
 		freightToolsUniversalCode: '代码查询',
 		menu: '菜单嵌套',

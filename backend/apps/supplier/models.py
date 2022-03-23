@@ -12,6 +12,7 @@ class Supplier(BaseModel):
     full_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='全称')
     architecture = models.CharField(max_length=64, blank=True, null=True, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  blank=True, null=True, verbose_name='统一社会信用代码')
+    business_licence_image = models.ImageField(upload_to='businessLicenceImage', default='default.jpg', verbose_name='照业执照图片')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
     registered_address = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册地址')
     established_date = models.DateField(blank=True, null=True, verbose_name='成立日期')
@@ -60,12 +61,16 @@ class SupplierContact(models.Model):
         ('IT', 'IT'),
         ('HR', 'HR'),
     )
-    classification = models.CharField(max_length=32, blank=True, null=True, choices=CLASSIFICATIONS,
-                                      verbose_name='岗位类别(如财务/销售/..)')
-    name = models.CharField(max_length=32, blank=True, null=True, verbose_name='联系人姓名')
-    tel = models.CharField(max_length=64, blank=True, null=True, verbose_name='联系人电话')
-    phone = models.CharField(max_length=64, blank=True, null=True, verbose_name='联系人手机')
-    email = models.CharField(max_length=64, blank=True, null=True, verbose_name='联系人邮箱')
+    department = models.CharField(max_length=32, blank=False, null=False, verbose_name='部门名称')
+    title = models.CharField(max_length=32, blank=True, null=True, verbose_name='职位')
+    chn_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='中文名')
+    eng_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='英文名')
+    tel = models.CharField(max_length=128, blank=True, null=True, verbose_name='电话')
+    phone = models.CharField(max_length=128, blank=True, null=True, verbose_name='手机')
+    email = models.CharField(max_length=128, blank=True, null=True, verbose_name='邮箱')
+    wechat = models.CharField(max_length=64, blank=True, null=True, verbose_name='微信号')
+    qq = models.CharField(max_length=64, blank=True, null=True, verbose_name='QQ号')
+    social_account = models.TextField(max_length=256, blank=True, null=True, verbose_name='其他社交账号')
     remark = models.TextField(max_length=256, blank=True, null=True, verbose_name='备注')
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.CASCADE, related_name='contact',
                                  verbose_name='供应商id(外键)')
@@ -76,7 +81,7 @@ class SupplierContact(models.Model):
         db_table = 'supplier_contact'  # 数据库实际表名
         verbose_name = '供应商联系人表'  # 详细名称
         verbose_name_plural = verbose_name  # 详细名称
-        ordering = ['classification']  # 排序字段
+        ordering = ['department']  # 排序字段
 
     def __str__(self):
-        return '%s,%s' (self.classification, self.name)
+        return '%s,%s' (self.department, self.chn_name)
