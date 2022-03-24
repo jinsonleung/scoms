@@ -29,8 +29,8 @@ class Supplier(BaseModel):
     legal_person_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='法人姓名')
     legal_person_phone = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人电话')
     legal_person_email = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人邮箱')
-    banking_account_info = models.TextField(max_length=256, blank=True, null=True, verbose_name='银行对公账户信息')
-    description = models.TextField(max_length=256, blank=True, null=True, verbose_name='描述')
+    banking_account_info = models.TextField(max_length=256, blank=True, null=True, verbose_name='银行对公账户')
+    description = models.TextField(max_length=256, blank=True, null=True, verbose_name='企业描述')
     is_available = models.BooleanField(default=False, verbose_name='是否启用')  # 默认为还没激活
 
     objects = models.Manager()   # 默认模型管理器
