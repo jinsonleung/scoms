@@ -10,12 +10,12 @@
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="简称" prop="abbreviation_name">
+              <el-form-item label="供应商简称" prop="abbreviation_name">
                 <el-input v-model="ruleForm.abbreviation_name" placeholder="请输入供应商简称" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-              <el-form-item label="供应商名全称" prop="full_name">
+              <el-form-item label="供应商全称" prop="full_name">
                 <el-input v-model="ruleForm.full_name" placeholder="请输入供应商名全称" clearable></el-input>
               </el-form-item>
             </el-col>
@@ -140,7 +140,9 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
               <el-form-item label="是否启用" prop="is_available">
-                <el-switch v-model="ruleForm.is_available" inline-prompt active-text="启" inactive-text="否"></el-switch>
+                <el-switch v-model="ruleForm.is_available" inline-prompt active-text="Y" inactive-text="N"
+                           active-color="green"
+                           inactive-color="red"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>

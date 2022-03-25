@@ -1,8 +1,8 @@
 <template>
   <div class="universalCode-Airport-container">
     <el-card shadow="hover" header="机场代码查询">
+      <!--查询选项（机场代码查询/航司代码查询/国家代码查询）-->
       <div class="query-container">
-        <!--查询选项（机场代码查询/航司代码查询/国家代码查询）-->
         <el-row style="margin-bottom: 10px">
           <el-radio-group v-model="tabPosition" size="small" type="warning" fill="orange"
                           @change="onHandleRadioGroupChange">
@@ -38,7 +38,6 @@
           </el-button>
         </el-row>
       </div>
-      <!--查询结果表格数据展示-->
       <!--分隔线-->
       <el-divider></el-divider>
       <!--机场代码查询列表-->

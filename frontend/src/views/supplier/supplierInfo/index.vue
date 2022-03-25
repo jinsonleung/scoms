@@ -1,67 +1,113 @@
 <template>
   <div class="universalCode-Airport-container">
     <el-card shadow="hover">
-    <el-table :data="tableData.data" stripe row-key="id" style="width: 100%"
-              :cell-style="{padding:'0px'}">
-      <!--嵌套子表：供应商联系人-->
-      <el-table-column type="expand" label="C/P" min-width="20px">
-        <template #default="scope">
-          <el-table class="child-table" :data="scope.row.contact" stripe  style="width: 100%">
-            <el-table-column align="center" label="供应商联系方式">
-              <el-table-column align="center" show-overflow-tooltip type="index" label="№" min-width="20px" ></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="department" label="部门" min-width="40px" ></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="title" label="职位" min-width="40px"></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="chn_name" label="中文名" min-width="40px"></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="eng_name" label="英文名" min-width="60px"></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="tel" label="电话" min-width="60px"></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="phone" label="手机" min-width="60px"></el-table-column>
-              <el-table-column align="center" show-overflow-tooltip prop="email" label="邮箱" min-width="100px"></el-table-column>
-              <el-table-column align="center" label="操作" show-overflow-tooltip width="180px">
-                <template #header >
-                  <el-button-group>
-                    <el-tooltip>操作</el-tooltip>
-                    <el-button type="primary" style="margin-left:5px; float: right">新建</el-button>
-                  </el-button-group>
-                </template>
+      <!--1.查询框-->
+      <div class="query-container">
+        <el-row>
+          <el-input v-model="queryText" size="small" placeholder="请输入供应商账号/公司名" clearable
+                    style="max-width: 360px"></el-input>
+          <el-button type="primary" @click="onHandleQuery(queryButtonIndex)" size="small" style="margin-left: 10px">
+            <el-icon>
+              <elementSearch/>
+            </el-icon>
+            查询
+          </el-button>
+        </el-row>
+      </div>
 
-                <template #default="scope">
-                  <el-button type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
-                  <el-button type="text" plain :icon="Edit" title="编辑" @click="onOpenDetailDialog(scope.row)"></el-button>
-                  <el-button type="text" plain :icon="Delete" title="删除" @click="onOpenDetailDialog(scope.row)"></el-button>
-                </template>
+
+
+
+      <!--2.表单-->
+      <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
+        <!--1.1嵌套子表：供应商联系人-->
+        <el-table-column type="expand" label="C/E" min-width="20px">
+          <template #default="scope">
+            <el-table class="child-table" :data="scope.row.contact" stripe style="width: 100%">
+              <el-table-column align="center" label="供应商联系方式">
+                <el-table-column align="center" show-overflow-tooltip type="index" label="№"
+                                 min-width="20px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="department" label="部门"
+                                 min-width="40px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="title" label="职位"
+                                 min-width="40px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="chn_name" label="中文名"
+                                 min-width="40px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="eng_name" label="英文名"
+                                 min-width="60px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="tel" label="电话"
+                                 min-width="60px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="phone" label="手机"
+                                 min-width="60px"></el-table-column>
+                <el-table-column align="center" show-overflow-tooltip prop="email" label="邮箱"
+                                 min-width="100px"></el-table-column>
+                <el-table-column align="center" label="操作" show-overflow-tooltip width="180px">
+                  <template #header>
+                    <el-button-group>
+                      <el-tooltip>操作</el-tooltip>
+                      <el-button type="primary" style="margin-left:5px; float: right">新建</el-button>
+                    </el-button-group>
+                  </template>
+
+                  <template #default="scope">
+                    <el-button type="text" plain :icon="ZoomIn" title="详情"
+                               @click="onOpenDetailDialog(scope.row)"></el-button>
+                    <el-button type="text" plain :icon="Edit" title="编辑"
+                               @click="onOpenDetailDialog(scope.row)"></el-button>
+                    <el-button type="text" plain :icon="Delete" title="删除"
+                               @click="onOpenDetailDialog(scope.row)"></el-button>
+                  </template>
+                </el-table-column>
               </el-table-column>
-            </el-table-column>
-          </el-table>
-        </template>
-      </el-table-column>
-
-      <!--主表：供应商信息表-->
-      <el-table-column align="center" show-overflow-tooltip type="index" label="№" min-width="20px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="account" label="账号"
-                       min-width="60px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="abbreviation_name" label="简称"
-                       min-width="60px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="full_name" label="全称"
-                       min-width="100px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="established_date" label="成立日期"
-                       min-width="80px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="office_address" label="办公地址"
-                       min-width="150px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
-                       min-width="80px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="business_scope" label="经营范围"
-                       min-width="80px"></el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="is_available" label="是否启用"
-                       min-width="80px"></el-table-column>
-      <el-table-column align="center" label="操作" show-overflow-tooltip width="100px">
-        <template #default="scope">
-          <el-button type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
-          <el-button type="text" plain :icon="Edit" title="编辑" @click="onOpenEditDialog(scope.row)"></el-button>
-          <el-button type="text" plain :icon="Delete" title="删除" @click="onDeleteRow(scope.row)"></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+            </el-table>
+          </template>
+        </el-table-column>
+        <!--1.2主表：供应商信息表-->
+        <el-table-column align="center" show-overflow-tooltip type="index" label="№" min-width="20px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="account" label="账号"
+                         min-width="60px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="abbreviation_name" label="简称"
+                         min-width="80px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="full_name" label="全称"
+                         min-width="100px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="established_date" label="成立日期"
+                         min-width="80px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="office_address" label="办公地址"
+                         min-width="150px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
+                         min-width="80px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="is_available" label="是否启用"
+                         min-width="60px">
+          <template #default="scope">
+            <el-switch v-model="scope.row.is_available" disabled inline-prompt active-text="Y" inactive-text="N"
+                       active-color="green"
+                       inactive-color="red"></el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
+          <template #default="scope">
+            <el-button type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
+            <el-button type="text" plain :icon="Edit" title="编辑" @click="onOpenEditDialog(scope.row)"></el-button>
+            <el-button type="text" plain :icon="Delete" title="删除" @click="onDeleteRow(scope.row)"></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--1.3分页导航栏-->
+      <el-pagination
+          @size-change="onHandlePageSizeChange"
+          @current-change="onHandlePageNumChange"
+          class="mt15"
+          :pager-count="5"
+          :page-sizes="[10, 20, 30]"
+          v-model:current-page="tableData.param.page_num"
+          background
+          v-model:page-size="tableData.param.page_size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="tableData.total"
+      >
+      </el-pagination>
     </el-card>
+    <!--3.子组件-->
     <SupplierDetail ref="supplierDetailRef"/>
     <SupplierEdit ref="supplierEditRef"/>
   </div>
@@ -71,16 +117,16 @@
 import {onMounted, reactive, ref, toRefs} from "vue";
 import {getPageSuppliers} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
-import SupplierEdit from '/@/views/supplier/supplierInfo/component/suppliverEdit.vue';
+import SupplierEdit from '/@/views/supplier/supplierInfo/component/supplierEdit.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
-import {deleteEnterprises} from "/@/api/enterprise";
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
 export default {
   name: 'supplierSupplierInfo',
   components: {SupplierDetail,SupplierEdit,},
   setup() {
+    const queryText = ref('');
     const supplierDetailRef = ref();
     const supplierEditRef = ref();
     const state = reactive({
@@ -96,6 +142,29 @@ export default {
       childTable: [],
     });
 
+    // 页长改变事件
+    const onHandlePageSizeChange = (pageSize: number) => {
+      state.tableData.param.pageSize = pageSize;
+      state.tableData.param.pageNum = 1;
+      let pageNum =1;
+      getPageSuppliers({pageNum, pageSize}).then((res: any) => {
+        state.tableData.data = res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+
+
+    };
+
+    // 页码改变事件
+    const onHandlePageNumChange = (pageNum: number) => {
+      state.tableData.param.pageNum = pageNum;
+      let pageSize = state.tableData.param.pageSize;
+      getPageSuppliers({pageNum, pageSize}).then((res: any) => {
+        state.tableData.data = res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+    };
+
     // 供应商详细情况弹窗
     const onOpenDetailDialog = (row: object) => {
       supplierDetailRef.value.openDialog(row);
@@ -104,12 +173,8 @@ export default {
     const onOpenEditDialog = (row: object) => {
       supplierEditRef.value.openDialog(row);
     };
-    // 删除供应商弹窗
-    const onOpenDeleteDialog = (row: object) => {
-      // airlineDetailailRef.value.openDialog(row);
-    };
 
-        // 删除当前行
+    // 删除当前行
     const onDeleteRow = async (row: any) => {
       ElMessageBox.confirm(`删除账号：${row.account} 的供应商记录, 是否继续?`, '提示', {
         confirmButtonText: '删除',
@@ -140,9 +205,12 @@ export default {
       ZoomIn,
       Edit,
       Delete,
+      queryText,
       ...toRefs(state),
       supplierDetailRef,
       supplierEditRef,
+      onHandlePageSizeChange,
+      onHandlePageNumChange,
       onOpenDetailDialog,
       onOpenEditDialog,
       onDeleteRow,
@@ -152,4 +220,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "/@/theme/public/eltable.scss";
+.query-container{
+  margin-bottom: 10px;
+}
+:deep(.el-tag--small){
+    height: 24px;
+    line-height: 22px;
+}
 </style>

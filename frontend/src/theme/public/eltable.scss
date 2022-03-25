@@ -11,6 +11,7 @@
   border-color: #D0D0D0FF;
   background-color: #e4f5dd;  /*隔行背景色*/
   font-size: 12px;
+  height: 30px; /*内容行行矩*/
 }
 
 /*修改element-ui的table 在鼠标悬停hover时的高亮颜色*/
@@ -30,6 +31,7 @@
   color: rgb(14, 14, 14);
   padding: 0;
   font-size: 12px;
+  height: 30px; /*表头行行矩*/
 }
 
 /*操作图标*/
