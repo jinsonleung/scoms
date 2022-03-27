@@ -84,7 +84,12 @@
             <template #label><div class="cell-item">企业描述</div></template>{{ruleForm.description}}
           </el-descriptions-item>
           <el-descriptions-item label-align="right" label-class-name="desc_label">
-            <template #label><div class="cell-item">是否启用</div></template>{{ruleForm.is_available}}
+            <template #label>
+              <div class="cell-item">是否启用</div>
+            </template>
+            <el-switch v-model="ruleForm.is_available" disabled inline-prompt active-text="Y" inactive-text="N"
+                       active-color="green"
+                       inactive-color="red"></el-switch>
           </el-descriptions-item>
         </el-descriptions>
         <template #footer>

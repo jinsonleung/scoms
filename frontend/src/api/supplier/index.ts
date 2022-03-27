@@ -2,7 +2,7 @@ import request from '/@/utils/request'
 
 /**
  * @func：分页获取数据
- * @param params: {pageNum:pageNum,pageSize:pageSize}
+ * @param： params格式为 {pageNum:pageNum,pageSize:pageSize}
  * @returns: 返回接口数据
  */
 export function getPageSuppliers(params:any){
@@ -12,4 +12,31 @@ export function getPageSuppliers(params:any){
 		data: params,
 	});
 }
+
+/**
+ * @func: 模糊查找
+ * @param: params格式为{queryText:queryText,pageNum:pageNum,pageSize:pageSize}
+ * @returns: 返回接口数据
+ */
+export function queryPageSuppliers(params:any){
+	return request({
+		url: `/supplier/?queryText=${params.queryText}&pageNum=${params.pageNum}&pageSize=${params.pageSize}`,
+		method: 'GET',
+		data: params,
+	});
+}
+
+/**
+ * @func：修改企业记录
+ * @param params: 如{id:id}}
+ * @returns: 返回接口数据
+ */
+export function updateSupplier(params: any){
+	return request({
+		url: `/supplier/${params.id}/`,
+		method: 'PUT',
+		data: params,
+	});
+}
+
 

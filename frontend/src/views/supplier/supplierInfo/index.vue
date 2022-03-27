@@ -115,11 +115,12 @@
 <script lang="ts">
 
 import {onMounted, reactive, ref, toRefs} from "vue";
-import {getPageSuppliers} from '/@/api/supplier/index';
+import {getPageSuppliers,queryPageSuppliers} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import SupplierEdit from '/@/views/supplier/supplierInfo/component/supplierEdit.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
+import {queryAirports} from "/@/api/universalCode";
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
 export default {
@@ -142,27 +143,34 @@ export default {
       childTable: [],
     });
 
+    //获取分页数据
+    const getPageData = async (queryText: any, pageNum: number, pageSize: number) => {
+      queryPageSuppliers({queryText, pageNum, pageSize}).then((res: any) => {
+        state.tableData.data = res.result_data.data;
+        state.tableData.total = res.result_data.count;
+      })
+    };
+
     // 页长改变事件
     const onHandlePageSizeChange = (pageSize: number) => {
       state.tableData.param.pageSize = pageSize;
       state.tableData.param.pageNum = 1;
       let pageNum =1;
-      getPageSuppliers({pageNum, pageSize}).then((res: any) => {
-        state.tableData.data = res.result_data.data;
-        state.tableData.total = res.result_data.count;
-      })
-
-
+      getPageData(queryText.value, pageNum, pageSize)
     };
 
     // 页码改变事件
     const onHandlePageNumChange = (pageNum: number) => {
       state.tableData.param.pageNum = pageNum;
       let pageSize = state.tableData.param.pageSize;
-      getPageSuppliers({pageNum, pageSize}).then((res: any) => {
-        state.tableData.data = res.result_data.data;
-        state.tableData.total = res.result_data.count;
-      })
+      getPageData(queryText.value, pageNum, pageSize)
+    };
+
+    // 查询事件
+    const onHandleQuery = () => {
+      let pageNum= state.tableData.param.pageNum;
+      let pageSize = state.tableData.param.pageSize;
+      getPageData(queryText.value.trim(), pageNum, pageSize)
     };
 
     // 供应商详细情况弹窗
@@ -176,7 +184,7 @@ export default {
 
     // 删除当前行
     const onDeleteRow = async (row: any) => {
-      ElMessageBox.confirm(`删除账号：${row.account} 的供应商记录, 是否继续?`, '提示', {
+      ElMessageBox.confirm(`删除账号：${row.account} 的供应商, 是否继续?`, '提示', {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
         type: 'warning',
@@ -190,15 +198,9 @@ export default {
       })
     };
 
-
+    // 钩子函数，获取第1页数据
     onMounted(()=>{
-      let pageNum = 1;
-      let pageSize = 10;
-      getPageSuppliers({pageNum, pageSize}).then((res: any) => {
-        console.log('==res==', res)
-        state.tableData.data = res.result_data.data;
-        state.tableData.total = res.result_data.count;
-      })
+      getPageData(queryText.value, 1, 10)
     });
 
     return {
@@ -209,6 +211,8 @@ export default {
       ...toRefs(state),
       supplierDetailRef,
       supplierEditRef,
+      getPageData,
+      onHandleQuery,
       onHandlePageSizeChange,
       onHandlePageNumChange,
       onOpenDetailDialog,
