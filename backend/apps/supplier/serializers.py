@@ -20,6 +20,10 @@ class SupplierSerializer(serializers.ModelSerializer):
         exclude = ['is_delete', 'create_datetime', 'create_by', 'update_datetime', 'update_by']
         depth = 2   # 指定深度
 
+    def get_status(self, obj):
+        return obj.get_status_display()
+
+
 
 class SupplierFilterSet(FilterSet):
     """account、full_name字段的模糊查找过滤器"""

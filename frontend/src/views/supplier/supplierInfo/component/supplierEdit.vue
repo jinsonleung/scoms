@@ -159,16 +159,29 @@
             </el-upload>
           </el-tab-pane>
           <el-tab-pane label="银行对公账户" name="BankAccountTab">
-            <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="4"
+            <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="8"
                       maxlength="256"></el-input>
           </el-tab-pane>
           <el-tab-pane label="企业描述" name="descriptionTab">
-            <el-input v-model="ruleForm.description" type="textarea" placeholder="请输入企业描述" :rows="4"
+            <el-input v-model="ruleForm.description" type="textarea" placeholder="请输入企业描述" :rows="8"
                       maxlength="256"></el-input>
           </el-tab-pane>
+
+          <el-tab-pane label="是否启用" name="isAvailableTab">
+                <el-switch v-model="ruleForm.is_available" inline-prompt active-text="Y" inactive-text="N"
+                           active-color="green"
+                           inactive-color="red"></el-switch>
+                {{ruleForm.is_available}}
+            <div>
+                供应商状态：<span> {{ruleForm.is_available ? "已激活":"未激活"}}</span>
+              <span>新建：供应商处于新创建状态，不可正常使用，若需要正常使用，则更新为“生效”状态<br/>
+生效：供应商处于生效状态中，可正常使用<br/>
+失效：供应商处于营业执照过期失效中，不可正常使用<br/>
+冻结：供应商处理冻结中，不可正常使用</span>
+            </div>
+          </el-tab-pane>
+
         </el-tabs>
-
-
         <template #footer>
 					<span class="dialog-footer">
 						<el-button @click="onCancel" size="small">取 消</el-button>

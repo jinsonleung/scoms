@@ -76,13 +76,11 @@
                          min-width="150px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
                          min-width="80px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="is_available" label="是否启用"
+        <el-table-column align="center" show-overflow-tooltip prop="status" label="状态"
                          min-width="60px">
-          <template #default="scope">
-            <el-switch v-model="scope.row.is_available" disabled inline-prompt active-text="Y" inactive-text="N"
-                       active-color="green"
-                       inactive-color="red"></el-switch>
-          </template>
+<!--          <template #default="scope">-->
+<!--            {{scope.row.get_pay_status_display }}-->
+<!--          </template>-->
         </el-table-column>
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
           <template #default="scope">
@@ -146,6 +144,7 @@ export default {
     //获取分页数据
     const getPageData = async (queryText: any, pageNum: number, pageSize: number) => {
       queryPageSuppliers({queryText, pageNum, pageSize}).then((res: any) => {
+        console.log('==res==', res)
         state.tableData.data = res.result_data.data;
         state.tableData.total = res.result_data.count;
       })
