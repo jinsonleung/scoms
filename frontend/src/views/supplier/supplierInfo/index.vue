@@ -7,17 +7,10 @@
           <el-input v-model="queryText" size="small" placeholder="请输入供应商账号/公司名" clearable
                     style="max-width: 360px"></el-input>
           <el-button type="primary" @click="onHandleQuery(queryButtonIndex)" size="small" style="margin-left: 10px">
-            <el-icon>
-              <elementSearch/>
-            </el-icon>
-            查询
+            <el-icon><elementSearch/></el-icon>查询
           </el-button>
         </el-row>
       </div>
-
-
-
-
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
         <!--1.1嵌套子表：供应商联系人-->
@@ -65,9 +58,9 @@
         <!--1.2主表：供应商信息表-->
         <el-table-column align="center" show-overflow-tooltip type="index" label="№" min-width="20px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="account" label="账号"
-                         min-width="60px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="abbreviation_name" label="简称"
                          min-width="80px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="abbreviation_name" label="简称"
+                         min-width="120px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="full_name" label="全称"
                          min-width="100px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="established_date" label="成立日期"
@@ -76,11 +69,10 @@
                          min-width="150px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
                          min-width="80px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="status" label="状态"
-                         min-width="60px">
-<!--          <template #default="scope">-->
-<!--            {{scope.row.get_pay_status_display }}-->
-<!--          </template>-->
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="状态" min-width="80px">
+          <template #default="scope">
+            <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
+          </template>
         </el-table-column>
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
           <template #default="scope">
@@ -112,7 +104,7 @@
 </template>
 <script lang="ts">
 
-import {onMounted, reactive, ref, toRefs} from "vue";
+import {computed, onMounted, reactive, ref, toRefs} from "vue";
 import {getPageSuppliers,queryPageSuppliers} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import SupplierEdit from '/@/views/supplier/supplierInfo/component/supplierEdit.vue';
@@ -120,6 +112,9 @@ import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {queryAirports} from "/@/api/universalCode";
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
+
+
+
 
 export default {
   name: 'supplierSupplierInfo',
@@ -140,6 +135,15 @@ export default {
       },
       childTable: [],
     });
+
+    // 供应商状态el-tag标签类型字典
+    const tagType:{[key:string]: string} = {
+      "新建": "info",
+      "生效": "success",
+      "失效": "warning",
+      "冻结": "danger",
+    };
+
 
     //获取分页数据
     const getPageData = async (queryText: any, pageNum: number, pageSize: number) => {
@@ -210,6 +214,7 @@ export default {
       ...toRefs(state),
       supplierDetailRef,
       supplierEditRef,
+      tagType,
       getPageData,
       onHandleQuery,
       onHandlePageSizeChange,

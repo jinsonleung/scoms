@@ -3,16 +3,24 @@ from apps.public.models import BaseModel
 from apps.public.managers import CommonManager
 
 
+class Status(models.IntegerChoices):
+    """供应商使用状态枚举类型定义，单独一个类可以被不同的模型类使用"""
+    NEW = 0, '新建'
+    AVAILABLE = 1, '生效'
+    UNAVAILABLE = 2, '失效'
+    SUSPEND = 3, '冻结'
+
+
 class Supplier(BaseModel):
     """
     供应商表，继承抽象基类BaseModel
     """
-    status_choices = (
-        (0, '新建'),
-        (1, '生效'),
-        (2, '失效'),
-        (3, '冻结'),
-    )
+    # status_choices = (
+    #     (0, '新建'),
+    #     (1, '生效'),
+    #     (2, '失效'),
+    #     (3, '冻结'),
+    # )
 
     account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='账号')
     abbreviation_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='简称')
@@ -38,7 +46,8 @@ class Supplier(BaseModel):
     legal_person_email = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人邮箱')
     banking_account_info = models.TextField(max_length=256, blank=True, null=True, verbose_name='银行对公账户')
     description = models.TextField(max_length=256, blank=True, null=True, verbose_name='企业描述')
-    status = models.IntegerChoices(choices=status_choices, verbose_name='状态')
+    # status = models.IntegerField(max_length=16, choices=Status, blank=False, null=False, verbose_name='状态')
+    status = models.IntegerField(choices=Status.choices, blank=False, null=False, verbose_name='状态')
     status_description = models.CharField(max_length=64, blank=True, null=True, verbose_name='状态说明')
 
     objects = models.Manager()   # 默认模型管理器

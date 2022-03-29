@@ -13,6 +13,8 @@ class SupplierContactSerializer(serializers.ModelSerializer):
 class SupplierSerializer(serializers.ModelSerializer):
     # contact变量名必须是SupplierContact模型中外键的related_name
     contact = SupplierContactSerializer(many=True)
+    # 自定义序列化字段，获取状态枚举值
+    status_label = serializers.CharField(source='get_status_display')
 
     class Meta:
         model = Supplier   # 序列化的对象名
@@ -20,9 +22,8 @@ class SupplierSerializer(serializers.ModelSerializer):
         exclude = ['is_delete', 'create_datetime', 'create_by', 'update_datetime', 'update_by']
         depth = 2   # 指定深度
 
-    def get_status(self, obj):
-        return obj.get_status_display()
-
+    # def get_status(self, obj):
+    #     return obj.get_status_display()
 
 
 class SupplierFilterSet(FilterSet):

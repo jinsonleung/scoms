@@ -126,10 +126,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="是否启用" prop="is_available">
-                    <el-switch v-model="ruleForm.is_available" inline-prompt active-text="Y" inactive-text="N"
-                               active-color="green"
-                               inactive-color="red"></el-switch>
+                  <el-form-item label="状态" prop="status_label">
+<!--                    <el-switch v-model="ruleForm.status_label" inline-prompt active-text="Y" inactive-text="N"-->
+<!--                               active-color="green"-->
+<!--                               inactive-color="red"></el-switch>-->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -167,24 +167,59 @@
                       maxlength="256"></el-input>
           </el-tab-pane>
 
-          <el-tab-pane label="是否启用" name="isAvailableTab">
-                <el-switch v-model="ruleForm.is_available" inline-prompt active-text="Y" inactive-text="N"
-                           active-color="green"
-                           inactive-color="red"></el-switch>
-                {{ruleForm.is_available}}
-            <div>
-                供应商状态：<span> {{ruleForm.is_available ? "已激活":"未激活"}}</span>
-              <span>新建：供应商处于新创建状态，不可正常使用，若需要正常使用，则更新为“生效”状态<br/>
-生效：供应商处于生效状态中，可正常使用<br/>
-失效：供应商处于营业执照过期失效中，不可正常使用<br/>
-冻结：供应商处理冻结中，不可正常使用</span>
-            </div>
+          <el-tab-pane label="状态" name="statusTab">
+                <el-form size="small" label-width="110px">
+                  <el-row :gutter="10">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
+                      <el-form-item label="状态" prop="status_label">
+                        <el-select v-model="ruleForm.status_label" placeholder="Select">
+                          <el-option
+                            v-for="item in statusOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value"
+                            :disabled="item.disabled"
+                          >
+                            <span style="float: left">{{ item.label }}</span>
+                            <span
+                              style="
+                                float: right;
+                                color: var(--el-text-color-secondary);
+                                font-size: 13px;
+                              "
+                              >{{ item.value }}</span
+                            >
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :md="24" :lg="24" :xl="24" class="mb20">
+                      <el-form-item label="状态备注" prop="status_description">
+                        <el-input v-model="ruleForm.status_description" type="textarea" :rows="8" maxlength="256" placeholder="请输入状态备注" clearable></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :xs="24" :sm="12" :md="24" :lg="24" :xl="24" class="mb20">
+                      <el-form-item label="状态说明" >
+                        <div class="statusDesc">
+                          <ul>
+                            <li>新建[自动设置]：供应商处于新创建状态，不可正常使用，若需要正常使用，则更新为“生效”状态</li>
+                            <li>生效[需手动设置]：供应商处于生效状态中，可正常使用</li>
+                            <li>失效[自动设置]：供应商处于营业执照过期失效中，不可正常使用</li>
+                            <li>冻结[需手动设置]：供应商处于冻结中，不可正常使用</li>
+                          </ul>
+                        </div>
+                      </el-form-item>
+                    </el-col>
+
+                  </el-row>
+                </el-form>
+
           </el-tab-pane>
 
         </el-tabs>
         <template #footer>
 					<span class="dialog-footer">
-						<el-button @click="onCancel" size="small">取 消</el-button>
+						<el-button @click="onCancel" size="small">取消</el-button>
 						<el-button type="primary" @click="onSubmit" size="small">确定</el-button>
 					</span>
         </template>
@@ -205,13 +240,36 @@ export default {
   name: 'supplierSupplierInfoSupplierEdit',
   components: {UploadFilled},
   setup() {
-    const activeName = ref('baseInfoTab')
+    const activeName = ref('baseInfoTab');
     const ruleFormRef = ref(null);
+    const statusValue = ref('');
     const state = reactive({
       isShowDialog: false,
       ruleForm: {},
 
     });
+
+    const statusOptions = [
+  {
+    value: '自动生成',
+    label: '新建',
+    disabled: true,
+  },
+  {
+    value: '手动配置',
+    label: '生效',
+  },
+  {
+    value: '自动生成',
+    label: '失效',
+    disabled: true,
+  },
+  {
+    value: '手动配置',
+    label: '冻结',
+  },
+];
+
 
     const handleClick = (tab: TabsPaneContext, event: Event) => {
       console.log(tab, event)
@@ -244,9 +302,7 @@ export default {
       });
     };
 
-    // 初始化城市数据
-    const initCityData = () => {
-    };
+
 
     const handleUploadSuccess = (res: any) => {
       console.log('==handleUploadSuccess->res==', res)
@@ -256,7 +312,7 @@ export default {
       console.log('==handleOnChange==', file)
     }
 
-        const handleHttpRequest = (item: any) => {
+    const handleHttpRequest = (item: any) => {
       console.log('==handleHttpRequest->item.file==', item.file)
       // form.goods_image = URL.createObjectURL(item.file)  //用示显示的dom
       // form.goods_image = item.file  //转给后台的格式
@@ -269,6 +325,8 @@ export default {
 
     });
     return {
+      statusValue,
+      statusOptions,
       activeName,
       handleClick,
       openDialog,
@@ -284,8 +342,18 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss" scoped>
 .el-dialog__body {
   height: 553px;
+}
+
+.statusDesc{
+  margin:0;
+  padding:0;
+  li {
+    font-size: small;
+    list-style: none;
+    line-height: 20px;
+  }
 }
 </style>
