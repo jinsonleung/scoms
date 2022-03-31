@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from demo.books.models import Books
+from rest_framework.serializers import BaseSerializer
 
 
 # 图书类序列货器

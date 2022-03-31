@@ -4,6 +4,7 @@ from apps.supplier.models import Supplier
 from apps.supplier.serializers import SupplierSerializer
 from utils.pagination import Pagination
 from rest_framework import viewsets
+from rest_framework import status
 
 
 class SupplierModelViewSet(viewsets.ModelViewSet):
@@ -35,4 +36,31 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    def update(self, request, *args, **kwargs):
+        # 1.获取id
+        pk = kwargs.get('pk')
+        # pk = 2
+        # data = {
+        #     "account": "000111",
+        #     "full_name": "大疆公司"
+        # }
+        # 2.单改
+        if pk:
+            # 2.1 获取模型对象
+            try:
+                instance = self.get_queryset().get(pk=pk)
+            except Supplier.DoesNotExist:
+                return Response(status.HTTP_404_NOT_FOUND)
+            # 2.2 序列化
+            # patrial=True就是将所有反序列化字段的required设置为False（提供就校验，不提供就不校验）
+            serializer = SupplierSerializer(instance=instance,data=request.data, partial=True)
+            # serializer = SupplierSerializer(instance=instance, data=data, partial=True)
+            # 2.3 数据校验
+            serializer.is_valid(raise_exception=True)
+            # 2.4 保存数据
+            serializer.save()
+            # 2.5 返回结果给客户端
+            return Response(serializer.data)
 
+        else:
+            return Response({'msg': 'okkkkkk'})

@@ -27,7 +27,7 @@ class Supplier(BaseModel):
     full_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='全称')
     architecture = models.CharField(max_length=64, blank=True, null=True, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  blank=True, null=True, verbose_name='统一社会信用代码')
-    business_licence_image = models.ImageField(upload_to='businessLicenceImage', default='default.jpg', verbose_name='照业执照图片')
+    business_licence_image = models.FileField(upload_to='supplierBusinessLicenceImage', blank=True, null=True, default='default.jpg', verbose_name='照业执照图片')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
     registered_address = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册地址')
     established_date = models.DateField(blank=True, null=True, verbose_name='成立日期')
@@ -46,7 +46,6 @@ class Supplier(BaseModel):
     legal_person_email = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人邮箱')
     banking_account_info = models.TextField(max_length=256, blank=True, null=True, verbose_name='银行对公账户')
     description = models.TextField(max_length=256, blank=True, null=True, verbose_name='企业描述')
-    # status = models.IntegerField(max_length=16, choices=Status, blank=False, null=False, verbose_name='状态')
     status = models.IntegerField(choices=Status.choices, blank=False, null=False, verbose_name='状态')
     status_description = models.CharField(max_length=64, blank=True, null=True, verbose_name='状态说明')
 
@@ -55,18 +54,22 @@ class Supplier(BaseModel):
 
     class Meta:
         db_table = 'supplier'  # 数据库实际表名
-        verbose_name = '供应商表'  # 详细名称
+        verbose_name = '供应商表'  # 详细表名称
         verbose_name_plural = verbose_name  # 详细名称
         ordering = ['account']  # 排序字段
 
+    def delete(self, using=None, keep_parents=False):
+        """重写数据删除方法实现逻辑删除"""
+        self.is_delete = True
+        self.save()
+
     def __str__(self):
+        """控制台对象输出内容"""
         return '%s,%s' (self.account, self.full_name)
 
 
 class SupplierContact(models.Model):
-    """
-    供应商联系人表
-    """
+    """供应商联系人表"""
     CLASSIFICATIONS = (
         ('GM', '总经办'),
         ('LO', '对接人'),  # liaison officer
@@ -90,7 +93,7 @@ class SupplierContact(models.Model):
     social_account = models.TextField(max_length=256, blank=True, null=True, verbose_name='其他社交账号')
     remark = models.TextField(max_length=256, blank=True, null=True, verbose_name='备注')
     supplier = models.ForeignKey(Supplier, blank=True, null=True, on_delete=models.CASCADE, related_name='contact',
-                                 verbose_name='供应商id(外键)')
+                                 db_constraint=False, verbose_name='供应商id(外键)')  # 外键，断外键关联关系
 
     objects = models.Manager()  # 默认模型管理器
 

@@ -140,17 +140,13 @@
                 class="upload-demo"
                 drag
                 action=""
-            @on-change="handleOnChange"
-            :on-success="handleUploadSuccess"
-            :http-request="handleHttpRequest"
+                @on-change="handleUploadOnChange"
+                :on-success="handleUploadSuccess"
+                :http-request="handleUploadHttpRequest"
                 multiple
             >
-              <el-icon class="el-icon--upload">
-                <upload-filled/>
-              </el-icon>
-              <div class="el-upload__text">
-                拖放文件到这里或点击<em>上传图片</em>
-              </div>
+              <el-icon class="el-icon--upload"><upload-filled/></el-icon>
+              <div class="el-upload__text">拖放文件到这里或点击<em>上传图片</em></div>
               <template #tip>
                 <div class="el-upload__tip">
                   jpg/png files with a size less than 500kb
@@ -158,6 +154,7 @@
               </template>
             </el-upload>
           </el-tab-pane>
+
           <el-tab-pane label="银行对公账户" name="BankAccountTab">
             <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="8"
                       maxlength="256"></el-input>
@@ -292,6 +289,8 @@ export default {
 
     // 修改
     const onSubmit = async () => {
+      delete state.ruleForm.business_licence_image;
+      delete state.ruleForm.contact;
       console.log('==typeof(state.ruleForm)2==', typeof (state.ruleForm), state.ruleForm)
       updateSupplier(state.ruleForm).then((res: any) => {
         if (res) {
@@ -308,12 +307,12 @@ export default {
       console.log('==handleUploadSuccess->res==', res)
     }
 
-    const handleOnChange = (file: any, fileList: any) => {
-      console.log('==handleOnChange==', file)
+    const handleUploadOnChange = (file: any, fileList: any) => {
+      console.log('==handleUploadOnChange==', file)
     }
 
-    const handleHttpRequest = (item: any) => {
-      console.log('==handleHttpRequest->item.file==', item.file)
+    const handleUploadHttpRequest = (item: any) => {
+      console.log('==handleUploadHttpRequest->item.file==', item.file)
       // form.goods_image = URL.createObjectURL(item.file)  //用示显示的dom
       // form.goods_image = item.file  //转给后台的格式
       state.ruleForm.business_licence_image = item.file  //转给后台的格式
@@ -331,8 +330,8 @@ export default {
       handleClick,
       openDialog,
       closeDialog,
-      handleOnChange,
-      handleHttpRequest,
+      handleUploadOnChange,
+      handleUploadHttpRequest,
       handleUploadSuccess,
       onCancel,
       onSubmit,
