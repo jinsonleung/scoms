@@ -67,6 +67,15 @@ class Supplier(BaseModel):
         """控制台对象输出内容"""
         return '%s,%s' (self.account, self.full_name)
 
+    def image_img(self):
+        print('==self.business_licence_image==', self.business_licence_image)
+        if self.business_licence_image:
+            return u'<img src="%s" width="50" height="50" />' % self.item_image.url
+        else:
+            return '(Sin imagen)'
+    image_img.short_description = 'Thumb'
+    image_img.allow_tags = True
+
 
 class SupplierContact(models.Model):
     """供应商联系人表"""

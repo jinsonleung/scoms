@@ -1,9 +1,9 @@
 <template>
-  <div class="system-edit-dept-container">
+  <div class="supplier-supplierInfo-edit-container">
     <div v-dialogdrag>
       <el-dialog title="修改供应商信息" v-model="isShowDialog" width="800px">
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-          <el-tab-pane label="基本信息" name="baseInfoTab">
+          <el-tab-pane label="基本信息" name="baseInfoTab" >
             <el-form ref="ruleFormRef" :model="ruleForm" size="small" label-width="110px">
               <el-row :gutter="10">
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -25,7 +25,7 @@
                   <el-form-item label="体系结构" prop="architecture">
                     <el-select v-model="ruleForm.architecture" placeholder="请选择体系结构" clearable class="w100">
                       <el-option
-                          v-for="item in enterpriseArchitectureOptions"
+                          v-for="item in Architectures"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value"
@@ -97,7 +97,7 @@
                   <el-form-item label="所在行业" prop="industry">
                     <el-select v-model="ruleForm.industry" placeholder="请选择所在行业" clearable class="w100">
                       <el-option
-                          v-for="item in industryOptions"
+                          v-for="item in Industries"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value"
@@ -125,13 +125,6 @@
                     <el-input v-model="ruleForm.legal_person_email" placeholder="请输入法人邮箱" clearable></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="状态" prop="status_label">
-<!--                    <el-switch v-model="ruleForm.status_label" inline-prompt active-text="Y" inactive-text="N"-->
-<!--                               active-color="green"-->
-<!--                               inactive-color="red"></el-switch>-->
-                  </el-form-item>
-                </el-col>
               </el-row>
             </el-form>
           </el-tab-pane>
@@ -154,7 +147,6 @@
               </template>
             </el-upload>
           </el-tab-pane>
-
           <el-tab-pane label="银行对公账户" name="BankAccountTab">
             <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="8"
                       maxlength="256"></el-input>
@@ -163,7 +155,6 @@
             <el-input v-model="ruleForm.description" type="textarea" placeholder="请输入企业描述" :rows="8"
                       maxlength="256"></el-input>
           </el-tab-pane>
-
           <el-tab-pane label="状态" name="statusTab">
                 <el-form size="small" label-width="110px">
                   <el-row :gutter="10">
@@ -226,12 +217,16 @@
   </div>
 </template>
 
+<!--2022/4/1drf提交文件异常解决方法-->
+<!--https://huyu.info/blog/detail/148-->
+
 <script lang="ts">
 import {reactive, toRefs, onMounted, ref} from 'vue';
 import {updateSupplier} from "/@/api/supplier";
 import {ElMessage} from "element-plus";
 import type {TabsPaneContext} from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
+import {CompanyTypes, Architectures, Industries} from '/@/utils/publicOptionItems';
 
 export default {
   name: 'supplierSupplierInfoSupplierEdit',
@@ -243,7 +238,6 @@ export default {
     const state = reactive({
       isShowDialog: false,
       ruleForm: {},
-
     });
 
     const statusOptions = [
@@ -289,8 +283,8 @@ export default {
 
     // 修改
     const onSubmit = async () => {
-      delete state.ruleForm.business_licence_image;
-      delete state.ruleForm.contact;
+      // delete state.ruleForm.business_licence_image;
+      delete state.ruleForm.contact;  // 供应商联系人不转给后端更新，单独CRUD
       console.log('==typeof(state.ruleForm)2==', typeof (state.ruleForm), state.ruleForm)
       updateSupplier(state.ruleForm).then((res: any) => {
         if (res) {
@@ -313,9 +307,11 @@ export default {
 
     const handleUploadHttpRequest = (item: any) => {
       console.log('==handleUploadHttpRequest->item.file==', item.file)
+      console.log('==handleUploadHttpRequest->item.file.name==', item.file.name)
       // form.goods_image = URL.createObjectURL(item.file)  //用示显示的dom
       // form.goods_image = item.file  //转给后台的格式
       state.ruleForm.business_licence_image = item.file  //转给后台的格式
+      // state.ruleForm.business_licence_image = item.file.name  //转给后台的格式
     }
 
 
@@ -327,6 +323,9 @@ export default {
       statusValue,
       statusOptions,
       activeName,
+      CompanyTypes,
+      Architectures,
+      Industries,
       handleClick,
       openDialog,
       closeDialog,
@@ -342,8 +341,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.el-dialog__body {
-  height: 553px;
+:deep(.el-dialog__body) {
+  height: 553px !important;
 }
 
 .statusDesc{

@@ -47,6 +47,11 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         # 2.单改
         if pk:
             # 2.1 获取模型对象
+            files = request.FILES
+            print('==kwargs1==', request.data['business_licence_image'])
+            print('==request.FILES==', request.FILES)
+            print('==kwargs2==', files.get('business_licence_image'))
+
             try:
                 instance = self.get_queryset().get(pk=pk)
             except Supplier.DoesNotExist:

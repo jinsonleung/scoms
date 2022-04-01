@@ -1,4 +1,5 @@
 import request from '/@/utils/request'
+import header from "/@/layout/component/header.vue";
 
 /**
  * @func：分页获取数据
@@ -31,7 +32,7 @@ export function queryPageSuppliers(params:any){
  * @param params: 如{id:id}}
  * @returns: 返回接口数据
  */
-export function updateSupplier(params: any){
+export function updateSupplier1(params: any){
 	return request({
 		url: `/supplier/${params.id}/`,
 		method: 'PUT',
@@ -39,4 +40,10 @@ export function updateSupplier(params: any){
 	});
 }
 
-
+export function updateSupplier(params: any){
+	return request({
+		url: `/supplier/${params.id}/`,
+		method: 'PUT',
+		data: params,
+	});
+}
