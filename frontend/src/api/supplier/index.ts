@@ -41,9 +41,11 @@ export function updateSupplier1(params: any){
 }
 
 export function updateSupplier(params: any){
+	console.log('--params.id--', params.get('id'));
 	return request({
 		url: `/supplier/${params.id}/`,
 		method: 'PUT',
+		headers: {'content-type': 'multipart/form-data'},
 		data: params,
 	});
 }

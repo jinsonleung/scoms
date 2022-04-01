@@ -13,10 +13,15 @@ const service = axios.create({
 // 添加请求拦截器
 service.interceptors.request.use(
 	(config) => {
+		// get不需要content-type,给data赋值以绕过if判断
+		if(config.method==='get') {
+			config.data=true;
+		}
 		// 在发送请求之前做些什么 token
 		if (Session.get('token')) {
 			config.headers.common['Authorization'] = `${Session.get('token')}`;
 		}
+		console.log('==config==', config);
 		return config;
 	},
 	(error) => {

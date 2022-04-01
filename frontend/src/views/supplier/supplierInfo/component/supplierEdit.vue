@@ -240,6 +240,8 @@ export default {
       ruleForm: {},
     });
 
+    // const formData= new FormData();
+
     const statusOptions = [
   {
     value: '自动生成',
@@ -282,11 +284,26 @@ export default {
     };
 
     // 修改
-    const onSubmit = async () => {
+    const onSubmit1 = async () => {
       // delete state.ruleForm.business_licence_image;
       delete state.ruleForm.contact;  // 供应商联系人不转给后端更新，单独CRUD
       console.log('==typeof(state.ruleForm)2==', typeof (state.ruleForm), state.ruleForm)
       updateSupplier(state.ruleForm).then((res: any) => {
+        if (res) {
+          if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          closeDialog();
+          ElMessage.success('修改成功！');
+        }
+      });
+    };
+
+    const onSubmit = async () => {
+      let formData = new FormData();
+      formData.append('id', state.ruleForm.id);
+      formData.append('account', state.ruleForm.account);
+      formData.append('full_name', state.ruleForm.full_name);
+      formData.append('business_licence_image', state.ruleForm.business_licence_image);
+      updateSupplier(formData).then((res: any) => {
         if (res) {
           if (ruleFormRef.value) ruleFormRef.value.resetFields();
           closeDialog();
