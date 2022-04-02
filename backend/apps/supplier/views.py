@@ -71,48 +71,20 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
             return Response({'msg': 'okkkkkk'})
 
     def update(self, request, *args, **kwargs):
-        # 1.获取id
-        # pk = kwargs.get('pk')
-        # pk = 2
-        # data = {
-        #     "account": "000111",
-        #     "full_name": "大疆公司"
-        # }
-        print('==id==', request.POST.get('id'))
-        pk = request.POST.get('id')
-        # data = {
-        #     "account": request.POST.get('account'),
-        #     "full_name": request.POST.get('full_name'),
-        #     "business_licence_image": request.FILES.get('business_licence_image'),
-        # }
+        """更新"""
+        # 获取PK及数据
+        pk = kwargs.get('pk')
+        data = request.data
         # print('==data==', data)
-        account = request.POST.get('account'),
-        full_name = request.POST.get('full_name'),
-        business_licence_image = request.POST.get('business_licence_image'),
-        _obj = Supplier.objects.create(account=account, full_name=full_name, business_licence_image=business_licence_image)
-
-        # 2.单改
-        if pk:
-            # 2.1 获取模型对象
-            # files = request.FILES
-            # print('==kwargs1==', request.data['business_licence_image'])
-            # print('==request.FILES==', request.FILES)
-            # print('==kwargs2==', files.get('business_licence_image'))
-
-            try:
-                instance = self.get_queryset().get(pk=pk)
-            except Supplier.DoesNotExist:
-                return Response(status.HTTP_404_NOT_FOUND)
-            # 2.2 序列化
-            # patrial=True就是将所有反序列化字段的required设置为False（提供就校验，不提供就不校验）
-            serializer = SupplierSerializer(instance=instance, data=_obj, partial=True)
-            # serializer = SupplierSerializer(instance=instance, data=data, partial=True)
-            # 2.3 数据校验
+        instance = self.get_queryset().get(pk=pk)
+        files = request.FILES.getlist('files')
+        # print('==files==', files)
+        for file in files:
+            print('==file==', file)
+            serializer = self.get_serializer(instance=instance, data=data)
             serializer.is_valid(raise_exception=True)
-            # 2.4 保存数据
             serializer.save()
-            # 2.5 返回结果给客户端
-            return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-        else:
-            return Response({'msg': 'okkkkkk'})
+# https://www.jianshu.com/p/fc45221ba5fd
+# https://blog.csdn.net/weixin_45407214/article/details/110124426

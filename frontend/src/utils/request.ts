@@ -21,7 +21,6 @@ service.interceptors.request.use(
 		if (Session.get('token')) {
 			config.headers.common['Authorization'] = `${Session.get('token')}`;
 		}
-		console.log('==config==', config);
 		return config;
 	},
 	(error) => {

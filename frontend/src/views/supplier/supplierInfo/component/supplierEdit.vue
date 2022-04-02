@@ -130,13 +130,19 @@
           </el-tab-pane>
           <el-tab-pane label="营业执照" name="LicenseTab">
             <el-upload
+                ref="uploadRef"
+                :limit="10"
                 class="upload-demo"
                 drag
-                action=""
-                @on-change="handleUploadOnChange"
-                :on-success="handleUploadSuccess"
-                :http-request="handleUploadHttpRequest"
                 multiple
+                action="aa"
+                :disabled="uploadRef.isUploading"
+                :on-change="handleUploadOnChange"
+                :before-remove="handleUploadBeforeRemove"
+                :on-success="handleUploadSuccess"
+                :auto-upload="false"
+                :http-request="handleUploadHttpRequest"
+                :file-list="uploadRef.fileList"
             >
               <el-icon class="el-icon--upload"><upload-filled/></el-icon>
               <div class="el-upload__text">拖放文件到这里或点击<em>上传图片</em></div>
@@ -225,9 +231,9 @@ import {reactive, toRefs, onMounted, ref} from 'vue';
 import {updateSupplier} from "/@/api/supplier";
 import {ElMessage} from "element-plus";
 import type {TabsPaneContext} from 'element-plus'
-import { UploadFilled } from '@element-plus/icons-vue'
+import {UploadFilled} from '@element-plus/icons-vue'
 import {CompanyTypes, Architectures, Industries} from '/@/utils/publicOptionItems';
-
+import {objectToFormData} from '/@/utils/tsHelper'
 export default {
   name: 'supplierSupplierInfoSupplierEdit',
   components: {UploadFilled},
@@ -239,6 +245,17 @@ export default {
       isShowDialog: false,
       ruleForm: {},
     });
+    const uploadRef = reactive({
+      open: false,  // 是否显示弹出层（放在el-dialog :visible.syn="upload.open"）
+      title: '',  // 弹出层的标题（放在el-dialog :title="upload.title"）
+      isUploading: false,  // 是否禁用上传
+      updateSupport: 0,   // 是否更新已存在的用户数据
+      // headers: {Authorization: getToken()},   // 上传请求头
+      url: import.meta.env.VITE_API_URL + 'media/businessLicenceImage/upload',   // 上传地址
+      fileList: [],   //文件列表
+      fileNames: [],   //文件名列表
+    });
+
 
     // const formData= new FormData();
 
@@ -297,12 +314,26 @@ export default {
       });
     };
 
+
+
+
+
     const onSubmit = async () => {
+      // 文件及图片上传请求头中content-type必须是”mulpart/form-data"，服务端DRF只能接受表单格式数据
+      // 创建新表单数据对象
       let formData = new FormData();
-      formData.append('id', state.ruleForm.id);
-      formData.append('account', state.ruleForm.account);
-      formData.append('full_name', state.ruleForm.full_name);
-      formData.append('business_licence_image', state.ruleForm.business_licence_image);
+      formData = objectToFormData(state.ruleForm)
+      //将上传文件放到数据对象中，保存文件名
+      uploadRef.fileList.forEach((file:any)=>{
+        formData.append('files', file.raw);
+        uploadRef.fileNames.push(file.name);
+      })
+      // 将上传文件名放到数据对象中
+      formData.append('fileNames', uploadRef.fileNames);
+      // 移除联系人信息，联系人信息单独处理
+      formData.delete('contact')
+
+      // 发送axios请求
       updateSupplier(formData).then((res: any) => {
         if (res) {
           if (ruleFormRef.value) ruleFormRef.value.resetFields();
@@ -310,26 +341,51 @@ export default {
           ElMessage.success('修改成功！');
         }
       });
+
     };
 
-
-
     const handleUploadSuccess = (res: any) => {
-      console.log('==handleUploadSuccess->res==', res)
+      // console.log('==handleUploadSuccess->res==', res)
     }
 
+    // el-upload组件发生变化钩子
     const handleUploadOnChange = (file: any, fileList: any) => {
-      console.log('==handleUploadOnChange==', file)
+      uploadRef.fileList = fileList;
+      console.log('==handleUploadOnChange==', fileList)
+      console.log('==uploadRef.fileList==', uploadRef.fileList)
+
+    }
+    // el-upload组件删除文件时钩子
+    const handleUploadBeforeRemove = (file: any, fileList: any) => {
+      uploadRef.fileList = fileList;
+      console.log('==handleUploadOnChange==', fileList)
+      console.log('==uploadRef.fileList==', uploadRef.fileList)
     }
 
     const handleUploadHttpRequest = (item: any) => {
-      console.log('==handleUploadHttpRequest->item.file==', item.file)
-      console.log('==handleUploadHttpRequest->item.file.name==', item.file.name)
-      // form.goods_image = URL.createObjectURL(item.file)  //用示显示的dom
+      // console.log('==handleUploadHttpRequest->item.file==', item.file)
+      // console.log('==handleUploadHttpRequest->item.file.name==', item.file)
       // form.goods_image = item.file  //转给后台的格式
-      state.ruleForm.business_licence_image = item.file  //转给后台的格式
-      // state.ruleForm.business_licence_image = item.file.name  //转给后台的格式
+      // state.ruleForm.business_licence_image = item.file
+
+      // state.ruleForm.business_licence_image = item.file.name
     }
+
+
+
+     const transformRequest=((data:any)=> {
+        let ret = '';
+        for (let it in data) {
+          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        return ret
+    })
+
+
+
+
+
+
 
 
     // 页面加载时
@@ -347,11 +403,12 @@ export default {
       openDialog,
       closeDialog,
       handleUploadOnChange,
+      handleUploadBeforeRemove,
       handleUploadHttpRequest,
       handleUploadSuccess,
       onCancel,
       onSubmit,
-
+      uploadRef,
       ...toRefs(state),
     };
   },
