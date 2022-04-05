@@ -51,3 +51,11 @@ export function updateSupplier(params: any){
 	});
 }
 
+
+export function addSupplier(params: any){
+	return request({
+		url: '/supplier/',
+		method: 'POST',
+		data: params,
+	});
+}

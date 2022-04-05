@@ -177,10 +177,12 @@ IMG_UPLOAD = os.path.join(BASE_DIR, 'static/uploads')
 
 # 3、媒体文件目录配置，这是变动的资源存放目录，如用户头像/上传的图片或视频等,可为富文本编辑器mdeditor提供支持
 MEDIA_URL = '/media/'   # 可以理解为通过url访问媒体文件目录路径
-MEDIA_ROOT = (
-    os.path.join(BASE_DIR, 'media'),
-    # os.path.join(BASE_DIR, 'demo/book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
-)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# MEDIA_ROOT = (
+#     os.path.join(BASE_DIR, 'media'),
+#     # os.path.join(BASE_DIR, 'demo/book_shop/media')   # 在根目录中创建'book_shop/media'目录，保存文件时将放在这个目录下
+# )
 
 # 4、日期输入格式
 # DATE_INPUT_FORMATS = ['%d/%m/%Y']

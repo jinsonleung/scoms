@@ -10,6 +10,7 @@
             <el-icon><elementSearch/></el-icon>查询
           </el-button>
         </el-row>
+        <el-button type="primary" @click="handleAddSupplier">新增</el-button>
       </div>
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
@@ -105,12 +106,13 @@
 <script lang="ts">
 
 import {computed, onMounted, reactive, ref, toRefs} from "vue";
-import {getPageSuppliers,queryPageSuppliers} from '/@/api/supplier/index';
+import {getPageSuppliers,queryPageSuppliers, addSupplier} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import SupplierEdit from '/@/views/supplier/supplierInfo/component/supplierEdit.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {queryAirports} from "/@/api/universalCode";
+
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
 
@@ -201,6 +203,22 @@ export default {
       })
     };
 
+    const handleAddSupplier = ()=>{
+      console.log('==add....==')
+      const data = {
+        account:'222333',
+        contact: {
+          id:1,
+          id:2,
+        },
+        status:'1',
+        status_label: '',
+      };
+      addSupplier(data).then((res:any)=>{
+        console.log('==addSupplier.res==', res)
+      })
+    }
+
     // 钩子函数，获取第1页数据
     onMounted(()=>{
       getPageData(queryText.value, 1, 10)
@@ -222,6 +240,7 @@ export default {
       onOpenDetailDialog,
       onOpenEditDialog,
       onDeleteRow,
+      handleAddSupplier,
     };
   },
 };

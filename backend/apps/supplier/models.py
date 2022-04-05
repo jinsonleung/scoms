@@ -27,6 +27,7 @@ class Supplier(BaseModel):
     full_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='全称')
     architecture = models.CharField(max_length=64, blank=True, null=True, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  blank=True, null=True, verbose_name='统一社会信用代码')
+    # 会将图片文件存放到media/supplierBusinessLicenceImage目录下，如果文件名重复则drf会自动添加缀
     business_licence_image = models.FileField(upload_to='supplierBusinessLicenceImage', blank=True, null=True, default='default.jpg', verbose_name='照业执照图片')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
     registered_address = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册地址')
@@ -56,7 +57,8 @@ class Supplier(BaseModel):
         db_table = 'supplier'  # 数据库实际表名
         verbose_name = '供应商表'  # 详细表名称
         verbose_name_plural = verbose_name  # 详细名称
-        ordering = ['account']  # 排序字段
+        ordering = ['id']  # 排序字段
+        get_latest_by = 'account'
 
     def delete(self, using=None, keep_parents=False):
         """重写数据删除方法实现逻辑删除"""
@@ -65,7 +67,8 @@ class Supplier(BaseModel):
 
     def __str__(self):
         """控制台对象输出内容"""
-        return '%s,%s' (self.account, self.full_name)
+        # return '%s,%s' (self.account, self.full_name)
+        return self.account
 
     # def image_img(self):
     #     print('==self.business_licence_image==', self.business_licence_image)

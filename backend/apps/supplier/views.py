@@ -7,6 +7,24 @@ from rest_framework import viewsets
 from rest_framework import status
 
 
+def create_new_supplier_account(latest_account):
+    """供应商账号生成规则，由S+5位账号+1位校验位"""
+    print('latest_account==', latest_account, type(latest_account))
+    new_account = ''
+
+    latest_account_num = latest_account
+    # new_account_num = (int(latest_account_num)+1).zfill(5)
+    # coefficient = [8,2,3,4,5]
+    # mod_digital = [1,0,9,8,7,6,5,4,3,2]
+    # sum = 0
+    # for i in range(5):
+    #     sum += int(coefficient[i])*int(new_account_num[i])
+    # mod_num = sum%10
+    # validate_num = mod_digital[mod_num]
+    # new_account = "S" + new_account_num + str(validate_num)
+    return new_account
+
+
 class SupplierModelViewSet(viewsets.ModelViewSet):
     """
     获取多条记录（可模糊查询）
@@ -15,6 +33,36 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
     queryset = Supplier.custom.all()    # 获取所有数据
     serializer_class = SupplierSerializer   # 序列化
     pagination_class = Pagination  # 分页
+
+    # def create(self, request, *args, **kwargs):
+    #     """新增"""
+    #
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     # account = serializer['account']
+    #     # print('=account=', account)
+    #     serializer.save()
+    #
+    #
+    #
+    #     # 1.获取数据库中最后一条记录的供应商账号（数据中的记录以自增id排序）
+    #     latest_account = ''
+    #
+    #     # try:
+    #     #     latest_instance = self.get_queryset().latest('id')
+    #     #     if not latest_instance:
+    #     #         latest_account = 'S000010'
+    #     #     else:
+    #     #         latest_account = getattr(latest_instance, 'account')
+    #     #     new_account = create_new_supplier_account(latest_account)
+    #     #     # print('new_account==', type(latest_account), latest_account.)
+    #     # except Supplier.DoesNotExist:
+    #     #     return Response(status=status.HTTP_404_NOT_FOUND)
+    #     # 2.自动按规则生成供应商账号
+    #     # 3.保存记录
+    #     # 4.返回客户端数据
+    #     return Response({'msg': 'create ok'})
+
 
     def list(self, request, *args, **kwargs):
         """重写list，实现供应商账号、供应商名称模糊查询"""
@@ -70,21 +118,39 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         else:
             return Response({'msg': 'okkkkkk'})
 
-    def update(self, request, *args, **kwargs):
-        """更新"""
+    def update1(self, request, *args, **kwargs):
+        """更新（正确）"""
         # 获取PK及数据
         pk = kwargs.get('pk')
         data = request.data
         # print('==data==', data)
         instance = self.get_queryset().get(pk=pk)
         files = request.FILES.getlist('files')
+        fileNames = request.POST.get('fileNames')
         # print('==files==', files)
+        print('==fileNames==', fileNames)
+        data.pop('files')
+        data.pop('fileNames')
+        # print('==data==', data)
+
         for file in files:
-            print('==file==', file)
-            serializer = self.get_serializer(instance=instance, data=data)
+            data['business_licence_image'] = file
+            print('==data[business_licence_image]==', data['business_licence_image'])
+            print('==data==', data)
+
+            serializer = self.get_serializer(instance=instance, data=data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'msg': 'okkkk'})
+
+
+
+
+
+
+
+
 
 # https://www.jianshu.com/p/fc45221ba5fd
 # https://blog.csdn.net/weixin_45407214/article/details/110124426

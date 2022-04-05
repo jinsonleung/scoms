@@ -131,24 +131,27 @@
           <el-tab-pane label="营业执照" name="LicenseTab">
             <el-upload
                 ref="uploadRef"
-                :limit="10"
                 class="upload-demo"
                 drag
-                multiple
-                action="aa"
+                action=""
+                accept=".png, .jpg, .jpeg"
+                :limit="1"
+                :multiple="false"
                 :disabled="uploadRef.isUploading"
                 :on-change="handleUploadOnChange"
                 :before-remove="handleUploadBeforeRemove"
                 :on-success="handleUploadSuccess"
+                :on-preview="handleUploadPreview"
                 :auto-upload="false"
                 :http-request="handleUploadHttpRequest"
                 :file-list="uploadRef.fileList"
+                :on-exceed="handleUploadExceed"
             >
               <el-icon class="el-icon--upload"><upload-filled/></el-icon>
               <div class="el-upload__text">拖放文件到这里或点击<em>上传图片</em></div>
               <template #tip>
                 <div class="el-upload__tip">
-                  jpg/png files with a size less than 500kb
+                  只能上传一张作为营业执照格式为 jpg/jpeg/png，不超过 2MB
                 </div>
               </template>
             </el-upload>
@@ -227,17 +230,19 @@
 <!--https://huyu.info/blog/detail/148-->
 
 <script lang="ts">
-import {reactive, toRefs, onMounted, ref} from 'vue';
+import {reactive, toRefs, onMounted, ref, getCurrentInstance} from 'vue';
 import {updateSupplier} from "/@/api/supplier";
-import {ElMessage} from "element-plus";
-import type {TabsPaneContext} from 'element-plus'
-import {UploadFilled} from '@element-plus/icons-vue'
+import {ElMessage,ElNotification} from "element-plus";
+import type {TabsPaneContext } from 'element-plus';
+import {UploadFilled} from '@element-plus/icons-vue';
 import {CompanyTypes, Architectures, Industries} from '/@/utils/publicOptionItems';
 import {objectToFormData} from '/@/utils/tsHelper'
+
 export default {
   name: 'supplierSupplierInfoSupplierEdit',
   components: {UploadFilled},
   setup() {
+    const { proxy }  = getCurrentInstance() as any;
     const activeName = ref('baseInfoTab');
     const ruleFormRef = ref(null);
     const statusValue = ref('');
@@ -280,14 +285,13 @@ export default {
   },
 ];
 
-
     const handleClick = (tab: TabsPaneContext, event: Event) => {
       console.log(tab, event)
     }
 
     // 打开弹窗
     const openDialog = (row: any) => {
-      console.log('==openDialog.row1==', row);
+      // console.log('==openDialog.row1==', row);
       state.ruleForm = row;
       state.isShowDialog = true;
     };
@@ -301,23 +305,6 @@ export default {
     };
 
     // 修改
-    const onSubmit1 = async () => {
-      // delete state.ruleForm.business_licence_image;
-      delete state.ruleForm.contact;  // 供应商联系人不转给后端更新，单独CRUD
-      console.log('==typeof(state.ruleForm)2==', typeof (state.ruleForm), state.ruleForm)
-      updateSupplier(state.ruleForm).then((res: any) => {
-        if (res) {
-          if (ruleFormRef.value) ruleFormRef.value.resetFields();
-          closeDialog();
-          ElMessage.success('修改成功！');
-        }
-      });
-    };
-
-
-
-
-
     const onSubmit = async () => {
       // 文件及图片上传请求头中content-type必须是”mulpart/form-data"，服务端DRF只能接受表单格式数据
       // 创建新表单数据对象
@@ -332,59 +319,70 @@ export default {
       formData.append('fileNames', uploadRef.fileNames);
       // 移除联系人信息，联系人信息单独处理
       formData.delete('contact')
+      // formData.delete('business_licence_image')
 
       // 发送axios请求
       updateSupplier(formData).then((res: any) => {
         if (res) {
-          if (ruleFormRef.value) ruleFormRef.value.resetFields();
-          closeDialog();
+          // if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          // $ref.uploadRef.clearFiles();
+
+          console.log('==proxy.uploadRef==', proxy.uploadRef)
+          // console.log('==proxy.uploadRef.fileList==', proxy.uploadRef.fileList)
+          // console.log('==proxy.uploadRef.fileList.length==', proxy.uploadRef.fileList.length)
+
+          // proxy.$refs.uploadRef.clearFiles();
+          // proxy.uploadRef.fileList.clear; //不可以
+          // proxy.uploadRef.fileList.clear(); //错误
+          // proxy.$refs.uploadRef.clearFiles(); //不可以
+          // proxy.uploadRef.clearFiles(); //不可以
+          // proxy.uploadRef.fileList.splice(0); //不可以
+
+
+          // closeDialog();
           ElMessage.success('修改成功！');
         }
       });
 
     };
 
+    // 文件上传成功时的钩子
     const handleUploadSuccess = (res: any) => {
+      ElMessage.success('文件上传成功啦。。。。')
       // console.log('==handleUploadSuccess->res==', res)
     }
 
-    // el-upload组件发生变化钩子
+    // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
     const handleUploadOnChange = (file: any, fileList: any) => {
+      ElMessage.success('fileList');
       uploadRef.fileList = fileList;
-      console.log('==handleUploadOnChange==', fileList)
-      console.log('==uploadRef.fileList==', uploadRef.fileList)
+      // console.log('==handleUploadOnChange==', fileList)
+      // console.log('==uploadRef.fileList==', uploadRef.fileList)
 
     }
-    // el-upload组件删除文件时钩子
+    // 删除文件之前的钩子
     const handleUploadBeforeRemove = (file: any, fileList: any) => {
       uploadRef.fileList = fileList;
-      console.log('==handleUploadOnChange==', fileList)
-      console.log('==uploadRef.fileList==', uploadRef.fileList)
-    }
+      // console.log('==handleUploadOnChange==', fileList)
+      // console.log('==uploadRef.fileList==', uploadRef.fileList)
+    };
 
     const handleUploadHttpRequest = (item: any) => {
-      // console.log('==handleUploadHttpRequest->item.file==', item.file)
-      // console.log('==handleUploadHttpRequest->item.file.name==', item.file)
-      // form.goods_image = item.file  //转给后台的格式
-      // state.ruleForm.business_licence_image = item.file
+    };
 
-      // state.ruleForm.business_licence_image = item.file.name
-    }
+    // 当超出个数限制时执行的钩子函数
+    const handleUploadExceed = (files: any, fileList: any)=>{
+      console.log('==proxy.uploadRef.fileList.length==', proxy.uploadRef.fileList.length)
+      console.log('==fileList.length==', fileList.length)
+      if (fileList.length==1){
+        ElMessage.warning('只能上传一个图片文件，请移除不需要的再重新上传');
+      }
+    };
 
-
-
-     const transformRequest=((data:any)=> {
-        let ret = '';
-        for (let it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        }
-        return ret
-    })
-
-
-
-
-
+    //点击文件列表中已上传的文件时的钩子
+    const handleUploadPreview=(file: any)=>{
+        ElMessage.info('preview pic');
+    };
 
 
 
@@ -406,6 +404,8 @@ export default {
       handleUploadBeforeRemove,
       handleUploadHttpRequest,
       handleUploadSuccess,
+      handleUploadPreview,
+      handleUploadExceed,
       onCancel,
       onSubmit,
       uploadRef,
