@@ -15,12 +15,12 @@ class Supplier(BaseModel):
     """
     供应商表，继承抽象基类BaseModel
     """
-    # status_choices = (
-    #     (0, '新建'),
-    #     (1, '生效'),
-    #     (2, '失效'),
-    #     (3, '冻结'),
-    # )
+    status_choices = (
+        (0, '新建'),
+        (1, '生效'),
+        (2, '失效'),
+        (3, '冻结'),
+    )
 
     account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='账号')
     abbreviation_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='简称')

@@ -71,7 +71,9 @@
         <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
                          min-width="80px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="状态" min-width="80px">
+<!--        <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" min-width="80px">-->
           <template #default="scope">
+<!--            {{scope.row.get_status_display}}-->
             <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
           </template>
         </el-table-column>

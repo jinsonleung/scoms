@@ -12,9 +12,9 @@ class SupplierContactSerializer(serializers.ModelSerializer):
 
 class SupplierSerializer(serializers.ModelSerializer):
     # contact变量名必须是SupplierContact模型中外键的related_name
-    contact = SupplierContactSerializer(many=True)
+    contact = SupplierContactSerializer(many=True, read_only=True)
     # 自定义序列化字段，获取状态枚举值
-    # status_label = serializers.CharField(source='get_status_display')
+    status_label = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Supplier   # 序列化的对象名
@@ -29,6 +29,15 @@ class SupplierSerializer(serializers.ModelSerializer):
     #     # contact_data = validate_data.pop('contact')
     #     supplier = self.create(**validate_data)
     #     return supplier
+
+    def get_status_label(self, obj):
+        """ 获取状态数字对应的值
+        自定义序列化字段，序列化的属性值由方法来提供
+        方法的名：固定为get_属性名（self,obj）
+        方法参数：序列化对象，序列化的model对象
+        强烈建议：自定义序列化字段名不要与model已有的属性名相同
+        """
+        return obj.get_status_display()
 
 
 class SupplierFilterSet(FilterSet):
