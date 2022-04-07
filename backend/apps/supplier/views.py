@@ -8,20 +8,24 @@ from rest_framework import status
 
 
 def create_new_supplier_account(latest_account):
-    """供应商账号生成规则，由S+5位账号+1位校验位"""
-    print('latest_account==', latest_account, type(latest_account))
-    new_account = ''
-
-    latest_account_num = latest_account
-    # new_account_num = (int(latest_account_num)+1).zfill(5)
-    # coefficient = [8,2,3,4,5]
-    # mod_digital = [1,0,9,8,7,6,5,4,3,2]
-    # sum = 0
-    # for i in range(5):
-    #     sum += int(coefficient[i])*int(new_account_num[i])
-    # mod_num = sum%10
-    # validate_num = mod_digital[mod_num]
-    # new_account = "S" + new_account_num + str(validate_num)
+    """
+    自动生成供应商账号
+    供应商账号生成规则：由S+5位账号+1位校验位
+    """
+    latest_account_num = latest_account[1:6]
+    print('latest_account_num=', latest_account_num)
+    new_account_num = str((int(latest_account_num)+1)).zfill(5)
+    print('new_account_num=', new_account_num)
+    coefficient = [8, 2, 3, 4, 5]
+    mod_digital = [1, 0, 9, 8, 7, 6, 5, 4, 3, 2]
+    _sum = 0
+    for i in range(5):
+        _sum += int(coefficient[i])*int(new_account_num[i])
+        print('{},{}', i, _sum)
+    # print('_sum=', _sum)
+    mod_num = _sum % 10
+    validate_num = mod_digital[mod_num]
+    new_account = "S" + new_account_num + str(validate_num)
     return new_account
 
 
@@ -34,34 +38,49 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
     serializer_class = SupplierSerializer   # 序列化
     pagination_class = Pagination  # 分页
 
-    # def create(self, request, *args, **kwargs):
-    #     """新增"""
-    #
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     # account = serializer['account']
-    #     # print('=account=', account)
-    #     serializer.save()
-    #
-    #
-    #
-    #     # 1.获取数据库中最后一条记录的供应商账号（数据中的记录以自增id排序）
-    #     latest_account = ''
-    #
-    #     # try:
-    #     #     latest_instance = self.get_queryset().latest('id')
-    #     #     if not latest_instance:
-    #     #         latest_account = 'S000010'
-    #     #     else:
-    #     #         latest_account = getattr(latest_instance, 'account')
-    #     #     new_account = create_new_supplier_account(latest_account)
-    #     #     # print('new_account==', type(latest_account), latest_account.)
-    #     # except Supplier.DoesNotExist:
-    #     #     return Response(status=status.HTTP_404_NOT_FOUND)
-    #     # 2.自动按规则生成供应商账号
-    #     # 3.保存记录
-    #     # 4.返回客户端数据
-    #     return Response({'msg': 'create ok'})
+    def create(self, request, *args, **kwargs):
+        """新增"""
+        # 1.获取最后一条记录所对应的供应商账号，如果空表则第1个账号为S00001+校验位
+        try:
+            latest_instance = self.get_queryset().latest('id')
+            latest_account = getattr(latest_instance, 'account')
+        except Supplier.DoesNotExist:
+            latest_account = '00000'
+        # 2.根据数据库中最后一个供应商账号自动生成新的账号
+        new_account = create_new_supplier_account(latest_account)
+        print('full_name=', request.data.get('full_name'))
+        # new_data = request.POST.copy()
+        new_data = request.data
+        new_data['account'] = new_account
+        print('new_data.full_name=', new_data.get('full_name'))
+
+        serializer = self.get_serializer(data=new_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'msg': 'okkkssss'})
+
+
+
+
+
+        # 1.获取数据库中最后一条记录的供应商账号（数据中的记录以自增id排序）
+        latest_account = ''
+
+        # try:
+        #     latest_instance = self.get_queryset().latest('id')
+        #     if not latest_instance:
+        #         latest_account = 'S000010'
+        #     else:
+        #         latest_account = getattr(latest_instance, 'account')
+        #     new_account = create_new_supplier_account(latest_account)
+        #     # print('new_account==', type(latest_account), latest_account.)
+        # except Supplier.DoesNotExist:
+        #     return Response(status=status.HTTP_404_NOT_FOUND)
+        # 2.自动按规则生成供应商账号
+        # 3.保存记录
+        # 4.返回客户端数据
+        return Response({'msg': 'create ok'})
 
 
     def list(self, request, *args, **kwargs):

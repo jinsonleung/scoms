@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.response import Response
+
 from apps.supplier.models import Supplier, SupplierContact
 import django_filters
 from django_filters.rest_framework import FilterSet
@@ -13,7 +15,7 @@ class SupplierContactSerializer(serializers.ModelSerializer):
 class SupplierSerializer(serializers.ModelSerializer):
     # contact变量名必须是SupplierContact模型中外键的related_name
     contact = SupplierContactSerializer(many=True, read_only=True)
-    # 自定义序列化字段，获取状态枚举值
+    # 自定义序列化字段，获取状态枚举值，对应get_status_label()自定义函数
     status_label = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -23,12 +25,18 @@ class SupplierSerializer(serializers.ModelSerializer):
         depth = 2   # 指定深度
 
     # def create(self, validate_data):
+    #
+    #     print('validate_data=====')
+    #
     #     # latest_account = validate_data['account']
     #     # validate_data['account'] = latest_account + 'ddd'
-    #     # super.create(validate_data)
-    #     # contact_data = validate_data.pop('contact')
-    #     supplier = self.create(**validate_data)
-    #     return supplier
+    #     # print('validate_data[account]', validate_data['account'])
+    #     # # super.create(validate_data)
+    #     # # contact_data = validate_data.pop('contact')
+    #     # # supplier = self.create(**validate_data)
+    #     # # return supplier
+    #     # return Response({'msg': 'ok'})
+
 
     def get_status_label(self, obj):
         """ 获取状态数字对应的值

@@ -208,13 +208,9 @@ export default {
     const handleAddSupplier = ()=>{
       console.log('==add....==')
       const data = {
-        account:'222333',
-        contact: {
-          id:1,
-          id:2,
-        },
-        status:'1',
-        status_label: '',
+        'account': '',
+        'full_name': '雅思国际集团公司',
+        'status': 0
       };
       addSupplier(data).then((res:any)=>{
         console.log('==addSupplier.res==', res)
