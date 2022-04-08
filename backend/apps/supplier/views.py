@@ -12,19 +12,22 @@ def create_new_supplier_account(latest_account):
     自动生成供应商账号
     供应商账号生成规则：由S+5位账号+1位校验位
     """
+    # 截取5位账号
     latest_account_num = latest_account[1:6]
-    print('latest_account_num=', latest_account_num)
+    # 将5位账号字符串转为数据加1，不足5位前补上0
     new_account_num = str((int(latest_account_num)+1)).zfill(5)
-    print('new_account_num=', new_account_num)
-    coefficient = [8, 2, 3, 4, 5]
+    # 系数
+    coefficient = [5, 2, 4, 1, 3]
+    # 取模种子数组
     mod_digital = [1, 0, 9, 8, 7, 6, 5, 4, 3, 2]
+    # 每位系系统与每位账号相乘后求和
     _sum = 0
     for i in range(5):
         _sum += int(coefficient[i])*int(new_account_num[i])
-        print('{},{}', i, _sum)
-    # print('_sum=', _sum)
+    # 取模并得到校验位
     mod_num = _sum % 10
     validate_num = mod_digital[mod_num]
+    # 拼接下一个账号
     new_account = "S" + new_account_num + str(validate_num)
     return new_account
 
