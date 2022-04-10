@@ -5,6 +5,8 @@ from apps.supplier.serializers import SupplierSerializer
 from utils.pagination import Pagination
 from rest_framework import viewsets
 from rest_framework import status
+import random
+import time
 
 
 def create_new_supplier_account(latest_account):
@@ -41,49 +43,68 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
     serializer_class = SupplierSerializer   # 序列化
     pagination_class = Pagination  # 分页
 
-    def create(self, request, *args, **kwargs):
-        """新增"""
-        # 1.获取最后一条记录所对应的供应商账号，如果空表则第1个账号为S00001+校验位
+    def create_0(self, request, *args, **kwargs):
+        """新增（正确）"""
+
+        ext = str(request.FILES.get('files').name).split('.')[-1]
+        fileName = 'hello.' + ext
+        request.FILES.get('files').name = fileName
+        # 获取前端表单数据
+        data = request.data
+        # 读取表单文件
+        files = request.FILES.getlist('files')
+        print('files==', files)
+        fileNames = request.POST.get('fileNames')
+        # 保存将表单文件文件到data
+        for file in files:
+            print('file=', type(file))
+            data['business_licence_image'] = file
+        # 获取最后一条记录所对应的供应商账号，如果空表则第1个账号为S00001+校验位
         try:
             latest_instance = self.get_queryset().latest('id')
             latest_account = getattr(latest_instance, 'account')
         except Supplier.DoesNotExist:
             latest_account = '00000'
-        # 2.根据数据库中最后一个供应商账号自动生成新的账号
+        # 根据数据库中最后一个供应商账号自动生成新的账号
         new_account = create_new_supplier_account(latest_account)
-        print('full_name=', request.data.get('full_name'))
-        # new_data = request.POST.copy()
-        new_data = request.data
-        new_data['account'] = new_account
-        print('new_data.full_name=', new_data.get('full_name'))
-
-        serializer = self.get_serializer(data=new_data)
+        data['account'] = new_account
+        # 反序列化并校验
+        serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
+        # 保存至数据库
         serializer.save()
-        # return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response({'msg': 'okkkssss'})
+        # 返回数据给客户端
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response({'msg': 'okkkkk'})
 
-
-
-
-
-        # 1.获取数据库中最后一条记录的供应商账号（数据中的记录以自增id排序）
-        latest_account = ''
-
-        # try:
-        #     latest_instance = self.get_queryset().latest('id')
-        #     if not latest_instance:
-        #         latest_account = 'S000010'
-        #     else:
-        #         latest_account = getattr(latest_instance, 'account')
-        #     new_account = create_new_supplier_account(latest_account)
-        #     # print('new_account==', type(latest_account), latest_account.)
-        # except Supplier.DoesNotExist:
-        #     return Response(status=status.HTTP_404_NOT_FOUND)
-        # 2.自动按规则生成供应商账号
-        # 3.保存记录
-        # 4.返回客户端数据
-        return Response({'msg': 'create ok'})
+    def create(self, request, *args, **kwargs):
+        """新增（正确）"""
+        # 获取最后一条记录所对应的供应商账号，如果空表则第1个账号为S00001+校验位
+        try:
+            latest_instance = self.get_queryset().latest('id')
+            latest_account = getattr(latest_instance, 'account')
+        except Supplier.DoesNotExist:
+            latest_account = '00000'
+        # 根据数据库中最后一个供应商账号自动生成新的账号
+        new_account = create_new_supplier_account(latest_account)
+        # 修改客户端营业执照文件名，格式为：账号_license_年月日时分秒_2位随机数
+        file_extension = str(request.FILES.get('files').name).split('.')[-1]
+        datetime_and_random_num = time.strftime('%Y%m%d%H%M%S')
+        datetime_and_random_num = datetime_and_random_num + '_%d' % random.randint(0, 100)
+        fileName = f'{new_account}_license_{datetime_and_random_num}.{file_extension}'
+        # 获取前端表单数据（前端上传的营业执照只有仅限1张图片）
+        data = request.data
+        data['account'] = new_account
+        data['business_licence_image'] = request.FILES.get('files')
+        data['business_licence_image'].name = fileName
+        # 反序列化并校验
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        # 保存至数据库
+        serializer.save()
+        # 返回数据给客户端
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response({'msg': 'okkkkk'})
 
 
     def list(self, request, *args, **kwargs):
@@ -140,7 +161,7 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         else:
             return Response({'msg': 'okkkkkk'})
 
-    def update1(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
         """更新（正确）"""
         # 获取PK及数据
         pk = kwargs.get('pk')

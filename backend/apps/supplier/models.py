@@ -1,7 +1,12 @@
 from django.db import models
 from apps.public.models import BaseModel
 from apps.public.managers import CommonManager
+from utils.system.storage import ImageStorage
+import uuid
 
+
+def image_upload_to(self, instance, filename):
+    return 'supplierBusinessLicenceImage/{uuid}/{filename}'.format(uuid=uuid.uuid4().hex, filename=filename)
 
 class Status(models.IntegerChoices):
     """供应商使用状态枚举类型定义，单独一个类可以被不同的模型类使用"""
@@ -27,8 +32,13 @@ class Supplier(BaseModel):
     full_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='全称')
     architecture = models.CharField(max_length=64, blank=True, null=True, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  blank=True, null=True, verbose_name='统一社会信用代码')
-    # 会将图片文件存放到media/supplierBusinessLicenceImage目录下，如果文件名重复则drf会自动添加缀
+
+    # 方法1： 会将图片文件存放到media/supplierBusinessLicenceImage目录下，如果文件名重复则drf会自动添加缀
     business_licence_image = models.FileField(upload_to='supplierBusinessLicenceImage', blank=True, null=True, default='default.jpg', verbose_name='照业执照图片')
+    # 方法2：使用storage选项对文件进行重命名
+    # business_licence_image = models.FileField(upload_to='supplierBusinessLicenceImage', blank=True, null=True, default='default.jpg', storage=ImageStorage(), verbose_name='照业执照图片')
+    # 方法3：使用upload_to调用方法对文件进行重命名
+    # business_licence_image = models.FileField(upload_to=image_upload_to, blank=True, null=True, default='default.jpg', verbose_name='照业执照图片')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
     registered_address = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册地址')
     established_date = models.DateField(blank=True, null=True, verbose_name='成立日期')
@@ -69,6 +79,11 @@ class Supplier(BaseModel):
         """控制台对象输出内容"""
         # return '%s,%s' (self.account, self.full_name)
         return self.account
+
+
+
+
+
 
     # def image_img(self):
     #     print('==self.business_licence_image==', self.business_licence_image)

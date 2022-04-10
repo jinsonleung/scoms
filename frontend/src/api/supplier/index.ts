@@ -52,10 +52,20 @@ export function updateSupplier(params: any){
 }
 
 
+export function addSupplier_old(params: any){
+	return request({
+		url: '/supplier/',
+		method: 'POST',
+		data: params,
+	});
+}
+
 export function addSupplier(params: any){
 	return request({
 		url: '/supplier/',
 		method: 'POST',
+		//前端有图片文件，需要使用multipart/form-data请求头
+		headers: {'content-type': 'multipart/form-data'},
 		data: params,
 	});
 }

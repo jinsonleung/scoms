@@ -10,7 +10,7 @@
             <el-icon><elementSearch/></el-icon>查询
           </el-button>
         </el-row>
-        <el-button type="primary" @click="handleAddSupplier">新增</el-button>
+        <el-button type="primary" @click="onOpenAddDialog">新增</el-button>
       </div>
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
@@ -102,7 +102,8 @@
     </el-card>
     <!--3.子组件-->
     <SupplierDetail ref="supplierDetailRef"/>
-    <SupplierEdit ref="supplierEditRef"/>
+    <EditSupplier ref="editSupplierRef"/>
+    <AddSupplier ref="addSupplierRef"/>
   </div>
 </template>
 <script lang="ts">
@@ -110,7 +111,8 @@
 import {computed, onMounted, reactive, ref, toRefs} from "vue";
 import {getPageSuppliers,queryPageSuppliers, addSupplier} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
-import SupplierEdit from '/@/views/supplier/supplierInfo/component/supplierEdit.vue';
+import EditSupplier from '/@/views/supplier/supplierInfo/component/editSupplier.vue';
+import AddSupplier from '/@/views/supplier/supplierInfo/component/addSupplier.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {queryAirports} from "/@/api/universalCode";
@@ -122,11 +124,12 @@ import {queryAirports} from "/@/api/universalCode";
 
 export default {
   name: 'supplierSupplierInfo',
-  components: {SupplierDetail,SupplierEdit,},
+  components: {SupplierDetail,EditSupplier,AddSupplier,},
   setup() {
     const queryText = ref('');
     const supplierDetailRef = ref();
-    const supplierEditRef = ref();
+    const editSupplierRef = ref();
+    const addSupplierRef = ref();
     const state = reactive({
       tableData: {
         data: [] as Array<any>,
@@ -186,7 +189,7 @@ export default {
     };
     // 编辑供应商情况弹窗
     const onOpenEditDialog = (row: object) => {
-      supplierEditRef.value.openDialog(row);
+      editSupplierRef.value.openDialog(row);
     };
 
     // 删除当前行
@@ -205,7 +208,11 @@ export default {
       })
     };
 
-    const handleAddSupplier = ()=>{
+    const onOpenAddDialog = () => {
+      addSupplierRef.value.openDialog();
+    }
+
+    const onOpenAddDialog_old = ()=>{
       console.log('==add....==')
       const data = {
         'account': '',
@@ -229,7 +236,8 @@ export default {
       queryText,
       ...toRefs(state),
       supplierDetailRef,
-      supplierEditRef,
+      editSupplierRef,
+      addSupplierRef,
       tagType,
       getPageData,
       onHandleQuery,
@@ -238,7 +246,7 @@ export default {
       onOpenDetailDialog,
       onOpenEditDialog,
       onDeleteRow,
-      handleAddSupplier,
+      onOpenAddDialog,
     };
   },
 };
