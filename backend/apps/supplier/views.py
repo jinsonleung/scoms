@@ -77,7 +77,7 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         # return Response({'msg': 'okkkkk'})
 
-    def create(self, request, *args, **kwargs):
+    def create_1(self, request, *args, **kwargs):
         """新增（正确）"""
         # 获取最后一条记录所对应的供应商账号，如果空表则第1个账号为S00001+校验位
         try:
@@ -106,6 +106,41 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         # return Response({'msg': 'okkkkk'})
 
+    def create(self, request, *args, **kwargs):
+        """新增（正确）"""
+        # 获取最后一条记录所对应的供应商账号，如果空表则第1个账号为S00001+校验位
+        try:
+            latest_instance = self.get_queryset().latest('id')
+            latest_account = getattr(latest_instance, 'account')
+        except Supplier.DoesNotExist:
+            latest_account = '00000'
+        # 根据数据库中最后一个供应商账号自动生成新的账号
+        new_account = create_new_supplier_account(latest_account)
+        print('==new_account==', new_account)
+        data = request.data
+        data._mutable = True
+        data['account'] = new_account
+        image_file = request.FILES.get('files')
+        if image_file:
+            file_extension = str(image_file.name).split('.')[-1]
+            datetime_and_random_num = time.strftime('%Y%m%d%H%M%S')
+            datetime_and_random_num = datetime_and_random_num + '_%d' % random.randint(0, 100)
+            new_image_file_name = f'{new_account}_license_{datetime_and_random_num}.{file_extension}'
+            image_file.name = new_image_file_name
+            data['business_licence_image'] = image_file
+        else:
+            data.pop('business_licence_image')
+        #     image_file.name = 'supplierBusinessLicenceImage/default.jpg'
+        # data['business_licence_image'] = image_file
+        data._mutable = False
+        # 反序列化并校验
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        # 保存至数据库
+        serializer.save()
+        # 返回数据给客户端
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'msg': 'okkkkk'})
 
     def list(self, request, *args, **kwargs):
         """重写list，实现供应商账号、供应商名称模糊查询"""

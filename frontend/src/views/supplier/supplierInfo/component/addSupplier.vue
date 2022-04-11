@@ -394,9 +394,9 @@ export default {
 
     // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
     const handleUploadOnChange = (file: any, fileList: any) => {
-      ElMessage.success('fileList');
+
       uploadRef.fileList = fileList;
-      // console.log('==handleUploadOnChange==', fileList)
+      console.log('==handleUploadOnChange==', fileList)
       // console.log('==uploadRef.fileList==', uploadRef.fileList)
 
     }
