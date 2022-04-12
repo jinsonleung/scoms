@@ -45,7 +45,6 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
 
     def create_0(self, request, *args, **kwargs):
         """新增（正确）"""
-
         ext = str(request.FILES.get('files').name).split('.')[-1]
         fileName = 'hello.' + ext
         request.FILES.get('files').name = fileName

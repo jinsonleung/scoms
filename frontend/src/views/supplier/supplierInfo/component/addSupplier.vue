@@ -6,12 +6,15 @@
           <el-tab-pane label="基本信息" name="baseInfoTab" >
             <el-form ref="ruleFormRef" :model="ruleForm" size="small" label-width="110px">
               <el-row :gutter="10">
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="mb20">
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="账号" prop="account">
                     <el-input v-model="ruleForm.account" placeholder="账号自动生成" clearable disabled></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="mb20">
+                <!--空列-->
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                </el-col>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="供应商简称" prop="abbreviation_name">
                     <el-input v-model="ruleForm.abbreviation_name" placeholder="请输入供应商简称" clearable></el-input>
                   </el-form-item>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SqlDialectMappings">
-    <file url="file://$USER_HOME$/Desktop/2021全国省市区街道四级Mysql/t_area.sql" dialect="MySQL" />
-    <file url="file://$USER_HOME$/Desktop/2021全国省市区街道四级Mysql/t_city.sql" dialect="MySQL" />
-    <file url="file://$USER_HOME$/Desktop/2021全国省市区街道四级Mysql/t_province.sql" dialect="MySQL" />
-    <file url="file://$USER_HOME$/Desktop/2021全国省市区街道四级Mysql/t_street.sql" dialect="MySQL" />
-  </component>
-</project>
