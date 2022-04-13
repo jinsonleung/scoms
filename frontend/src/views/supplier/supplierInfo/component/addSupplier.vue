@@ -8,7 +8,7 @@
               <el-row :gutter="10">
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="账号" prop="account">
-                    <el-input v-model="ruleForm.account" placeholder="账号自动生成" clearable disabled></el-input>
+                    <el-input v-model="ruleForm.account" placeholder="账号自动生成" disabled></el-input>
                   </el-form-item>
                 </el-col>
                 <!--空列-->
@@ -176,25 +176,25 @@
                   <el-row :gutter="10">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
                       <el-form-item label="状态" prop="status">
-                        <el-select v-model="ruleForm.status" placeholder="Select">
-                          <el-option
-                            v-for="item in statusOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                            :disabled="item.disabled"
+                        <el-select v-model="ruleForm.status" placeholder="Select" disabled="True">
+<!--                          <el-option-->
+<!--                            v-for="item in statusOptions"-->
+<!--                            :key="item.value"-->
+<!--                            :label="item.label"-->
+<!--                            :value="item.value"-->
+<!--                            :disabled="item.disabled"-->
 
-                          >
-                            <span style="float: left">{{ item.label }}</span>
-                            <span
-                              style="
-                                float: right;
-                                color: var(--el-text-color-secondary);
-                                font-size: 13px;
-                              "
-                              >{{ item.value }}</span
-                            >
-                          </el-option>
+<!--                          >-->
+<!--                            <span style="float: left">{{ item.label }}</span>-->
+<!--                            <span-->
+<!--                              style="-->
+<!--                                float: right;-->
+<!--                                color: var(&#45;&#45;el-text-color-secondary);-->
+<!--                                font-size: 13px;-->
+<!--                              "-->
+<!--                              >{{ item.value }}</span-->
+<!--                            >-->
+<!--                          </el-option>-->
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -303,22 +303,9 @@ export default {
 
     const statusOptions = [
   {
-    value: '自动生成',
+    value: '新建',
     label: '新建',
     disabled: true,
-  },
-  {
-    value: '手动配置',
-    label: '生效',
-  },
-  {
-    value: '自动生成',
-    label: '失效',
-    disabled: true,
-  },
-  {
-    value: '手动配置',
-    label: '冻结',
   },
 ];
 

@@ -8,8 +8,11 @@
               <el-row :gutter="10">
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="账号" prop="account">
-                    <el-input v-model="ruleForm.account" placeholder="请输入供应商账号" clearable></el-input>
+                    <el-input v-model="ruleForm.account" placeholder="请输入供应商账号" disabled></el-input>
                   </el-form-item>
+                </el-col>
+                <!--空列-->
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="供应商简称" prop="abbreviation_name">
@@ -155,6 +158,8 @@
                 </div>
               </template>
             </el-upload>
+            {{ruleForm.business_licence_image}}
+            <el-image v-model="ruleForm.business_licence_image"></el-image>
           </el-tab-pane>
           <el-tab-pane label="银行对公账户" name="BankAccountTab">
             <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="8"
@@ -291,7 +296,7 @@ export default {
 
     // 打开弹窗
     const openDialog = (row: any) => {
-      // console.log('==openDialog.row1==', row);
+      console.log('==openEditDialog.row==', row);
       state.ruleForm = row;
       state.isShowDialog = true;
     };
