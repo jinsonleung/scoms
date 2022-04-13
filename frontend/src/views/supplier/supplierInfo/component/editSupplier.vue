@@ -158,8 +158,15 @@
                 </div>
               </template>
             </el-upload>
-            {{ruleForm.business_licence_image}}
-            <el-image v-model="ruleForm.business_licence_image"></el-image>
+                <el-image
+                    style="width: 100px; height: 100px"
+                    :src="ruleForm.business_licence_image"
+                    fit="contain">
+                </el-image>
+<!--            <img width="100%" :src="URL.createObjectURL(ruleForm.business_licence_image)" alt="aaa" />-->
+<!--            {{ruleForm.business_licence_image}}-->
+<!--            <el-image v-model="ruleForm.business_licence_image"></el-image>-->
+<!--            <el-image-viewer :url-list="ruleForm.business_licence_image"></el-image-viewer>-->
           </el-tab-pane>
           <el-tab-pane label="银行对公账户" name="BankAccountTab">
             <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="8"
