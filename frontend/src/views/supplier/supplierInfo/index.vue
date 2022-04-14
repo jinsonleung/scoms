@@ -79,12 +79,17 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="生效期" min-width="80px">
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业期" min-width="80px">
           <template #default="scope">
-            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')>=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')}}</el-tag>
+            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? '正常':'失效'}}</el-tag>
           </template>
         </el-table-column>
 
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业执照" min-width="80px">
+          <template #default="scope">
+            <el-tag :type="scope.row.business_licence_image=''? 'danger':'success'" size="mini" effect="dark">{{scope.row.business_licence_image=''? '未上传':'已上传'}}</el-tag>
+          </template>
+        </el-table-column>
 
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
           <template #default="scope">
