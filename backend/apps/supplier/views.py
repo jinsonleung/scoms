@@ -90,12 +90,12 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         file_extension = str(request.FILES.get('files').name).split('.')[-1]
         datetime_and_random_num = time.strftime('%Y%m%d%H%M%S')
         datetime_and_random_num = datetime_and_random_num + '_%d' % random.randint(0, 100)
-        fileName = f'{new_account}_license_{datetime_and_random_num}.{file_extension}'
+        file_name = f'{new_account}_license_{datetime_and_random_num}.{file_extension}'
         # 获取前端表单数据（前端上传的营业执照只有仅限1张图片）
         data = request.data
         data['account'] = new_account
         data['business_licence_image'] = request.FILES.get('files')
-        data['business_licence_image'].name = fileName
+        data['business_licence_image'].name = file_name
         # 反序列化并校验
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -124,7 +124,7 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
             file_extension = str(image_file.name).split('.')[-1]
             datetime_and_random_num = time.strftime('%Y%m%d%H%M%S')
             datetime_and_random_num = datetime_and_random_num + '_%d' % random.randint(0, 100)
-            new_image_file_name = f'{new_account}_license_{datetime_and_random_num}.{file_extension}'
+            new_image_file_name = f'{new_account}_LICENSE_{datetime_and_random_num}.{file_extension}'
             image_file.name = new_image_file_name
             data['business_licence_image'] = image_file
         else:

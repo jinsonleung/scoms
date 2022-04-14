@@ -150,23 +150,26 @@
                 :file-list="uploadRef.fileList"
                 :on-exceed="handleUploadExceed"
             >
-              <el-icon class="el-icon--upload"><upload-filled/></el-icon>
+              <el-icon class="el-icon--upload">
+                <upload-filled/>
+              </el-icon>
               <div class="el-upload__text">拖放文件到这里或点击<em>上传图片</em></div>
               <template #tip>
                 <div class="el-upload__tip">
-                  只能上传一张作为营业执照格式为 jpg/jpeg/png，不超过 2MB
+                  （只能上传一张作为营业执照格式为 jpg/jpeg/png，不超过 2MB）
                 </div>
               </template>
             </el-upload>
-                <el-image
-                    style="width: 100px; height: 100px"
-                    :src="ruleForm.business_licence_image"
-                    fit="contain">
-                </el-image>
-<!--            <img width="100%" :src="URL.createObjectURL(ruleForm.business_licence_image)" alt="aaa" />-->
-<!--            {{ruleForm.business_licence_image}}-->
-<!--            <el-image v-model="ruleForm.business_licence_image"></el-image>-->
-<!--            <el-image-viewer :url-list="ruleForm.business_licence_image"></el-image-viewer>-->
+            <ul style="margin: 10px 0 10px 0;">
+              <span>已上传的附件列表</span>
+              <li><a :href="ruleForm.business_licence_image" target="_blank">{{imageFileName}}</a><br/></li>
+            </ul>
+<!--            <a :href="ruleForm.business_licence_image" target="_blank">{{imageFileName}}</a><br/>-->
+            <el-image
+                style="width: 100px; height: 100px"
+                :src="ruleForm.business_licence_image"
+                fit="contain">
+            </el-image>
           </el-tab-pane>
           <el-tab-pane label="银行对公账户" name="BankAccountTab">
             <el-input v-model="ruleForm.banking_account_info" type="textarea" placeholder="请输入银行对公账户" :rows="8"
@@ -242,7 +245,7 @@
 <!--https://huyu.info/blog/detail/148-->
 
 <script lang="ts">
-import {reactive, toRefs, onMounted, ref, getCurrentInstance} from 'vue';
+import {reactive, toRefs, onMounted, ref, getCurrentInstance, computed} from 'vue';
 import {updateSupplier} from "/@/api/supplier";
 import {ElMessage,ElNotification} from "element-plus";
 import type {TabsPaneContext } from 'element-plus';
@@ -298,13 +301,23 @@ export default {
 ];
 
     const handleClick = (tab: TabsPaneContext, event: Event) => {
-      console.log(tab, event)
+      // console.log(tab, event)
     }
 
     // 打开弹窗
     const openDialog = (row: any) => {
       console.log('==openEditDialog.row==', row);
+      console.log('==openEditDialog.row.business_licence_image==', row.business_licence_image);
+
+      const imageUrl= "http://localhost:8000/media/supplierBusinessLicenceImage/S001229_license_20220414130847_35.jpg"
+      const aa = imageUrl.substring(imageUrl.lastIndexOf('/')+1)
+      console.log('=aa.split.length==', aa)
+
       state.ruleForm = row;
+      // if (row.business_licence_image) {
+      //   imageFileName.value = row.business_licence_image.split('/')[-1];
+      // }
+      // console.log('==imageFileName==', imageFileName)
       state.isShowDialog = true;
     };
     // 关闭弹窗
@@ -315,6 +328,14 @@ export default {
     const onCancel = () => {
       closeDialog();
     };
+
+    // 计算属性，获取从服务端返回图片url的文件名
+    const imageFileName = computed(()=>{
+      if (state.ruleForm.business_licence_image) {
+        const imageUrl = state.ruleForm.business_licence_image;
+        return imageUrl.substring(imageUrl.lastIndexOf('/')+1)
+      }
+    })
 
     // 修改
     const onSubmit = async () => {
@@ -406,6 +427,7 @@ export default {
       statusValue,
       statusOptions,
       activeName,
+      imageFileName,
       CompanyTypes,
       Architectures,
       Industries,

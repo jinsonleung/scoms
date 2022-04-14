@@ -64,12 +64,13 @@
                          min-width="120px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="full_name" label="全称"
                          min-width="100px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="established_date" label="成立日期"
-                         min-width="80px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="office_address" label="办公地址"
                          min-width="150px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
                          min-width="80px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="established_date" label="成立日期"
+                         min-width="80px"></el-table-column>
+
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="状态" min-width="80px">
 <!--        <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" min-width="80px">-->
           <template #default="scope">
@@ -77,6 +78,14 @@
             <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
           </template>
         </el-table-column>
+
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="生效期" min-width="80px">
+          <template #default="scope">
+            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')>=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')}}</el-tag>
+          </template>
+        </el-table-column>
+
+
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
           <template #default="scope">
             <el-button type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
@@ -116,6 +125,7 @@ import AddSupplier from '/@/views/supplier/supplierInfo/component/addSupplier.vu
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {queryAirports} from "/@/api/universalCode";
+import {formatDate} from '/@/utils/formatTime'
 
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
@@ -234,6 +244,7 @@ export default {
       Edit,
       Delete,
       queryText,
+      formatDate,
       ...toRefs(state),
       supplierDetailRef,
       editSupplierRef,
