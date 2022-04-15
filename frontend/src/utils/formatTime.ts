@@ -135,3 +135,63 @@ export function formatAxis(param: Date): string {
 	else if (hour < 22) return '晚上好';
 	else return '夜里好';
 }
+
+
+ /**
+   * 获取当前日期
+   * @returns {string}
+   * @Example getNowDate('-')
+   */
+  export function getNowDate(str:string):string{
+    let nowDate = new Date();
+    let y = nowDate.getFullYear();
+    let m = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+    let d = nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+    if(str){
+      return y + str + m + str + d;
+    }else{
+      return y + '年' + m + '月' + d + '日';
+    }
+  }
+
+  /**
+   * 获取两个字符串日期间的差值
+   * @param startDay
+   * @param endDay
+   * @Example getDateDiff('2020-01-05','2020-01-10')
+   */
+  export function getDateDiff(startDay:string,endDay:string){
+    return Math.abs(parseInt((new Date(endDay).getTime() - new Date(startDay).getTime())/(1000 * 60 * 60 * 24)));
+  }
+
+  /**
+   * 获取当前月份
+   * @returns {string}
+   * @Example getNowMonth('-')
+   */
+  export function getMonth(str:string){
+    let nowDate = new Date();
+    let y = nowDate.getFullYear();
+    let m = nowDate.getMonth() + 1 < 10 ? "0" + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+    if(str){
+      return y + str + m;
+    }else{
+      return y + '年' + m + '月';
+    }
+  }
+
+  /**
+   * 获取两个字符串月份间的差值
+   * @param startMonth
+   * @param endMonth
+   * @Example getMonthDiff('2020-04','2020-01')
+   */
+  export function getMonthDiff(startMonth:string,endMonth:string){
+    let startMonths = startMonth.split('-');
+    let endMonths = endMonth.split('-');
+    return Math.abs((parseInt(startMonths[0]) * 12 + parseInt(startMonths[1])) - (parseInt(endMonths[0]) * 12 + parseInt(endMonths[1])));
+  }
+
+
+
+

@@ -12,6 +12,9 @@
         </el-row>
         <el-button type="primary" @click="onOpenAddDialog">新增</el-button>
       </div>
+
+      <el-button>aaaa</el-button>
+
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
         <!--1.1嵌套子表：供应商联系人-->
@@ -57,35 +60,60 @@
           </template>
         </el-table-column>
         <!--1.2主表：供应商信息表-->
-        <el-table-column align="center" show-overflow-tooltip type="index" label="№" min-width="20px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip type="index" label="№" min-width="10px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="account" label="账号"
                          min-width="80px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="abbreviation_name" label="简称"
-                         min-width="120px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="full_name" label="全称"
                          min-width="100px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="full_name" label="全称"
+                         min-width="180px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="office_address" label="办公地址"
                          min-width="150px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
                          min-width="80px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="established_date" label="成立日期"
-                         min-width="80px"></el-table-column>
-
-        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="状态" min-width="80px">
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="使用状态" min-width="70px">
 <!--        <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" min-width="80px">-->
           <template #default="scope">
 <!--            {{scope.row.get_status_display}}-->
             <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
           </template>
         </el-table-column>
-
-        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="生效期" min-width="80px">
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业状态" min-width="170px">
+<!--          <template #default="scope">-->
+<!--            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? "有效":"失效"}}</el-tag>-->
+<!--          </template>-->
           <template #default="scope">
-            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')>=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')}}</el-tag>
+            bb {{getDateDiff(new Date(),scope.row.effective_end_date)}}
+
+            <el-tag v-if="(scope.row.effective_end_date-formatDate(new Date(),'YYYY-mm-dd'))<=0"
+                    type="danger"
+                    size="mini"
+                    effect="dark"
+            >已失效</el-tag>
+            <el-tag v-else-if="0<(scope.row.effective_end_date-formatDate(new Date(),'YYYY-mm-dd'))<=30"
+                    type="warning"
+                    size="mini"
+                    effect="dark"
+            >将失效
+            </el-tag>
+            <el-tag v-else-if="(scope.row.effective_end_date-formatDate(new Date(),'YYYY-mm-dd'))>30"
+                    type="success"
+                    size="mini"
+                    effect="dark"
+            >生效中
+            </el-tag>
+          </template>
+<!--          <template #default="scope">-->
+<!--            <el-tag :type="effectiveStatus(scope.row.effective_end_date)['type']">{{effectiveStatus(scope.row.effective_end_date)['text']}}</el-tag>-->
+<!--          </template>-->
+
+
+        </el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="执照上传" min-width="70px">
+          <template #default="scope">
+            <el-tag :type="scope.row.business_licence_image? 'success':'danger'" size="mini" effect="dark">{{scope.row.business_licence_image? "已上传":"未上传"}}</el-tag>
           </template>
         </el-table-column>
-
-
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
           <template #default="scope">
             <el-button type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
@@ -125,7 +153,7 @@ import AddSupplier from '/@/views/supplier/supplierInfo/component/addSupplier.vu
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import {queryAirports} from "/@/api/universalCode";
-import {formatDate} from '/@/utils/formatTime'
+import {formatDate, getDateDiff} from '/@/utils/formatTime'
 
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
@@ -223,6 +251,8 @@ export default {
     }
 
     const onOpenAddDialog_old = ()=>{
+      const aa = '2022/2/2';
+
       console.log('==add....==')
       const data = {
         'account': '',
@@ -233,6 +263,32 @@ export default {
         console.log('==addSupplier.res==', res)
       })
     }
+
+    const gap_days = computed(()=>{
+      // const p = state.tableData.param.pageSize;
+      // const d = state.tableData.data["effective_end_date"]
+      // console.log('==cmputed==', d)
+      // return d
+      // // const d = state.tableData.data.effective_end_date;
+      // // return d;
+      // // console.log('==cmputed==', d)
+    })
+
+    const effective_result = (end_date: any)=>{
+      console.log('==effective_result==', end_date)
+      if (end_date) {
+
+        const e_d = Date.parse(end_date)
+        const current_date = new Date();
+        const gap_days = current_date - end_date;
+        console.log('==its date==', current_date)
+        return gap_days;
+
+      }
+    }
+
+
+
 
     // 钩子函数，获取第1页数据
     onMounted(()=>{
@@ -258,6 +314,9 @@ export default {
       onOpenEditDialog,
       onDeleteRow,
       onOpenAddDialog,
+      gap_days,
+      getDateDiff,
+      effective_result,
     };
   },
 };
