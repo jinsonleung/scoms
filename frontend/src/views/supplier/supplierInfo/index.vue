@@ -78,6 +78,7 @@
             <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
           </template>
         </el-table-column>
+<<<<<<< HEAD
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业状态" min-width="170px">
 <!--          <template #default="scope">-->
 <!--            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? "有效":"失效"}}</el-tag>-->
@@ -102,11 +103,22 @@
                     effect="dark"
             >生效中
             </el-tag>
+=======
+
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业期" min-width="80px">
+          <template #default="scope">
+            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? '正常':'失效'}}</el-tag>
+>>>>>>> 14c7298b4736ccaee447cb6f0d10dafb93c04aee
           </template>
 <!--          <template #default="scope">-->
 <!--            <el-tag :type="effectiveStatus(scope.row.effective_end_date)['type']">{{effectiveStatus(scope.row.effective_end_date)['text']}}</el-tag>-->
 <!--          </template>-->
 
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业执照" min-width="80px">
+          <template #default="scope">
+            <el-tag :type="scope.row.business_licence_image=''? 'danger':'success'" size="mini" effect="dark">{{scope.row.business_licence_image=''? '未上传':'已上传'}}</el-tag>
+          </template>
+        </el-table-column>
 
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="执照上传" min-width="70px">
