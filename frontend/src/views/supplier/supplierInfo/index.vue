@@ -12,13 +12,10 @@
         </el-row>
         <el-button type="primary" @click="onOpenAddDialog">新增</el-button>
       </div>
-
-      <el-button>aaaa</el-button>
-
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
         <!--1.1嵌套子表：供应商联系人-->
-        <el-table-column type="expand" label="C/E" min-width="20px">
+        <el-table-column type="expand" label="E/C" min-width="20px">
           <template #default="scope">
             <el-table class="child-table" :data="scope.row.contact" stripe style="width: 100%">
               <el-table-column align="center" label="供应商联系方式">
@@ -42,7 +39,7 @@
                   <template #header>
                     <el-button-group>
                       <el-tooltip>操作</el-tooltip>
-                      <el-button type="primary" style="margin-left:5px; float: right">新建</el-button>
+                        <el-button type="primary" style="margin-left:5px; float: right" @click="onOpenAddContactDialog">新建</el-button>
                     </el-button-group>
                   </template>
 
@@ -72,58 +69,18 @@
         <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
                          min-width="80px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="使用状态" min-width="70px">
-<!--        <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" min-width="80px">-->
           <template #default="scope">
-<!--            {{scope.row.get_status_display}}-->
             <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
           </template>
         </el-table-column>
-<<<<<<< HEAD
-        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业状态" min-width="170px">
-<!--          <template #default="scope">-->
-<!--            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? "有效":"失效"}}</el-tag>-->
-<!--          </template>-->
+        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业状态" min-width="70px">
           <template #default="scope">
-            bb {{getDateDiff(new Date(),scope.row.effective_end_date)}}
-
-            <el-tag v-if="(scope.row.effective_end_date-formatDate(new Date(),'YYYY-mm-dd'))<=0"
-                    type="danger"
-                    size="mini"
-                    effect="dark"
-            >已失效</el-tag>
-            <el-tag v-else-if="0<(scope.row.effective_end_date-formatDate(new Date(),'YYYY-mm-dd'))<=30"
-                    type="warning"
-                    size="mini"
-                    effect="dark"
-            >将失效
-            </el-tag>
-            <el-tag v-else-if="(scope.row.effective_end_date-formatDate(new Date(),'YYYY-mm-dd'))>30"
-                    type="success"
-                    size="mini"
-                    effect="dark"
-            >生效中
-            </el-tag>
-=======
-
-        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业期" min-width="80px">
-          <template #default="scope">
-            <el-tag :type="formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? 'success':'danger'" size="mini" effect="dark">{{formatDate(new Date(),'YYYY-mm-dd')<=scope.row.effective_end_date? '正常':'失效'}}</el-tag>
->>>>>>> 14c7298b4736ccaee447cb6f0d10dafb93c04aee
+            <el-tag :type="effectiveStatus[getEffectiveStatus(scope.row.effective_end_date)]" size="mini" effect="dark">{{getEffectiveStatus(scope.row.effective_end_date)}}</el-tag>
           </template>
-<!--          <template #default="scope">-->
-<!--            <el-tag :type="effectiveStatus(scope.row.effective_end_date)['type']">{{effectiveStatus(scope.row.effective_end_date)['text']}}</el-tag>-->
-<!--          </template>-->
-
-        <el-table-column align="center" show-overflow-tooltip prop="status_label" label="营业执照" min-width="80px">
-          <template #default="scope">
-            <el-tag :type="scope.row.business_licence_image=''? 'danger':'success'" size="mini" effect="dark">{{scope.row.business_licence_image=''? '未上传':'已上传'}}</el-tag>
-          </template>
-        </el-table-column>
-
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="执照上传" min-width="70px">
           <template #default="scope">
-            <el-tag :type="scope.row.business_licence_image? 'success':'danger'" size="mini" effect="dark">{{scope.row.business_licence_image? "已上传":"未上传"}}</el-tag>
+            <el-tag :type="scope.row.business_licence_image? 'success':'danger'" size="mini" effect="dark">{{scope.row.business_licence_image? "已传":"未传"}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
@@ -153,33 +110,32 @@
     <SupplierDetail ref="supplierDetailRef"/>
     <EditSupplier ref="editSupplierRef"/>
     <AddSupplier ref="addSupplierRef"/>
+    <AddContact ref="addContactRef"/>
   </div>
 </template>
 <script lang="ts">
 
 import {computed, onMounted, reactive, ref, toRefs} from "vue";
-import {getPageSuppliers,queryPageSuppliers, addSupplier} from '/@/api/supplier/index';
+import {getPageSuppliers, queryPageSuppliers, addSupplier, deleteSupplier} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import EditSupplier from '/@/views/supplier/supplierInfo/component/editSupplier.vue';
 import AddSupplier from '/@/views/supplier/supplierInfo/component/addSupplier.vue';
+import AddContact from '/@/views/supplier/supplierInfo/component/addContact.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
-import {queryAirports} from "/@/api/universalCode";
-import {formatDate, getDateDiff} from '/@/utils/formatTime'
-
+import moment from "moment";
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
-
-
 
 
 export default {
   name: 'supplierSupplierInfo',
-  components: {SupplierDetail,EditSupplier,AddSupplier,},
+  components: {SupplierDetail,EditSupplier,AddSupplier,AddContact,},
   setup() {
     const queryText = ref('');
     const supplierDetailRef = ref();
     const editSupplierRef = ref();
     const addSupplierRef = ref();
+    const addContactRef= ref();
     const state = reactive({
       tableData: {
         data: [] as Array<any>,
@@ -193,22 +149,32 @@ export default {
       childTable: [],
     });
 
-    // 供应商状态el-tag标签类型字典
+    // 供应商状态类型字典
     const tagType:{[key:string]: string} = {
       "新建": "info",
-      "生效": "success",
-      "失效": "warning",
-      "冻结": "danger",
+      "启用": "success",
+      "禁用": "danger",
     };
 
+    // 营业有效期状态字典
+    const effectiveStatus: {[key:string]: string} ={
+      "生效中": "success",
+      "将失效": "warning",
+      "已失效": "danger",
+    }
 
     //获取分页数据
     const getPageData = async (queryText: any, pageNum: number, pageSize: number) => {
       queryPageSuppliers({queryText, pageNum, pageSize}).then((res: any) => {
-        console.log('==res==', res)
+        // console.log('==res==', res)
         state.tableData.data = res.result_data.data;
         state.tableData.total = res.result_data.count;
       })
+    };
+
+    // 初始化表格数据
+    const initTableData = () => {
+      getPageData(queryText.value, state.tableData.param.pageNum,state.tableData.param.pageSize);
     };
 
     // 页长改变事件
@@ -242,19 +208,19 @@ export default {
       editSupplierRef.value.openDialog(row);
     };
 
-    // 删除当前行
+    // 删除
     const onDeleteRow = async (row: any) => {
       ElMessageBox.confirm(`删除账号：${row.account} 的供应商, 是否继续?`, '提示', {
         confirmButtonText: '删除',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(()=>{
-        // return deleteEnterprises({id: row.id});
+        return deleteSupplier({id: row.id});
       }).then((res) => {
-        // console.log('==delete res==', res)
-        // state.tableData.data = [];
-        // initTableData();
-        // ElMessage.success('删除成功。');
+        console.log('==delete res==', res)
+        state.tableData.data = [];
+        initTableData();
+        ElMessage.success('删除成功。');
       })
     };
 
@@ -262,45 +228,28 @@ export default {
       addSupplierRef.value.openDialog();
     }
 
-    const onOpenAddDialog_old = ()=>{
-      const aa = '2022/2/2';
-
-      console.log('==add....==')
-      const data = {
-        'account': '',
-        'full_name': '雅思国际集团公司',
-        'status': 0
-      };
-      addSupplier(data).then((res:any)=>{
-        console.log('==addSupplier.res==', res)
-      })
+    // 打开新增联系对话框
+    const onOpenAddContactDialog = () => {
+      addContactRef.value.openDialog();
     }
 
-    const gap_days = computed(()=>{
-      // const p = state.tableData.param.pageSize;
-      // const d = state.tableData.data["effective_end_date"]
-      // console.log('==cmputed==', d)
-      // return d
-      // // const d = state.tableData.data.effective_end_date;
-      // // return d;
-      // // console.log('==cmputed==', d)
-    })
 
-    const effective_result = (end_date: any)=>{
-      console.log('==effective_result==', end_date)
-      if (end_date) {
 
-        const e_d = Date.parse(end_date)
-        const current_date = new Date();
-        const gap_days = current_date - end_date;
-        console.log('==its date==', current_date)
-        return gap_days;
-
+    // 判断营业执照结束日期是否失效
+    const getEffectiveStatus = (end_date: string)=>{
+      if (!end_date) return "无日期";
+      // 获取并格式化当前日期
+      const current_date = moment().format('YYYY-MM-DD')
+      // 当前日期与营业执照结束日期天数之差
+      const date_diff = moment(end_date).diff(current_date)/(60*60*1000*24)
+      if (date_diff < 0) {
+        return "已失效";
+      }else if (date_diff>0 && date_diff<=30) { // 营业执照1个月之内过期
+        return "将失效";
+      }else if (date_diff > 30) {
+        return "生效中";
       }
-    }
-
-
-
+    };
 
     // 钩子函数，获取第1页数据
     onMounted(()=>{
@@ -312,12 +261,13 @@ export default {
       Edit,
       Delete,
       queryText,
-      formatDate,
-      ...toRefs(state),
       supplierDetailRef,
       editSupplierRef,
       addSupplierRef,
+      addContactRef,
       tagType,
+      effectiveStatus,
+      ...toRefs(state),
       getPageData,
       onHandleQuery,
       onHandlePageSizeChange,
@@ -326,13 +276,13 @@ export default {
       onOpenEditDialog,
       onDeleteRow,
       onOpenAddDialog,
-      gap_days,
-      getDateDiff,
-      effective_result,
+      onOpenAddContactDialog,
+      getEffectiveStatus,
     };
   },
 };
 </script>
+
 <style lang="scss" scoped>
 @import "/@/theme/public/eltable.scss";
 .query-container{

@@ -164,7 +164,6 @@
               <span>已上传的附件列表</span>
               <li><a :href="ruleForm.business_licence_image" target="_blank">{{imageFileName}}</a><br/></li>
             </ul>
-<!--            <a :href="ruleForm.business_licence_image" target="_blank">{{imageFileName}}</a><br/>-->
             <el-image
                 style="width: 100px; height: 100px"
                 :src="ruleForm.business_licence_image"
@@ -179,12 +178,12 @@
             <el-input v-model="ruleForm.description" type="textarea" placeholder="请输入企业描述" :rows="8"
                       maxlength="256"></el-input>
           </el-tab-pane>
-          <el-tab-pane label="状态" name="statusTab">
+          <el-tab-pane label="使用状态" name="statusTab">
                 <el-form size="small" label-width="110px">
                   <el-row :gutter="10">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-                      <el-form-item label="状态" prop="status_label">
-                        <el-select v-model="ruleForm.status_label" placeholder="Select">
+                      <el-form-item label="使用状态" prop="status">
+                        <el-select v-model="ruleForm.status" placeholder="Select">
                           <el-option
                             v-for="item in statusOptions"
                             :key="item.value"
@@ -192,37 +191,15 @@
                             :value="item.value"
                             :disabled="item.disabled"
                           >
-                            <span style="float: left">{{ item.label }}</span>
-                            <span
-                              style="
-                                float: right;
-                                color: var(--el-text-color-secondary);
-                                font-size: 13px;
-                              "
-                              >{{ item.value }}</span
-                            >
                           </el-option>
                         </el-select>
                       </el-form-item>
                     </el-col>
-                    <el-col :xs="24" :sm="12" :md="24" :lg="24" :xl="24" class="mb20">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="12" class="mb20">
                       <el-form-item label="状态备注" prop="status_description">
                         <el-input v-model="ruleForm.status_description" type="textarea" :rows="8" maxlength="256" placeholder="请输入状态备注" clearable></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :xs="24" :sm="12" :md="24" :lg="24" :xl="24" class="mb20">
-                      <el-form-item label="状态说明" >
-                        <div class="statusDesc">
-                          <ul>
-                            <li>新建[自动设置]：供应商处于新创建状态，不可正常使用，若需要正常使用，则更新为“生效”状态</li>
-                            <li>生效[需手动设置]：供应商处于生效状态中，可正常使用</li>
-                            <li>失效[自动设置]：供应商处于营业执照过期失效中，不可正常使用</li>
-                            <li>冻结[需手动设置]：供应商处于冻结中，不可正常使用</li>
-                          </ul>
-                        </div>
-                      </el-form-item>
-                    </el-col>
-
                   </el-row>
                 </el-form>
 
@@ -281,22 +258,17 @@ export default {
 
     const statusOptions = [
   {
-    value: '自动生成',
+    value: 0,
     label: '新建',
     disabled: true,
   },
   {
-    value: '手动配置',
-    label: '生效',
+    value: 1,
+    label: '启用',
   },
   {
-    value: '自动生成',
-    label: '失效',
-    disabled: true,
-  },
-  {
-    value: '手动配置',
-    label: '冻结',
+    value: 2,
+    label: '禁用',
   },
 ];
 
@@ -338,7 +310,7 @@ export default {
     })
 
     // 修改
-    const onSubmit = async () => {
+    const onSubmit_old = async () => {
       // 文件及图片上传请求头中content-type必须是”mulpart/form-data"，服务端DRF只能接受表单格式数据
       // 创建新表单数据对象
       let formData = new FormData();
@@ -378,6 +350,34 @@ export default {
       });
 
     };
+
+        // 修改
+    const onSubmit = async () => {
+      // 文件及图片上传请求头中content-type必须是”mulpart/form-data"，服务端DRF只能接受表单格式数据
+      // 创建新表单数据对象
+      let formData = new FormData();
+      formData = objectToFormData(state.ruleForm);
+      formData.append('files', '');
+      formData.append('fileNames', '');
+      // 如果有上传营业执照
+      if (uploadRef.fileList.length>0) {
+        //将上传文件放到数据对象中，保存文件名
+        uploadRef.fileList.forEach((file:any)=>{
+          formData.append('files', file.raw);
+          uploadRef.fileNames.push(file.name);
+        })
+        // 将上传文件名放到数据对象中
+        formData.append('fileNames', uploadRef.fileNames);
+      }
+      // 发送axios请求
+      updateSupplier(formData).then((res: any) => {
+        if (res) {
+          ElMessage.success('修改成功！');
+        }
+      });
+
+    };
+
 
     // 文件上传成功时的钩子
     const handleUploadSuccess = (res: any) => {

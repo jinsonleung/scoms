@@ -158,10 +158,15 @@ export function formatAxis(param: Date): string {
    * 获取两个字符串日期间的差值
    * @param startDay
    * @param endDay
+   * @return int
    * @Example getDateDiff('2020-01-05','2020-01-10')
    */
   export function getDateDiff(startDay:string,endDay:string){
-    return Math.abs(parseInt((new Date(endDay).getTime() - new Date(startDay).getTime())/(1000 * 60 * 60 * 24)));
+    return parseInt((new Date(endDay).getTime() - new Date(startDay).getTime())/(1000 * 60 * 60 * 24));
+    // return Math.abs(parseInt((new Date(endDay).getTime() - new Date(startDay).getTime())/(1000 * 60 * 60 * 24)));
+    // return parseInt((new Date(endDay).getTime() - new Date(startDay).getTime())/(1000 * 60 * 60 * 24));
+    // return (new Date(endDay).getTime() - new Date(startDay).getTime())/(1000 * 60 * 60 * 24);
+	 // return ((new Date(endDay)).valueOf() - (new Date(startDay)).valueOf())/(1000 * 60 * 60 * 24);
   }
 
   /**

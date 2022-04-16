@@ -5,7 +5,7 @@ import { store, key } from './store';
 import { directive } from '/@/utils/directive';
 import { i18n } from '/@/i18n/index';
 import other from '/@/utils/other';
-// import moment from 'moment'; // 时间格式化
+// import moment from 'moment'; // 时间格式化，页面引入即可不用全局引入
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import '/@/theme/index.scss';

@@ -51,21 +51,25 @@ export function updateSupplier(params: any){
 	});
 }
 
-
-export function addSupplier_old(params: any){
-	return request({
-		url: '/supplier/',
-		method: 'POST',
-		data: params,
-	});
-}
-
 export function addSupplier(params: any){
 	return request({
 		url: '/supplier/',
 		method: 'POST',
 		//前端有图片文件，需要使用multipart/form-data请求头
 		headers: {'content-type': 'multipart/form-data'},
+		data: params,
+	});
+}
+
+/**id
+ * 删除记录，软删除
+ * @param params 要传的参数值，如{id:id}
+ * @returns 返回接口数据
+ */
+export function deleteSupplier(params:any){
+	return request({
+		url: `/supplier/${params.id}`,
+		method: 'DELETE',
 		data: params,
 	});
 }

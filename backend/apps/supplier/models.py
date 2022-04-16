@@ -11,21 +11,20 @@ def image_upload_to(self, instance, filename):
 class Status(models.IntegerChoices):
     """供应商使用状态枚举类型定义，单独一个类可以被不同的模型类使用"""
     NEW = 0, '新建'
-    AVAILABLE = 1, '生效'
-    UNAVAILABLE = 2, '失效'
-    SUSPEND = 3, '冻结'
+    AVAILABLE = 1, '启用'
+    UNAVAILABLE = 2, '禁用'
+    # SUSPEND = 3, '冻结'
 
 
 class Supplier(BaseModel):
     """
     供应商表，继承抽象基类BaseModel
     """
-    status_choices = (
-        (0, '新建'),
-        (1, '生效'),
-        (2, '失效'),
-        (3, '冻结'),
-    )
+    # status_choices = (
+    #     (0, '新建'),
+    #     (1, '启用'),
+    #     (2, '禁用'),
+    # )
 
     account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='账号')
     abbreviation_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='简称')
