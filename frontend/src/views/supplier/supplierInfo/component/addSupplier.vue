@@ -448,6 +448,7 @@ export default {
 <style lang="scss" scoped>
 :deep(.el-dialog__body) {
   height: 553px !important;
+  margin-right: 10px;
 }
 
 .statusDesc{

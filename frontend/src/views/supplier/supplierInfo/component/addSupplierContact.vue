@@ -2,7 +2,7 @@
   <div class="supplier-add-contact-container">
     <div v-dialogdrag>
       <el-dialog title="新增联系人" v-model="isShowDialog" width="800px">
-        <el-form ref="ruleFormRef" :model="ruleForm" size="small" label-width="110px">
+        <el-form ref="ruleFormRef" :model="ruleForm" size="small" label-width="100px">
               <el-row :gutter="10">
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="部门名称" prop="department">
@@ -56,20 +56,19 @@
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="备注" prop="remark">
-                    <el-input v-model="ruleForm.remark" placeholder="请输入备注" clearable></el-input>
+                    <el-input v-model="ruleForm.remark" type="textarea" rows="8" placeholder="请输入备注" clearable></el-input>
                   </el-form-item>
                 </el-col>
 
 
                   </el-row>
-                </el-form>
+        </el-form>
         <template #footer>
 					<span class="dialog-footer">
 						<el-button @click="onCancel" size="small">取消</el-button>
 						<el-button type="primary" @click="onSubmit" size="small">确定</el-button>
-					</span>
+          </span>
         </template>
-
       </el-dialog>
     </div>
   </div>
@@ -78,13 +77,11 @@
 
 <script lang="ts">
 import {reactive, toRefs, onMounted, ref, getCurrentInstance} from 'vue';
-import {addSupplier, updateSupplier} from "/@/api/supplier";
 import {ElMessage,ElNotification} from "element-plus";
 import type {TabsPaneContext } from 'element-plus';
 import {CompanyTypes, Architectures, Industries} from '/@/utils/publicOptionItems';
-import {objectToFormData} from '/@/utils/tsHelper'
 import {Session} from "/@/utils/storage";
-import {addNewEnterprise} from "/@/api/enterprise";
+import {addSupplierContact} from "/@/api/supplier";
 
 export default {
   name: 'supplierAddContact',
@@ -105,11 +102,16 @@ export default {
         qq: '',
         social_account: '',
         remark: '',
+        supplier: 0,
+        create_by: '',
+        update_by: '',
       },
     });
 
     // 打开弹窗
-    const openDialog = () => {
+    const openDialog = (supplierId:number) => {
+      console.log('==supplierId==', supplierId)
+      state.ruleForm.supplier = supplierId
       state.isShowDialog = true;
     };
     // 关闭弹窗
@@ -121,27 +123,20 @@ export default {
       closeDialog();
     };
 
-    // 提交保存
+    // 提交
     const onSubmit = async () => {
-      // 文件及图片上传请求头中content-type必须是”mulpart/form-data"，服务端DRF只能接受表单格式数据
-      // 创建新表单数据对象
-      let formData = new FormData();
-      formData = objectToFormData(state.ruleForm);
-      //将上传文件放到数据对象中，保存文件名
-      uploadRef.fileList.forEach((file: any) => {
-        formData.append('files', file.raw);
-        uploadRef.fileNames.push(file.name);
-      });
-      // 将上传文件名放到数据对象中
-      formData.append('fileNames', uploadRef.fileNames);
-      formData.set('status',0);
-      // 发送axios请求
-      addSupplier(formData).then((res: any) => {
+      state.ruleForm.create_by = Session.get('userInfo').userName;
+      state.ruleForm.update_by = Session.get('userInfo').userName;
+      console.log('==state.ruleForm==', state.ruleForm)
+      addSupplierContact(state.ruleForm).then((res: any) => {
+        console.log('==res==', res)
         if (res) {
-          console.log('==proxy.uploadRef==', proxy.uploadRef)
-          // closeDialog();
-          ElMessage.success('修改成功！');
-        };
+          if (ruleFormRef.value) ruleFormRef.value.resetFields();
+          closeDialog();
+          ElMessage.success('新增联系人成功！');
+        }
+      }).catch((e:any)=>{
+        console.log('==e==', e)
       });
     };
 
@@ -166,15 +161,22 @@ export default {
 <style lang="scss" scoped>
 :deep(.el-dialog__body) {
   height: 553px !important;
+  margin-right: 20px;
 }
 
-.statusDesc{
-  margin:0;
-  padding:0;
-  li {
-    font-size: small;
-    list-style: none;
-    line-height: 20px;
-  }
+.el-overlay .el-overlay-dialog .el-dialog .el-dialog__body {
+    padding: 20px !important;
+    margin-right: 10px;
 }
+
+
+//.statusDesc{
+//  margin:0;
+//  padding:0;
+//  li {
+//    font-size: small;
+//    list-style: none;
+//    line-height: 20px;
+//  }
+//}
 </style>

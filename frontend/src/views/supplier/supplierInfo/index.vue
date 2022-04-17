@@ -39,10 +39,9 @@
                   <template #header>
                     <el-button-group>
                       <el-tooltip>操作</el-tooltip>
-                        <el-button type="primary" style="margin-left:5px; float: right" @click="onOpenAddContactDialog">新建</el-button>
+                        <el-button type="primary" style="margin-left:5px; float: right" @click="onOpenAddSupplierContactDialog(scope.row.id)">新建</el-button>
                     </el-button-group>
                   </template>
-
                   <template #default="scope">
                     <el-button type="text" plain :icon="ZoomIn" title="详情"
                                @click="onOpenDetailDialog(scope.row)"></el-button>
@@ -110,17 +109,17 @@
     <SupplierDetail ref="supplierDetailRef"/>
     <EditSupplier ref="editSupplierRef"/>
     <AddSupplier ref="addSupplierRef"/>
-    <AddContact ref="addContactRef"/>
+    <AddSupplierContact ref="addContactRef"/>
   </div>
 </template>
 <script lang="ts">
 
-import {computed, onMounted, reactive, ref, toRefs} from "vue";
+import {computed, onMounted, provide, reactive, ref, toRefs} from "vue";
 import {getPageSuppliers, queryPageSuppliers, addSupplier, deleteSupplier} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import EditSupplier from '/@/views/supplier/supplierInfo/component/editSupplier.vue';
 import AddSupplier from '/@/views/supplier/supplierInfo/component/addSupplier.vue';
-import AddContact from '/@/views/supplier/supplierInfo/component/addContact.vue';
+import AddSupplierContact from '/@/views/supplier/supplierInfo/component/addSupplierContact.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import moment from "moment";
@@ -129,7 +128,7 @@ import moment from "moment";
 
 export default {
   name: 'supplierSupplierInfo',
-  components: {SupplierDetail,EditSupplier,AddSupplier,AddContact,},
+  components: {SupplierDetail,EditSupplier,AddSupplier,AddSupplierContact,},
   setup() {
     const queryText = ref('');
     const supplierDetailRef = ref();
@@ -229,8 +228,10 @@ export default {
     }
 
     // 打开新增联系对话框
-    const onOpenAddContactDialog = () => {
-      addContactRef.value.openDialog();
+    const onOpenAddSupplierContactDialog = (supplierId: number) => {
+      // console.log('state.tableData.data.supplier_id==', supplierId)
+      // provide('supliverId', state.tableData.data.supplier_id)
+      addContactRef.value.openDialog(supplierId);
     }
 
 
@@ -276,7 +277,7 @@ export default {
       onOpenEditDialog,
       onDeleteRow,
       onOpenAddDialog,
-      onOpenAddContactDialog,
+      onOpenAddSupplierContactDialog,
       getEffectiveStatus,
     };
   },

@@ -3,7 +3,7 @@ import header from "/@/layout/component/header.vue";
 
 /**
  * @func：分页获取数据
- * @param： params格式为 {pageNum:pageNum,pageSize:pageSize}
+ * @param: params 格式为 {pageNum:pageNum,pageSize:pageSize}
  * @returns: 返回接口数据
  */
 export function getPageSuppliers(params:any){
@@ -16,7 +16,7 @@ export function getPageSuppliers(params:any){
 
 /**
  * @func: 模糊查找
- * @param: params格式为{queryText:queryText,pageNum:pageNum,pageSize:pageSize}
+ * @param: params 格式为{queryText:queryText,pageNum:pageNum,pageSize:pageSize}
  * @returns: 返回接口数据
  */
 export function queryPageSuppliers(params:any){
@@ -28,18 +28,10 @@ export function queryPageSuppliers(params:any){
 }
 
 /**
- * @func：修改企业记录
- * @param params: 如{id:id}}
- * @returns: 返回接口数据
+ * @func：更新
+ * @param: params 如{id:id,...}}
+ * @returns:
  */
-export function updateSupplier1(params: any){
-	return request({
-		url: `/supplier/${params.id}/`,
-		method: 'PUT',
-		data: params,
-	});
-}
-
 export function updateSupplier(params: any){
 	console.log('--params.pk--', params.get('id'));
 	return request({
@@ -51,6 +43,11 @@ export function updateSupplier(params: any){
 	});
 }
 
+/**
+ * @func：新增
+ * @param: params 如{id:id,...}}
+ * @returns:
+ */
 export function addSupplier(params: any){
 	return request({
 		url: '/supplier/',
@@ -62,14 +59,28 @@ export function addSupplier(params: any){
 }
 
 /**id
- * 删除记录，软删除
- * @param params 要传的参数值，如{id:id}
- * @returns 返回接口数据
+ * 删除（软删除）
+ * @param: params 要传的参数值，如{id:id}
+ * @returns:
  */
 export function deleteSupplier(params:any){
 	return request({
 		url: `/supplier/${params.id}`,
 		method: 'DELETE',
+		data: params,
+	});
+}
+
+
+/**
+ * @func：新增
+ * @param: params 如{id:id,...}}
+ * @returns:
+ */
+export function addSupplierContact(params: any){
+	return request({
+		url: '/supplierContact/',
+		method: 'POST',
 		data: params,
 	});
 }

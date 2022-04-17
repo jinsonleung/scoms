@@ -1,7 +1,7 @@
 from django.db.models import Q
 from rest_framework.response import Response
-from apps.supplier.models import Supplier
-from apps.supplier.serializers import SupplierSerializer
+from apps.supplier.models import Supplier, SupplierContact
+from apps.supplier.serializers import SupplierSerializer, SupplierContactSerializer
 from utils.pagination import Pagination
 from rest_framework import viewsets
 from rest_framework import status
@@ -100,67 +100,6 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    def update0(self, request, *args, **kwargs):
-        # 1.获取id
-        pk = kwargs.get('pk')
-        # pk = 2
-        # data = {
-        #     "account": "000111",
-        #     "full_name": "大疆公司"
-        # }
-        # 2.单改
-        if pk:
-            # 2.1 获取模型对象
-            files = request.FILES
-            print('==kwargs1==', request.data['business_licence_image'])
-            print('==request.FILES==', request.FILES)
-            print('==kwargs2==', files.get('business_licence_image'))
-
-            try:
-                instance = self.get_queryset().get(pk=pk)
-            except Supplier.DoesNotExist:
-                return Response(status.HTTP_404_NOT_FOUND)
-            # 2.2 序列化
-            # patrial=True就是将所有反序列化字段的required设置为False（提供就校验，不提供就不校验）
-            serializer = SupplierSerializer(instance=instance,data=request.data, partial=True)
-            # serializer = SupplierSerializer(instance=instance, data=data, partial=True)
-            # 2.3 数据校验
-            serializer.is_valid(raise_exception=True)
-            # 2.4 保存数据
-            serializer.save()
-            # 2.5 返回结果给客户端
-            return Response(serializer.data)
-
-        else:
-            return Response({'msg': 'okkkkkk'})
-
-    def update1(self, request, *args, **kwargs):
-        """更新（正确）"""
-        # 获取PK及数据
-        pk = kwargs.get('pk')
-        data = request.data
-        # print('==data==', data)
-        instance = self.get_queryset().get(pk=pk)
-        files = request.FILES.getlist('files')
-        fileNames = request.POST.get('fileNames')
-        # print('==files==', files)
-        print('==fileNames==', fileNames)
-        data.pop('files')
-        data.pop('fileNames')
-        # print('==data==', data)
-
-        for file in files:
-            data['business_licence_image'] = file
-            print('==data[business_licence_image]==', data['business_licence_image'])
-            print('==data==', data)
-
-            serializer = self.get_serializer(instance=instance, data=data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'msg': 'okkkk'})
-
-
     def update(self, request, *args, **kwargs):
         """更新（正确）"""
         # 获取PK及数据
@@ -188,6 +127,14 @@ class SupplierModelViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
         # return Response({'msg': 'okkkk'})
+
+
+class SupplierContactViewSet(viewsets.ModelViewSet):
+    queryset = SupplierContact.objects.all()    # 获取所有数据
+    serializer_class = SupplierContactSerializer   # 序列化
+    # pagination_class = Pagination  # 分页
+    pagination_class = None  # 分页
+
 
 
 

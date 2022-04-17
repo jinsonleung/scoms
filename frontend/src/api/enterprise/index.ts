@@ -9,9 +9,9 @@
 import request from '/@/utils/request'
 
 /**
- * 添加企业
- * @param params 要传的参数值
- * @returns 返回接口数据
+ * @func：新增
+ * @param： params 要传的参数值
+ * @returns：
  */
 export function addNewEnterprise(params: object){
 	return request({
@@ -22,8 +22,8 @@ export function addNewEnterprise(params: object){
 }
 
 /**
- * @func：修改企业记录
- * @param params: 如{id:id}}
+ * @func：更新
+ * @param params: 如{id:id,...}}
  * @returns: 返回接口数据
  */
 export function updateEnterprise(params: any){
@@ -49,7 +49,7 @@ export function getPageEnterprises(params:any){
 }
 
 /**id
- * 删除企业记录，软删除
+ * 删除（软删除）
  * @param params 要传的参数值，如{id:id}
  * @returns 返回接口数据
  */
@@ -62,7 +62,7 @@ export function deleteEnterprises(params:any){
 }
 
 /**
- * 查找企业记录
+ * 查找
  * @param params 要传的参数值，如{account:xxx}或{'enterprise_name'}
  * @returns 返回接口数据
  */

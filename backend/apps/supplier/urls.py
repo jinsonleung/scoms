@@ -25,10 +25,11 @@ from django.urls import re_path
 router = SimpleRouter()
 # 2.注册路由
 router.register('supplier', views.SupplierModelViewSet, basename='supplier')
+router.register('supplierContact', views.SupplierContactViewSet, basename='supplier')
 
 urlpatterns = [
-    # url(r'media/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT}),
-    re_path(r'media/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
+    # 媒体资源url
+    re_path(r'media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
 ]
 
 # 3.挂载到urlpatters

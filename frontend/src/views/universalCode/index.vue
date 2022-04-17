@@ -38,7 +38,7 @@
           </el-button>
         </el-row>
       </div>
-      <!--分隔线-->
+      <!--分隔线（分隔线以下是子组件）-->
       <el-divider></el-divider>
       <!--机场代码查询列表-->
       <div v-if="isShow==0">
