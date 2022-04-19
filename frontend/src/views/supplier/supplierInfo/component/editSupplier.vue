@@ -28,7 +28,7 @@
                   <el-form-item label="体系结构" prop="architecture">
                     <el-select v-model="ruleForm.architecture" placeholder="请选择体系结构" clearable class="w100">
                       <el-option
-                          v-for="item in Architectures"
+                          v-for="item in CompanyArchitectureTypes"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value"
@@ -71,7 +71,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="供应商地址" prop="office_address">
+                  <el-form-item label="办公地址" prop="office_address">
                     <el-input v-model="ruleForm.office_address" placeholder="办公地址" clearable></el-input>
                   </el-form-item>
                 </el-col>
@@ -83,7 +83,6 @@
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="所在城市" prop="city">
                     <el-input v-model="ruleForm.city" placeholder="请选择所在城市" clearable></el-input>
-
                     <!--                <el-cascader-->
                     <!--                    v-model="ruleForm.city"-->
                     <!--                    :options="threeLevelLinkageList"-->
@@ -97,10 +96,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="所在行业" prop="industry">
-                    <el-select v-model="ruleForm.industry" placeholder="请选择所在行业" clearable class="w100">
+                  <el-form-item label="服务类型" prop="service_type">
+                    <el-select v-model="ruleForm.service_type" placeholder="请选择服务类型" clearable class="w100">
                       <el-option
-                          v-for="item in Industries"
+                          v-for="item in SupplierServiceTypes"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value"
@@ -227,7 +226,7 @@ import {updateSupplier} from "/@/api/supplier";
 import {ElMessage,ElNotification} from "element-plus";
 import type {TabsPaneContext } from 'element-plus';
 import {UploadFilled} from '@element-plus/icons-vue';
-import {CompanyTypes, Architectures, Industries} from '/@/utils/publicOptionItems';
+import {CompanyTypes, CompanyArchitectureTypes, SupplierServiceTypes} from '/@/utils/publicOptionItems';
 import {objectToFormData} from '/@/utils/tsHelper'
 
 export default {
@@ -429,8 +428,8 @@ export default {
       activeName,
       imageFileName,
       CompanyTypes,
-      Architectures,
-      Industries,
+      CompanyArchitectureTypes,
+      SupplierServiceTypes,
       handleClick,
       openDialog,
       closeDialog,

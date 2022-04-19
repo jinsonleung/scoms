@@ -119,7 +119,7 @@ export default {
       }).then((res: any) => {
         console.log('==getTablePageData==', res)
         const data: Array<object> = [];
-        res.result_data.data.forEach((item: any) => {
+        res.result_data.forEach((item: any) => {
           data.push({
             id: item.id,
             superior_level: item.superior_level,

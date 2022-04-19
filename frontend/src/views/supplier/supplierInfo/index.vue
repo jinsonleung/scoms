@@ -6,11 +6,35 @@
         <el-row>
           <el-input v-model="queryText" size="small" placeholder="请输入供应商账号/公司名" clearable
                     style="max-width: 360px"></el-input>
-          <el-button type="primary" @click="onHandleQuery(queryButtonIndex)" size="small" style="margin-left: 10px">
+          <el-button type="primary" @click="onHandleQuery()" size="small" style="margin-left: 10px">
             <el-icon><elementSearch/></el-icon>查询
           </el-button>
+          <el-button type="primary" size="small" @click="onOpenAddDialog"><el-icon><elementStar/></el-icon>新增供应商</el-button>
         </el-row>
-        <el-button type="primary" @click="onOpenAddDialog">新增</el-button>
+      </div>
+      <!--全球国家省市区级联-->
+      <div>
+        <el-row>
+							<el-select v-model="linkage.country" placeholder="请选择国家" size="small" clearable @click="onCountryChange" class="w100">
+								<el-option v-for="(v, k) in linkage.countryList" :key="k" :label="v.vc_name" :value="v.vc_name"></el-option>
+							</el-select>
+          <el-select v-model="value" class="m-2" placeholder="Select" size="small">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+          </el-select>
+          <el-select v-model="value" class="m-2" placeholder="Select" size="small">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+          </el-select>
+        </el-row>
       </div>
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
@@ -39,16 +63,16 @@
                   <template #header>
                     <el-button-group>
                       <el-tooltip>操作</el-tooltip>
-                        <el-button type="primary" style="margin-left:5px; float: right" @click="onOpenAddSupplierContactDialog(scope.row.id)">新建</el-button>
+                        <el-button class="th-head-button" type="primary" @click="onOpenAddSupplierContactDialog(scope.row.id)">新建</el-button>
                     </el-button-group>
                   </template>
                   <template #default="scope">
-                    <el-button type="text" plain :icon="ZoomIn" title="详情"
-                               @click="onOpenDetailDialog(scope.row)"></el-button>
-                    <el-button type="text" plain :icon="Edit" title="编辑"
-                               @click="onOpenDetailDialog(scope.row)"></el-button>
-                    <el-button type="text" plain :icon="Delete" title="删除"
-                               @click="onOpenDetailDialog(scope.row)"></el-button>
+                    <el-button class="tr-button" type="text" plain :icon="ZoomIn" title="详情"
+                               @click="onOpenSupplierContactDetailDialog(scope.row)"></el-button>
+                    <el-button class="tr-button" type="text" plain :icon="Edit" title="编辑"
+                               @click="onOpenEditSupplierContactDialog(scope.row)"></el-button>
+                    <el-button class="tr-button" type="text" plain :icon="Delete" title="删除"
+                               @click="onDeleteSupplierContactRow(scope.row)"></el-button>
                   </template>
                 </el-table-column>
               </el-table-column>
@@ -65,8 +89,12 @@
                          min-width="180px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="office_address" label="办公地址"
                          min-width="150px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="industry" label="所在行业"
-                         min-width="80px"></el-table-column>
+        <el-table-column align="center" show-overflow-tooltip prop="service_type" label="服务类型"
+                         min-width="80px">
+          <template #default="scope">
+            {{getOptionsLabel(SupplierServiceTypes,scope.row.service_type)}}
+          </template>
+        </el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="使用状态" min-width="70px">
           <template #default="scope">
             <el-tag :type="tagType[scope.row.status_label]" size="mini" effect="dark">{{scope.row.status_label}}</el-tag>
@@ -84,13 +112,13 @@
         </el-table-column>
         <el-table-column align="center" label="操作" show-overflow-tooltip width="80px">
           <template #default="scope">
-            <el-button type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
-            <el-button type="text" plain :icon="Edit" title="编辑" @click="onOpenEditDialog(scope.row)"></el-button>
-            <el-button type="text" plain :icon="Delete" title="删除" @click="onDeleteRow(scope.row)"></el-button>
+            <el-button class="tr-button" type="text" plain :icon="ZoomIn" title="详情" @click="onOpenDetailDialog(scope.row)"></el-button>
+            <el-button class="tr-button" type="text" plain :icon="Edit" title="编辑" @click="onOpenEditDialog(scope.row)"></el-button>
+            <el-button class="tr-button" type="text" plain :icon="Delete" title="删除" @click="onDeleteRow(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
-      <!--1.3分页导航栏-->
+      <!--3.分页导航栏-->
       <el-pagination
           @size-change="onHandlePageSizeChange"
           @current-change="onHandlePageNumChange"
@@ -99,42 +127,52 @@
           :page-sizes="[10, 20, 30]"
           v-model:current-page="tableData.param.page_num"
           background
+          small
           v-model:page-size="tableData.param.page_size"
           layout="total, sizes, prev, pager, next, jumper"
           :total="tableData.total"
       >
       </el-pagination>
     </el-card>
-    <!--3.子组件-->
+    <!--4.子组件-->
     <SupplierDetail ref="supplierDetailRef"/>
     <EditSupplier ref="editSupplierRef"/>
     <AddSupplier ref="addSupplierRef"/>
     <AddSupplierContact ref="addContactRef"/>
+    <EditSupplierContact ref="editContactRef"/>
+    <SupplierContactDetail ref="contactDetailRef"/>
   </div>
 </template>
 <script lang="ts">
 
-import {computed, onMounted, provide, reactive, ref, toRefs} from "vue";
-import {getPageSuppliers, queryPageSuppliers, addSupplier, deleteSupplier} from '/@/api/supplier/index';
+import {computed, onMounted, reactive, ref, toRefs} from "vue";
+import {queryPageSuppliers, deleteSupplier, deleteSupplierContact} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import EditSupplier from '/@/views/supplier/supplierInfo/component/editSupplier.vue';
 import AddSupplier from '/@/views/supplier/supplierInfo/component/addSupplier.vue';
 import AddSupplierContact from '/@/views/supplier/supplierInfo/component/addSupplierContact.vue';
+import EditSupplierContact from '/@/views/supplier/supplierInfo/component/editSupplierContact.vue';
+import SupplierContactDetail from '/@/views/supplier/supplierInfo/component/supplierContactDetail.vue';
 import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
+import { SupplierServiceTypes, getOptionsLabel} from '/@/utils/publicOptionItems'
 import moment from "moment";
+import CHNGlobal4LevelLinkJson from '/@/mock/global4LevelLink_CHN.json';
+
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
 
 export default {
   name: 'supplierSupplierInfo',
-  components: {SupplierDetail,EditSupplier,AddSupplier,AddSupplierContact,},
+  components: {SupplierDetail,EditSupplier,AddSupplier,AddSupplierContact,EditSupplierContact,SupplierContactDetail,},
   setup() {
     const queryText = ref('');
     const supplierDetailRef = ref();
     const editSupplierRef = ref();
     const addSupplierRef = ref();
     const addContactRef= ref();
+    const editContactRef= ref();
+    const contactDetailRef = ref();
     const state = reactive({
       tableData: {
         data: [] as Array<any>,
@@ -146,6 +184,18 @@ export default {
         },
       },
       childTable: [],
+      global4LevelLink: '',
+      global4LevelLinkList: [],
+      linkage: {
+        country: '',
+        province: '',
+        city: '',
+        area: '',
+        countryList: [], // 国家
+        provinceList: [], // 省
+        cityList: [], // 市
+        areaList: [], // 区
+      },
     });
 
     // 供应商状态类型字典
@@ -198,16 +248,16 @@ export default {
       getPageData(queryText.value.trim(), pageNum, pageSize)
     };
 
-    // 供应商详细情况弹窗
+    // 打开供应商详细情况对话框
     const onOpenDetailDialog = (row: object) => {
       supplierDetailRef.value.openDialog(row);
     };
-    // 编辑供应商情况弹窗
+    // 打开编辑供应商情况对话框
     const onOpenEditDialog = (row: object) => {
       editSupplierRef.value.openDialog(row);
     };
 
-    // 删除
+    // 删除供应商
     const onDeleteRow = async (row: any) => {
       ElMessageBox.confirm(`删除账号：${row.account} 的供应商, 是否继续?`, '提示', {
         confirmButtonText: '删除',
@@ -223,17 +273,42 @@ export default {
       })
     };
 
+    // 打开新增供应商对话框
     const onOpenAddDialog = () => {
       addSupplierRef.value.openDialog();
     }
 
-    // 打开新增联系对话框
+    // 打开新增联系人对话框
     const onOpenAddSupplierContactDialog = (supplierId: number) => {
-      // console.log('state.tableData.data.supplier_id==', supplierId)
-      // provide('supliverId', state.tableData.data.supplier_id)
       addContactRef.value.openDialog(supplierId);
     }
 
+    // 打开编辑联系人对话框
+    const onOpenEditSupplierContactDialog = (row: object) => {
+      // console.log('==row==', row)
+      editContactRef.value.openDialog(row);
+    }
+    // 打开联系人详情对话框
+    const onOpenSupplierContactDetailDialog = (row: object) => {
+      // console.log('==row==', row)
+      contactDetailRef.value.openDialog(row);
+    }
+
+    // 删除联系人
+    const onDeleteSupplierContactRow = async (row: any) => {
+      ElMessageBox.confirm(`删除姓名为：${row.chn_name} 联系人, 是否继续?`, '提示', {
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        return deleteSupplierContact({id: row.id});
+      }).then((res) => {
+        // console.log('==delete res==', res)
+        state.tableData.data = [];
+        initTableData();
+        ElMessage.success('删除成功。');
+      })
+    };
 
 
     // 判断营业执照结束日期是否失效
@@ -252,22 +327,50 @@ export default {
       }
     };
 
+
+    // 初始化国家省市区数据
+		const init4LevelLinkData = () => {
+			state.global4LevelLinkList = CHNGlobal4LevelLinkJson;
+			// state.linkage.countryList = CHNGlobal4LevelLinkJson;
+		};
+
+    // 国家下拉改变时
+		const onCountryChange = (name: string) => {
+      console.log('==country name==', name);
+			state.linkage.province = '';
+			state.linkage.city = '';
+			state.linkage.area = '';
+			state.linkage.provinceList = [];
+			state.linkage.cityList = [];
+			state.linkage.areaList = [];
+			// state.linkage.countryList.map((v: any) => {
+			// 	if (v.vc_name === name) state.linkage.provinceList = v.children;
+			// });
+      state.linkage.countryList=state.global4LevelLinkList.filter((item)=> item.l_level === 0);
+		};
+
+
     // 钩子函数，获取第1页数据
     onMounted(()=>{
-      getPageData(queryText.value, 1, 10)
+      init4LevelLinkData();
+      getPageData(queryText.value, 1, 10);
     });
 
     return {
       ZoomIn,
       Edit,
       Delete,
+      SupplierServiceTypes,
       queryText,
       supplierDetailRef,
       editSupplierRef,
       addSupplierRef,
       addContactRef,
+      editContactRef,
+      contactDetailRef,
       tagType,
       effectiveStatus,
+      CHNGlobal4LevelLinkJson,
       ...toRefs(state),
       getPageData,
       onHandleQuery,
@@ -278,7 +381,13 @@ export default {
       onDeleteRow,
       onOpenAddDialog,
       onOpenAddSupplierContactDialog,
+      onOpenEditSupplierContactDialog,
+      onOpenSupplierContactDetailDialog,
+      onDeleteSupplierContactRow,
       getEffectiveStatus,
+      getOptionsLabel,
+      init4LevelLinkData,
+      onCountryChange,
     };
   },
 };
@@ -286,6 +395,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "/@/theme/public/eltable.scss";
+//@import "/@/theme/public/element-ui-reset.scss";
+
 .query-container{
   margin-bottom: 10px;
 }
@@ -293,4 +404,10 @@ export default {
     height: 24px;
     line-height: 22px;
 }
+
+//:deep(.child-table th.el-table__cell>.cell) {
+//  //color: red;
+//  background-color: yellowgreen;
+//
+//}
 </style>

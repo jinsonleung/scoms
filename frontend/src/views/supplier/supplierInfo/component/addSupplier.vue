@@ -28,7 +28,7 @@
                   <el-form-item label="体系结构" prop="architecture">
                     <el-select v-model="ruleForm.architecture" placeholder="请选择体系结构" clearable class="w100">
                       <el-option
-                          v-for="item in Architectures"
+                          v-for="item in CompanyArchitectureTypes"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value"
@@ -101,10 +101,10 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="所在行业" prop="industry">
-                    <el-select v-model="ruleForm.industry" placeholder="请选择所在行业" clearable class="w100">
+                  <el-form-item label="服务类型" prop="service_type">
+                    <el-select v-model="ruleForm.service_type" placeholder="请选择服务类型" clearable class="w100">
                       <el-option
-                          v-for="item in Industries"
+                          v-for="item in SupplierServiceTypes"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value"
@@ -171,30 +171,12 @@
             <el-input v-model="ruleForm.description" type="textarea" placeholder="请输入企业描述" :rows="8"
                       maxlength="256"></el-input>
           </el-tab-pane>
-          <el-tab-pane label="状态" name="statusTab">
+          <el-tab-pane label="使用状态" name="statusTab">
                 <el-form size="small" label-width="110px">
                   <el-row :gutter="10">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
-                      <el-form-item label="状态" prop="status">
-                        <el-select v-model="ruleForm.status" placeholder="Select" disabled="True">
-<!--                          <el-option-->
-<!--                            v-for="item in statusOptions"-->
-<!--                            :key="item.value"-->
-<!--                            :label="item.label"-->
-<!--                            :value="item.value"-->
-<!--                            :disabled="item.disabled"-->
-
-<!--                          >-->
-<!--                            <span style="float: left">{{ item.label }}</span>-->
-<!--                            <span-->
-<!--                              style="-->
-<!--                                float: right;-->
-<!--                                color: var(&#45;&#45;el-text-color-secondary);-->
-<!--                                font-size: 13px;-->
-<!--                              "-->
-<!--                              >{{ item.value }}</span-->
-<!--                            >-->
-<!--                          </el-option>-->
+                      <el-form-item label="使用状态" prop="status">
+                        <el-select v-model="ruleForm.status" placeholder="Select" disabled>
                         </el-select>
                       </el-form-item>
                     </el-col>
@@ -239,14 +221,13 @@
 
 <script lang="ts">
 import {reactive, toRefs, onMounted, ref, getCurrentInstance} from 'vue';
-import {addSupplier, updateSupplier} from "/@/api/supplier";
-import {ElMessage,ElNotification} from "element-plus";
+import {addSupplier} from "/@/api/supplier";
+import {ElMessage} from "element-plus";
 import type {TabsPaneContext } from 'element-plus';
 import {UploadFilled} from '@element-plus/icons-vue';
-import {CompanyTypes, Architectures, Industries} from '/@/utils/publicOptionItems';
+import {CompanyTypes, CompanyArchitectureTypes, SupplierServiceTypes} from '/@/utils/publicOptionItems';
 import {objectToFormData} from '/@/utils/tsHelper'
-import {Session} from "/@/utils/storage";
-import {addNewEnterprise} from "/@/api/enterprise";
+
 
 export default {
   name: 'supplierAddSupplier',
@@ -276,7 +257,7 @@ export default {
         province: '',
         city: '',
         district: '',
-        industry: '',
+        service_type: '',
         website: '',
         legal_person_name: '',
         legal_person_phone: '',
@@ -345,34 +326,8 @@ export default {
         if (res) {
           console.log('==proxy.uploadRef==', proxy.uploadRef)
           // closeDialog();
-          ElMessage.success('修改成功！');
+          ElMessage.success('新增供应商成功！');
         };
-      });
-    };
-
-
-
-    // 修改
-    const onSubmit_old = async () => {
-      // 文件及图片上传请求头中content-type必须是”mulpart/form-data"，服务端DRF只能接受表单格式数据
-      // 创建新表单数据对象
-      let formData = new FormData();
-      formData = objectToFormData(state.ruleForm)
-      //将上传文件放到数据对象中，保存文件名
-      uploadRef.fileList.forEach((file:any)=>{
-        formData.append('files', file.raw);
-        uploadRef.fileNames.push(file.name);
-      })
-      // 将上传文件名放到数据对象中
-      formData.append('fileNames', uploadRef.fileNames);
-      // 移除联系人信息，联系人信息单独处理
-      formData.delete('contact')
-      // formData.delete('business_licence_image')
-
-      // 发送axios请求
-      updateSupplier(formData).then((res: any) => {
-        if (res) {
-        }
       });
     };
 
@@ -384,9 +339,8 @@ export default {
 
     // 文件状态改变时的钩子，添加文件、上传成功和上传失败时都会被调用
     const handleUploadOnChange = (file: any, fileList: any) => {
-
       uploadRef.fileList = fileList;
-      console.log('==handleUploadOnChange==', fileList)
+      // console.log('==handleUploadOnChange==', fileList)
       // console.log('==uploadRef.fileList==', uploadRef.fileList)
 
     }
@@ -402,8 +356,8 @@ export default {
 
     // 当超出个数限制时执行的钩子函数
     const handleUploadExceed = (files: any, fileList: any)=>{
-      console.log('==proxy.uploadRef.fileList.length==', proxy.uploadRef.fileList.length)
-      console.log('==fileList.length==', fileList.length)
+      // console.log('==proxy.uploadRef.fileList.length==', proxy.uploadRef.fileList.length)
+      // console.log('==fileList.length==', fileList.length)
       if (fileList.length==1){
         ElMessage.warning('只能上传一个图片文件，请移除不需要的再重新上传');
       }
@@ -426,8 +380,8 @@ export default {
       statusOptions,
       activeName,
       CompanyTypes,
-      Architectures,
-      Industries,
+      CompanyArchitectureTypes,
+      SupplierServiceTypes,
       handleClick,
       openDialog,
       closeDialog,
@@ -447,17 +401,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 :deep(.el-dialog__body) {
-  height: 553px !important;
-  margin-right: 10px;
+  height: 555px !important;
+  //margin-right: 40px;
 }
 
-.statusDesc{
-  margin:0;
-  padding:0;
-  li {
-    font-size: small;
-    list-style: none;
-    line-height: 20px;
+//:deep(.el-tabs) {
+//  .el-tabs__content {
+//    margin-right: 10px;
+//    max-height: 320px;
+//    overflow: auto;
+//  }
+//}
+
+  .statusDesc{
+    margin:0;
+    padding:0;
+    li {
+      font-size: small;
+      list-style: none;
+      line-height: 20px;
+    }
   }
-}
+
 </style>

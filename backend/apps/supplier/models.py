@@ -8,30 +8,23 @@ import uuid
 def image_upload_to(self, instance, filename):
     return 'supplierBusinessLicenceImage/{uuid}/{filename}'.format(uuid=uuid.uuid4().hex, filename=filename)
 
+
 class Status(models.IntegerChoices):
     """供应商使用状态枚举类型定义，单独一个类可以被不同的模型类使用"""
     NEW = 0, '新建'
     AVAILABLE = 1, '启用'
     UNAVAILABLE = 2, '禁用'
-    # SUSPEND = 3, '冻结'
 
 
 class Supplier(BaseModel):
     """
     供应商表，继承抽象基类BaseModel
     """
-    # status_choices = (
-    #     (0, '新建'),
-    #     (1, '启用'),
-    #     (2, '禁用'),
-    # )
-
     account = models.CharField(max_length=16, blank=False, null=False, unique=True, verbose_name='账号')
     abbreviation_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='简称')
     full_name = models.CharField(max_length=64, blank=True, null=True, verbose_name='全称')
     architecture = models.CharField(max_length=64, blank=True, null=True, verbose_name='体系结构（总部/分公司/子公司）')
     unified_social_credit_code = models.CharField(max_length=32,  blank=True, null=True, verbose_name='统一社会信用代码')
-
     # 方法1： 会将图片文件存放到media/supplierBusinessLicenceImage目录下，如果文件名重复则drf会自动添加缀
     business_licence_image = models.FileField(upload_to='supplierBusinessLicenceImage', blank=True, null=True, default='default.jpg', verbose_name='照业执照图片')
     # 方法2：使用storage选项对文件进行重命名
@@ -39,24 +32,24 @@ class Supplier(BaseModel):
     # 方法3：使用upload_to调用方法对文件进行重命名
     # business_licence_image = models.FileField(upload_to=image_upload_to, blank=True, null=True, default='default.jpg', verbose_name='照业执照图片')
     registered_capital = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册资本')
-    registered_address = models.CharField(max_length=32, blank=True, null=True, verbose_name='注册地址')
+    registered_address = models.CharField(max_length=256, blank=True, null=True, verbose_name='注册地址')
     established_date = models.DateField(blank=True, null=True, verbose_name='成立日期')
     effective_start_date = models.DateField(blank=True, null=True, verbose_name='营业期限(起)')
     effective_end_date = models.DateField(blank=True, null=True, verbose_name='营业期限(止)')
-    office_address = models.CharField(max_length=128, blank=True, null=True, verbose_name='办公地址')
-    business_scope = models.TextField(max_length=128, blank=True, null=True, verbose_name='经营范围')
+    office_address = models.CharField(max_length=256, blank=True, null=True, verbose_name='办公地址')
+    business_scope = models.TextField(max_length=256, blank=True, null=True, verbose_name='经营范围')
     country = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在国家')
     province = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在省/洲')
     city = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在城市')
     district = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在区/县')
-    industry = models.CharField(max_length=32, blank=True, null=True, verbose_name='所在行业')
+    service_type = models.CharField(max_length=32, blank=True, null=True, verbose_name='服务类型')
     website = models.CharField(max_length=64, blank=True, null=True, verbose_name='企业网站')
     legal_person_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='法人姓名')
     legal_person_phone = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人电话')
     legal_person_email = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人邮箱')
     banking_account_info = models.TextField(max_length=256, blank=True, null=True, verbose_name='银行对公账户')
     description = models.TextField(max_length=256, blank=True, null=True, verbose_name='企业描述')
-    status = models.IntegerField(choices=Status.choices, blank=False, null=False, verbose_name='状态')
+    status = models.IntegerField(choices=Status.choices, blank=False, null=False, verbose_name='使用状态')
     status_description = models.CharField(max_length=64, blank=True, null=True, verbose_name='状态说明')
 
     objects = models.Manager()   # 默认模型管理器
@@ -78,11 +71,6 @@ class Supplier(BaseModel):
         """控制台对象输出内容"""
         # return '%s,%s' (self.account, self.full_name)
         return self.account
-
-
-
-
-
 
     # def image_img(self):
     #     print('==self.business_licence_image==', self.business_licence_image)

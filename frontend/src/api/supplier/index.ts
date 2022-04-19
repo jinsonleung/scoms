@@ -1,6 +1,8 @@
 import request from '/@/utils/request'
 import header from "/@/layout/component/header.vue";
 
+
+// ==============供应商接口=============
 /**
  * @func：分页获取数据
  * @param: params 格式为 {pageNum:pageNum,pageSize:pageSize}
@@ -72,6 +74,7 @@ export function deleteSupplier(params:any){
 }
 
 
+// ==============供应商联系人接口=============
 /**
  * @func：新增
  * @param: params 如{id:id,...}}
@@ -82,5 +85,31 @@ export function addSupplierContact(params: any){
 		url: '/supplierContact/',
 		method: 'POST',
 		data: params,
+	});
+}
+
+/**
+ * @func：更新
+ * @param params: 如{id:id,...}}
+ * @returns: 返回接口数据
+ */
+export function editSupplierContact(params: any){
+	return request({
+		url: `/supplierContact/${params.id}/`,
+		method: 'PUT',
+		data: params,
+	});
+}
+
+/**id
+ * 删除（软删除）
+ * @param: params 要传的参数值，如{id:id}
+ * @returns:
+ */
+export function deleteSupplierContact(params:any){
+	return request({
+		url: `/supplierContact/${params.id}/`,
+		method: 'DELETE',
+		// data: params,
 	});
 }

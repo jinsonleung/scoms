@@ -1,60 +1,76 @@
 /*
-  func：自定义element-plus样式
-  author：Jinson.Liang
-  date：2022/3/20
+  @func：自定义element-plus样式
+  @author：Jinson.Liang
+  @date：2022/3/20
  */
-
-
 
 /*修改table 的背景颜色和文字颜色*/
 :deep(.el-table td, .el-table th.is-leaf,.el-table--border, .el-table--group) {
   border-color: #D0D0D0FF;
-  background-color: #e4f5dd;  /*隔行背景色*/
+  background-color: #e4f5dd; /*隔行背景色*/
   font-size: 12px;
   height: 30px; /*内容行行矩*/
 }
 
-/*修改element-ui的table 在鼠标悬停hover时的高亮颜色*/
-//:deep(.el-table tbody tr:hover td) {
-//  background-color: #ec8b8b !important
-//}
-
-/*边框*/
+/*el-table样式*/
 :deep(.el-table) {
+  /*边框*/
   border: 1px solid #D0D0D0FF;
   border-radius: 6px;
+  /*表头*/
+  .el-table__header-wrapper tr th {
+    padding: 0;
+    font-size: 12px;
+    background-color: #b1d8f8 !important;
+  }
+
+  /*单元格*/
+  .el-table__cell {
+    padding: 0;
+  }
+
+  /*内容行操作图标按钮*/
+  .tr-button {
+    min-height: 20px;
+    padding: 0;
+    margin: 0 0 0 2px;
+    color: blue;
+  }
+
+  /*鼠标悬停hover时的高亮颜色*/
+  tbody tr:hover td {
+    //background-color: #91a2f5 !important;
+  }
 }
 
-/*表头*/
-:deep(.el-table .el-table__header-wrapper tr th) {
-  background-color: #8cbee3 !important;
-  color: rgb(14, 14, 14);
-  padding: 0;
-  font-size: 12px;
-  height: 30px; /*表头行行矩*/
-}
 
-/*操作图标*/
-:deep(.el-button) {
-  min-height: 20px;
-  padding: 0;
-  margin: 0 0 0 2px;
-  color: blue;
-}
+/*嵌套子表*/
+:deep(.child-table) {
+  /*表头背景色*/
+  .el-table__header-wrapper tr th {
+    color: black;
+    background-color: #d3c9f6 !important;
+  }
 
-/*子表操作图标*/
-:deep(.child-table .el-button) {
+  /*表头行按钮*/
+  .th-head-button {
+    min-height: 20px;
+    padding: 0 5px;
+    margin: 1px 0 0 8px;
+    font-size: 12px; /*最小*/
+    float: right;
+    color: blue;
+  }
+
+  /*内容行操作图标按钮*/
+  .tr-button {
     color: darkred;
+  }
+
+  /*鼠标悬停hover时的高亮颜色*/
+  tbody tr:hover td {
+    background-color: #f5ede3 !important
+  }
 }
 
-/*单元格*/
-:deep(.el-table .el-table__cell) {
-  padding: 0;
-}
-
-/*
-:deep(.el-table .el-table__row) {
-  padding: 0;
-}
- */
 
