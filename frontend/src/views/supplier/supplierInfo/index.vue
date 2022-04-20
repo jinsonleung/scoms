@@ -184,7 +184,8 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import { SupplierServiceTypes, getOptionsLabel} from '/@/utils/publicOptionItems'
 import moment from "moment";
 // import CHNGlobal4LevelLinkJson from '/@/mock/global4LevelLink_CHN.json';
-import GlobalCountry4LevelLinkageJson from '/@/mock/globalCountry4LevelLinkage.json';
+// import GlobalCountry4LevelLinkageJson from '/@/mock/globalCountry4LevelLinkage.json';
+import {get4LinkageList}from '/@/utils/globalCountry4LevelLinkage';
 
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
@@ -357,17 +358,20 @@ export default {
 
     // 初始化国家省市区数据
 		const init4LevelLinkData = () => {
-			state.global4LevelLinkList = GlobalCountry4LevelLinkageJson;
-      state.linkage.countryList = GlobalCountry4LevelLinkageJson.filter((item)=> item.levels === 0);
+			// state.global4LevelLinkList = GlobalCountry4LevelLinkageJson;
+      // state.linkage.countryList = GlobalCountry4LevelLinkageJson.filter((item)=> item.levels === 0);
+      state.linkage.countryList = get4LinkageList(0)
+      // console.log('=====state.linkage.countryList', state.linkage.countryList)
 		};
 
     // 国家下拉事件
-		const onCountryChange = (selVal: any) => {
-      // 获取国家的区域编号
-      let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
-      let areaCode = obj.area_code;
-      state.linkage.provinceList = state.global4LevelLinkList.filter((item)=> item.levels === 1 && item.area_code.includes(areaCode));
-			state.linkage.province = '';
+		const onCountryChange = (selVal: string) => {
+      // // 获取国家的区域编号
+      // let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
+      // let areaCode = obj.area_code;
+      // state.linkage.provinceList = state.global4LevelLinkList.filter((item)=> item.levels === 1 && item.area_code.includes(areaCode));
+			state.linkage.provinceList = get4LinkageList(1, selVal);
+      state.linkage.province = '';
 			state.linkage.city = '';
 			state.linkage.district = '';
 			state.linkage.cityList = [];
@@ -377,10 +381,11 @@ export default {
     // 省（洲）下拉事件
     const onProvinceChange = (selVal: any) => {
       // 获取省（洲）的区域编号
-      let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
-      let areaCode = obj.area_code;
-      state.linkage.cityList = state.global4LevelLinkList.filter((item)=> item.levels === 2 && item.area_code.includes(areaCode));
-			state.linkage.city = '';
+      // let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
+      // let areaCode = obj.area_code;
+      // state.linkage.cityList = state.global4LevelLinkList.filter((item)=> item.levels === 2 && item.area_code.includes(areaCode));
+			state.linkage.cityList = get4LinkageList(2, selVal);
+      state.linkage.city = '';
 			state.linkage.district = '';
 			state.linkage.districtList = [];
     }
@@ -388,10 +393,11 @@ export default {
     // 市下拉事件
     const onCityChange = (selVal: any) => {
       // 获取市的区域编号
-      let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
-      let areaCode = obj.area_code;
-      state.linkage.districtList = state.global4LevelLinkList.filter((item)=> item.levels === 3 && item.area_code.includes(areaCode));
-			state.linkage.district = '';
+      // let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
+      // let areaCode = obj.area_code;
+      // state.linkage.districtList = state.global4LevelLinkList.filter((item)=> item.levels === 3 && item.area_code.includes(areaCode));
+      state.linkage.districtList = get4LinkageList(3, selVal);
+      state.linkage.district = '';
     }
 
     // 区（县）下拉事件
