@@ -6,7 +6,7 @@
         <el-row>
           <el-input v-model="queryText" size="small" placeholder="请输入供应商账号/公司名" clearable
                     style="max-width: 360px"></el-input>
-          <el-button type="primary" @click="onHandleQuery()" size="small" style="margin-left: 10px">
+          <el-button type="primary" @change="onHandleQuery()" size="small" style="margin-left: 10px">
             <el-icon><elementSearch/></el-icon>查询
           </el-button>
           <el-button type="primary" size="small" @click="onOpenAddDialog"><el-icon><elementStar/></el-icon>新增供应商</el-button>
@@ -15,25 +15,51 @@
       <!--全球国家省市区级联-->
       <div>
         <el-row>
-							<el-select v-model="linkage.country" placeholder="请选择国家" size="small" clearable @click="onCountryChange" class="w100">
-								<el-option v-for="(v, k) in linkage.countryList" :key="k" :label="v.vc_name" :value="v.vc_name"></el-option>
+							<el-select v-model="linkage.country" placeholder="请选择国家" size="small" clearable @change="onCountryChange" class="w100">
+								<el-option v-for="(v, k) in linkage.countryList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                      <span style="float: left">{{ v.chn_name }}</span>
+                      <span style="float: right; color: var(--el-text-color-secondary);font-size: 13px;">{{ v.eng_name }}</span>
+                </el-option>
 							</el-select>
-          <el-select v-model="value" class="m-2" placeholder="Select" size="small">
-            <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            />
-          </el-select>
-          <el-select v-model="value" class="m-2" placeholder="Select" size="small">
-            <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-            />
-          </el-select>
+							<el-select v-model="linkage.province" placeholder="请选择省(洲)" size="small" clearable @change="onProvinceChange" class="w100">
+								<el-option v-for="(v, k) in linkage.provinceList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                        <span style="float: left">{{ v.chn_name }}</span>
+                        <span
+                          style="
+                            float: right;
+                            color: var(--el-text-color-secondary);
+                            font-size: 13px;
+                          "
+                          >{{ v.eng_name }}</span
+                        >
+                </el-option>
+							</el-select>
+							<el-select v-model="linkage.city" placeholder="请选择省(洲)" size="small" clearable @change="onCityChange" class="w100">
+								<el-option v-for="(v, k) in linkage.cityList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                        <span style="float: left">{{ v.chn_name }}</span>
+                        <span
+                          style="
+                            float: right;
+                            color: var(--el-text-color-secondary);
+                            font-size: 13px;
+                          "
+                          >{{ v.eng_name }}</span
+                        >
+                </el-option>
+							</el-select>
+							<el-select v-model="linkage.district" placeholder="请选择省(洲)" size="small" clearable @change="onDistrictChange" class="w100">
+								<el-option v-for="(v, k) in linkage.districtList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                        <span style="float: left">{{ v.chn_name }}</span>
+                        <span
+                          style="
+                            float: right;
+                            color: var(--el-text-color-secondary);
+                            font-size: 13px;
+                          "
+                          >{{ v.eng_name }}</span
+                        >
+                </el-option>
+							</el-select>
         </el-row>
       </div>
       <!--2.表单-->
@@ -157,7 +183,8 @@ import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import { SupplierServiceTypes, getOptionsLabel} from '/@/utils/publicOptionItems'
 import moment from "moment";
-import CHNGlobal4LevelLinkJson from '/@/mock/global4LevelLink_CHN.json';
+// import CHNGlobal4LevelLinkJson from '/@/mock/global4LevelLink_CHN.json';
+import GlobalCountry4LevelLinkageJson from '/@/mock/globalCountry4LevelLinkage.json';
 
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
@@ -190,11 +217,11 @@ export default {
         country: '',
         province: '',
         city: '',
-        area: '',
+        district: '',
         countryList: [], // 国家
         provinceList: [], // 省
         cityList: [], // 市
-        areaList: [], // 区
+        districtList: [], // 区
       },
     });
 
@@ -330,25 +357,48 @@ export default {
 
     // 初始化国家省市区数据
 		const init4LevelLinkData = () => {
-			state.global4LevelLinkList = CHNGlobal4LevelLinkJson;
-			// state.linkage.countryList = CHNGlobal4LevelLinkJson;
+			state.global4LevelLinkList = GlobalCountry4LevelLinkageJson;
+      state.linkage.countryList = GlobalCountry4LevelLinkageJson.filter((item)=> item.levels === 0);
 		};
 
-    // 国家下拉改变时
-		const onCountryChange = (name: string) => {
-      console.log('==country name==', name);
+    // 国家下拉事件
+		const onCountryChange = (selVal: any) => {
+      // 获取国家的区域编号
+      let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
+      let areaCode = obj.area_code;
+      state.linkage.provinceList = state.global4LevelLinkList.filter((item)=> item.levels === 1 && item.area_code.includes(areaCode));
 			state.linkage.province = '';
 			state.linkage.city = '';
-			state.linkage.area = '';
-			state.linkage.provinceList = [];
+			state.linkage.district = '';
 			state.linkage.cityList = [];
-			state.linkage.areaList = [];
-			// state.linkage.countryList.map((v: any) => {
-			// 	if (v.vc_name === name) state.linkage.provinceList = v.children;
-			// });
-      state.linkage.countryList=state.global4LevelLinkList.filter((item)=> item.l_level === 0);
+			state.linkage.districtList = [];
 		};
 
+    // 省（洲）下拉事件
+    const onProvinceChange = (selVal: any) => {
+      // 获取省（洲）的区域编号
+      let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
+      let areaCode = obj.area_code;
+      state.linkage.cityList = state.global4LevelLinkList.filter((item)=> item.levels === 2 && item.area_code.includes(areaCode));
+			state.linkage.city = '';
+			state.linkage.district = '';
+			state.linkage.districtList = [];
+    }
+
+    // 市下拉事件
+    const onCityChange = (selVal: any) => {
+      // 获取市的区域编号
+      let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
+      let areaCode = obj.area_code;
+      state.linkage.districtList = state.global4LevelLinkList.filter((item)=> item.levels === 3 && item.area_code.includes(areaCode));
+			state.linkage.district = '';
+    }
+
+    // 区（县）下拉事件
+    const onDistrictChange = (selVal: any) => {
+      // 获取市的区域编号
+      console.log('district==', selVal)
+    }
 
     // 钩子函数，获取第1页数据
     onMounted(()=>{
@@ -370,7 +420,7 @@ export default {
       contactDetailRef,
       tagType,
       effectiveStatus,
-      CHNGlobal4LevelLinkJson,
+      GlobalCountry4LevelLinkageJson,
       ...toRefs(state),
       getPageData,
       onHandleQuery,
@@ -388,6 +438,9 @@ export default {
       getOptionsLabel,
       init4LevelLinkData,
       onCountryChange,
+      onProvinceChange,
+      onCityChange,
+      onDistrictChange,
     };
   },
 };

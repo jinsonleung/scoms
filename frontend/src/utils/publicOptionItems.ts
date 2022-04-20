@@ -1,5 +1,5 @@
 import { SelectOptionTypes } from '/@/store/interface';
-
+import GlobalCountry4LevelLinkageJson from '/@/mock/globalCountry4LevelLinkage.json';
 
 
 // 公司类型
@@ -96,6 +96,10 @@ export function getOptionsLabel(options:Array<SelectOptionTypes>, value: string)
     if (ret) return ret.label;
     return '';
 }
+
+const countryList = GlobalCountry4LevelLinkageJson.filter((item)=> item.levels === 0);
+
+
 
 
 
