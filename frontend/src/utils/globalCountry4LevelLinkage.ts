@@ -11,6 +11,7 @@ export const get4LinkageList = (levels: number, val?: string) => {
     // 根据当前级中文名获取它的下一级的数组，如根据国家获取省（洲）
     }else if (levels>0){
         let obj = GlobalCountry4LevelLinkageJson.find((item:any)=> item.chn_name===val);
+        if (!obj) return null;
         let areaCode = obj.area_code;
         linkageList = GlobalCountry4LevelLinkageJson.filter((item:any)=> item.levels === levels && item.area_code.includes(areaCode));
     }

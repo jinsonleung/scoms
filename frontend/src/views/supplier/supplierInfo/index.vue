@@ -12,56 +12,6 @@
           <el-button type="primary" size="small" @click="onOpenAddDialog"><el-icon><elementStar/></el-icon>新增供应商</el-button>
         </el-row>
       </div>
-      <!--全球国家省市区级联-->
-      <div>
-        <el-row>
-							<el-select v-model="linkage.country" placeholder="请选择国家" size="small" clearable @change="onCountryChange" class="w100">
-								<el-option v-for="(v, k) in linkage.countryList" :key="k" :label="v.chn_name" :value="v.chn_name">
-                      <span style="float: left">{{ v.chn_name }}</span>
-                      <span style="float: right; color: var(--el-text-color-secondary);font-size: 13px;">{{ v.eng_name }}</span>
-                </el-option>
-							</el-select>
-							<el-select v-model="linkage.province" placeholder="请选择省(洲)" size="small" clearable @change="onProvinceChange" class="w100">
-								<el-option v-for="(v, k) in linkage.provinceList" :key="k" :label="v.chn_name" :value="v.chn_name">
-                        <span style="float: left">{{ v.chn_name }}</span>
-                        <span
-                          style="
-                            float: right;
-                            color: var(--el-text-color-secondary);
-                            font-size: 13px;
-                          "
-                          >{{ v.eng_name }}</span
-                        >
-                </el-option>
-							</el-select>
-							<el-select v-model="linkage.city" placeholder="请选择省(洲)" size="small" clearable @change="onCityChange" class="w100">
-								<el-option v-for="(v, k) in linkage.cityList" :key="k" :label="v.chn_name" :value="v.chn_name">
-                        <span style="float: left">{{ v.chn_name }}</span>
-                        <span
-                          style="
-                            float: right;
-                            color: var(--el-text-color-secondary);
-                            font-size: 13px;
-                          "
-                          >{{ v.eng_name }}</span
-                        >
-                </el-option>
-							</el-select>
-							<el-select v-model="linkage.district" placeholder="请选择省(洲)" size="small" clearable @change="onDistrictChange" class="w100">
-								<el-option v-for="(v, k) in linkage.districtList" :key="k" :label="v.chn_name" :value="v.chn_name">
-                        <span style="float: left">{{ v.chn_name }}</span>
-                        <span
-                          style="
-                            float: right;
-                            color: var(--el-text-color-secondary);
-                            font-size: 13px;
-                          "
-                          >{{ v.eng_name }}</span
-                        >
-                </el-option>
-							</el-select>
-        </el-row>
-      </div>
       <!--2.表单-->
       <el-table :data="tableData.data" stripe row-key="id" style="width: 100%">
         <!--1.1嵌套子表：供应商联系人-->
@@ -171,7 +121,7 @@
 </template>
 <script lang="ts">
 
-import {computed, onMounted, reactive, ref, toRefs} from "vue";
+import {onMounted, reactive, ref, toRefs} from "vue";
 import {queryPageSuppliers, deleteSupplier, deleteSupplierContact} from '/@/api/supplier/index';
 import SupplierDetail from '/@/views/supplier/supplierInfo/component/supplierDetail.vue';
 import EditSupplier from '/@/views/supplier/supplierInfo/component/editSupplier.vue';
@@ -183,10 +133,6 @@ import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import { SupplierServiceTypes, getOptionsLabel} from '/@/utils/publicOptionItems'
 import moment from "moment";
-// import CHNGlobal4LevelLinkJson from '/@/mock/global4LevelLink_CHN.json';
-// import GlobalCountry4LevelLinkageJson from '/@/mock/globalCountry4LevelLinkage.json';
-import {get4LinkageList}from '/@/utils/globalCountry4LevelLinkage';
-
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
 
@@ -355,60 +301,8 @@ export default {
       }
     };
 
-
-    // 初始化国家省市区数据
-		const init4LevelLinkData = () => {
-			// state.global4LevelLinkList = GlobalCountry4LevelLinkageJson;
-      // state.linkage.countryList = GlobalCountry4LevelLinkageJson.filter((item)=> item.levels === 0);
-      state.linkage.countryList = get4LinkageList(0)
-      // console.log('=====state.linkage.countryList', state.linkage.countryList)
-		};
-
-    // 国家下拉事件
-		const onCountryChange = (selVal: string) => {
-      // // 获取国家的区域编号
-      // let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
-      // let areaCode = obj.area_code;
-      // state.linkage.provinceList = state.global4LevelLinkList.filter((item)=> item.levels === 1 && item.area_code.includes(areaCode));
-			state.linkage.provinceList = get4LinkageList(1, selVal);
-      state.linkage.province = '';
-			state.linkage.city = '';
-			state.linkage.district = '';
-			state.linkage.cityList = [];
-			state.linkage.districtList = [];
-		};
-
-    // 省（洲）下拉事件
-    const onProvinceChange = (selVal: any) => {
-      // 获取省（洲）的区域编号
-      // let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
-      // let areaCode = obj.area_code;
-      // state.linkage.cityList = state.global4LevelLinkList.filter((item)=> item.levels === 2 && item.area_code.includes(areaCode));
-			state.linkage.cityList = get4LinkageList(2, selVal);
-      state.linkage.city = '';
-			state.linkage.district = '';
-			state.linkage.districtList = [];
-    }
-
-    // 市下拉事件
-    const onCityChange = (selVal: any) => {
-      // 获取市的区域编号
-      // let obj = state.global4LevelLinkList.find((item)=> item.chn_name===selVal);
-      // let areaCode = obj.area_code;
-      // state.linkage.districtList = state.global4LevelLinkList.filter((item)=> item.levels === 3 && item.area_code.includes(areaCode));
-      state.linkage.districtList = get4LinkageList(3, selVal);
-      state.linkage.district = '';
-    }
-
-    // 区（县）下拉事件
-    const onDistrictChange = (selVal: any) => {
-      // 获取市的区域编号
-      console.log('district==', selVal)
-    }
-
     // 钩子函数，获取第1页数据
     onMounted(()=>{
-      init4LevelLinkData();
       getPageData(queryText.value, 1, 10);
     });
 
@@ -426,7 +320,6 @@ export default {
       contactDetailRef,
       tagType,
       effectiveStatus,
-      GlobalCountry4LevelLinkageJson,
       ...toRefs(state),
       getPageData,
       onHandleQuery,
@@ -442,11 +335,6 @@ export default {
       onDeleteSupplierContactRow,
       getEffectiveStatus,
       getOptionsLabel,
-      init4LevelLinkData,
-      onCountryChange,
-      onProvinceChange,
-      onCityChange,
-      onDistrictChange,
     };
   },
 };
@@ -464,9 +352,4 @@ export default {
     line-height: 22px;
 }
 
-//:deep(.child-table th.el-table__cell>.cell) {
-//  //color: red;
-//  background-color: yellowgreen;
-//
-//}
 </style>

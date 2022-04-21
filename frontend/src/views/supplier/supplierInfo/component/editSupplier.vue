@@ -81,18 +81,64 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                  <el-form-item label="所在国家" prop="country">
+                    <el-select v-model="ruleForm.country" placeholder="请选择国家" size="small" clearable @change="onCountryChange" class="w100">
+                      <el-option v-for="(v, k) in linkage.countryList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                            <span style="float: left">{{ v.chn_name }}</span>
+                            <span style="float: right; color: var(--el-text-color-secondary);font-size: 13px;">{{ v.eng_name }}</span>
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                  <el-form-item label="所在省(洲)" prop="province">
+                    <el-select v-model="ruleForm.province" placeholder="请选择省(洲)" size="small" clearable @change="onProvinceChange" class="w100">
+                      <el-option v-for="(v, k) in linkage.provinceList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                              <span style="float: left">{{ v.chn_name }}</span>
+                              <span
+                                style="
+                                  float: right;
+                                  color: var(--el-text-color-secondary);
+                                  font-size: 13px;
+                                "
+                                >{{ v.eng_name }}</span
+                              >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                   <el-form-item label="所在城市" prop="city">
-                    <el-input v-model="ruleForm.city" placeholder="请选择所在城市" clearable></el-input>
-                    <!--                <el-cascader-->
-                    <!--                    v-model="ruleForm.city"-->
-                    <!--                    :options="threeLevelLinkageList"-->
-                    <!--                    :props="{ expandTrigger: 'hover', value: 'code', label: 'name' }"-->
-                    <!--                    size="small"-->
-                    <!--                    placeholder="请选择所在城市"-->
-                    <!--                    class="w100"-->
-                    <!--                    clearable-->
-                    <!--                >-->
-                    <!--                </el-cascader>-->
+                    <el-select v-model="ruleForm.city" placeholder="请选择城市" size="small" clearable @change="onCityChange" class="w100">
+                      <el-option v-for="(v, k) in linkage.cityList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                              <span style="float: left">{{ v.chn_name }}</span>
+                              <span
+                                style="
+                                  float: right;
+                                  color: var(--el-text-color-secondary);
+                                  font-size: 13px;
+                                "
+                                >{{ v.eng_name }}</span
+                              >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+                  <el-form-item label="所在区(县)" prop="district">
+                    <el-select v-model="ruleForm.district" placeholder="请选择所在区(县)" size="small" clearable @change="onDistrictChange" class="w100">
+                      <el-option v-for="(v, k) in linkage.districtList" :key="k" :label="v.chn_name" :value="v.chn_name">
+                              <span style="float: left">{{ v.chn_name }}</span>
+                              <span
+                                style="
+                                  float: right;
+                                  color: var(--el-text-color-secondary);
+                                  font-size: 13px;
+                                "
+                                >{{ v.eng_name }}</span
+                              >
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -223,11 +269,12 @@
 <script lang="ts">
 import {reactive, toRefs, onMounted, ref, getCurrentInstance, computed} from 'vue';
 import {updateSupplier} from "/@/api/supplier";
-import {ElMessage,ElNotification} from "element-plus";
+import {ElMessage} from "element-plus";
 import type {TabsPaneContext } from 'element-plus';
 import {UploadFilled} from '@element-plus/icons-vue';
 import {CompanyTypes, CompanyArchitectureTypes, SupplierServiceTypes} from '/@/utils/publicOptionItems';
 import {objectToFormData} from '/@/utils/tsHelper'
+import {get4LinkageList} from "/@/utils/globalCountry4LevelLinkage";
 
 export default {
   name: 'supplierSupplierInfoSupplierEdit',
@@ -240,6 +287,15 @@ export default {
     const state = reactive({
       isShowDialog: false,
       ruleForm: {},
+      // 全球国家省市区4层级联
+      global4LevelLink: '',
+      global4LevelLinkList: [],
+      linkage: {
+        countryList: [], // 国家
+        provinceList: [], // 省
+        cityList: [], // 市
+        districtList: [], // 区
+      },
     });
     const uploadRef = reactive({
       open: false,  // 是否显示弹出层（放在el-dialog :visible.syn="upload.open"）
@@ -416,11 +472,45 @@ export default {
         ElMessage.info('preview pic');
     };
 
+    // 初始化国家省市区数据
+		const init4LevelLinkage = () => {
+      state.linkage.countryList = get4LinkageList(0)
+		};
 
+  // 国家下拉事件
+		const onCountryChange = (selVal: string) => {
+			state.linkage.provinceList = get4LinkageList(1, selVal);
+      state.ruleForm.province = '';
+			state.ruleForm.city = '';
+			state.ruleForm.district = '';
+			state.ruleForm.cityList = [];
+			state.ruleForm.districtList = [];
+		};
+
+    // 省（洲）下拉事件
+    const onProvinceChange = (selVal: any) => {
+			state.linkage.cityList = get4LinkageList(2, selVal);
+      state.ruleForm.city = '';
+			state.ruleForm.district = '';
+			state.ruleForm.districtList = [];
+    }
+
+    // 市下拉事件
+    const onCityChange = (selVal: any) => {
+      // 获取市的区域编号
+      state.linkage.districtList = get4LinkageList(3, selVal);
+      state.ruleForm.district = '';
+    }
+
+    // 区（县）下拉事件
+    const onDistrictChange = (selVal: any) => {
+      // 获取市的区域编号
+      console.log('district==', selVal)
+    }
 
     // 页面加载时
     onMounted(() => {
-
+      init4LevelLinkage();
     });
     return {
       statusValue,
@@ -439,6 +529,11 @@ export default {
       handleUploadSuccess,
       handleUploadPreview,
       handleUploadExceed,
+      init4LevelLinkage,
+      onCountryChange,
+      onProvinceChange,
+      onCityChange,
+      onDistrictChange,
       onCancel,
       onSubmit,
       uploadRef,
