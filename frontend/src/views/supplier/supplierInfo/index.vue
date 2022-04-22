@@ -1,6 +1,12 @@
 <template>
   <div class="universalCode-Airport-container">
     <el-card shadow="hover">
+      <!--条形码测试-->
+      <div class="barcode_img">
+        <img id="barcode1" /><br>
+        <img id="barcode2" />
+      </div>
+
       <!--1.查询框-->
       <div class="query-container">
         <el-row>
@@ -133,6 +139,7 @@ import {ZoomIn, Edit, Delete,} from '@element-plus/icons-vue';
 import {ElMessage, ElMessageBox} from "element-plus";
 import { SupplierServiceTypes, getOptionsLabel} from '/@/utils/publicOptionItems'
 import moment from "moment";
+import JsBarcode from 'jsbarcode';
 // 嵌套表参考 https://blog.csdn.net/qq_34310906/article/details/98962682
 
 
@@ -301,8 +308,32 @@ export default {
       }
     };
 
+    const render = ()=> {
+      let conNum1 = '2020080400088989';
+      // let conNum1 = 'SC000013869564US';
+      // let conNum1 = 'SC000000068175US';
+      JsBarcode('#barcode1', conNum1, {
+        format: 'CODE39',
+        lineColor: '#000',
+        // background: '#EBEEF5',
+        // width: 2,
+        // height: 80,
+        displayValue: true,
+      });
+      // let conNum2 = '892210414302041';
+      let conNum2 = 'USPSPARCEL20220311044';
+      JsBarcode('#barcode2', conNum2, {
+        format: 'CODE39',
+        lineColor: '#000',
+        // background: '#EBEEF5',
+        // width: 2,
+        // height: 80,
+        displayValue: true,
+      });
+    }
     // 钩子函数，获取第1页数据
     onMounted(()=>{
+      render();
       getPageData(queryText.value, 1, 10);
     });
 
@@ -351,6 +382,12 @@ export default {
 :deep(.el-tag--small){
     height: 24px;
     line-height: 22px;
+}
+
+.barcode_img img{
+  width: 600px;
+  height: 100px;
+  padding: 0 20px;
 }
 
 </style>

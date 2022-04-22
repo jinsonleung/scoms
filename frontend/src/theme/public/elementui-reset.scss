@@ -86,7 +86,9 @@
   /*头部关闭图标*/
   .el-dialog__headerbtn{
     top:8px;
+    margin-right: -8px;
     font-size: 18px;
+
   }
   /*头部标签*/
   .el-dialog__title{
