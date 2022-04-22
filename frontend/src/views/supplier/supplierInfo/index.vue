@@ -6,7 +6,7 @@
         <el-row>
           <el-input v-model="queryText" size="small" placeholder="请输入供应商账号/公司名" clearable
                     style="max-width: 360px"></el-input>
-          <el-button type="primary" @change="onHandleQuery()" size="small" style="margin-left: 10px">
+          <el-button type="primary" @click="onHandleQuery()" size="small" style="margin-left: 10px">
             <el-icon><elementSearch/></el-icon>查询
           </el-button>
           <el-button type="primary" size="small" @click="onOpenAddDialog"><el-icon><elementStar/></el-icon>新增供应商</el-button>
@@ -24,7 +24,7 @@
                 <el-table-column align="center" show-overflow-tooltip prop="department" label="部门"
                                  min-width="40px"></el-table-column>
                 <el-table-column align="center" show-overflow-tooltip prop="title" label="职位"
-                                 min-width="40px"></el-table-column>
+                                 min-width="50px"></el-table-column>
                 <el-table-column align="center" show-overflow-tooltip prop="chn_name" label="中文名"
                                  min-width="40px"></el-table-column>
                 <el-table-column align="center" show-overflow-tooltip prop="eng_name" label="英文名"
@@ -65,10 +65,10 @@
                          min-width="180px"></el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="office_address" label="办公地址"
                          min-width="150px"></el-table-column>
-        <el-table-column align="center" show-overflow-tooltip prop="service_type" label="服务类型"
+        <el-table-column align="center" show-overflow-tooltip prop="enterprise_type" label="公司类型"
                          min-width="80px">
           <template #default="scope">
-            {{getOptionsLabel(SupplierServiceTypes,scope.row.service_type)}}
+            {{getOptionsLabel(SupplierServiceTypes,scope.row.enterprise_type)}}
           </template>
         </el-table-column>
         <el-table-column align="center" show-overflow-tooltip prop="status_label" label="使用状态" min-width="70px">
@@ -341,7 +341,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "/@/theme/public/eltable.scss";
+@import "/@/theme/public/elementui-reset.scss";
+//@import "/@/theme/public/eltable.scss";
 //@import "/@/theme/public/element-ui-reset.scss";
 
 .query-container{

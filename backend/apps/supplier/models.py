@@ -42,7 +42,7 @@ class Supplier(BaseModel):
     province = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在省/洲')
     city = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在城市')
     district = models.CharField(max_length=64, blank=True, null=True, verbose_name='所在区/县')
-    service_type = models.CharField(max_length=32, blank=True, null=True, verbose_name='服务类型')
+    enterprise_type = models.CharField(max_length=32, blank=True, null=True, verbose_name='企业类型')
     website = models.CharField(max_length=64, blank=True, null=True, verbose_name='企业网站')
     legal_person_name = models.CharField(max_length=32, blank=True, null=True, verbose_name='法人姓名')
     legal_person_phone = models.CharField(max_length=64, blank=True, null=True, verbose_name='法人电话')

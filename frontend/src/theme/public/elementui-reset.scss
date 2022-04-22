@@ -1,0 +1,99 @@
+/*
+  @func：自定义element-plus样式
+  @author：Jinson.Liang
+  @date：2022/3/20
+ */
+
+/*=============================el-table样式===========================*/
+/*修改table 的背景颜色和文字颜色*/
+:deep(.el-table td, .el-table th.is-leaf,.el-table--border, .el-table--group) {
+  border-color: #D0D0D0FF;
+  background-color: #e4f5dd; /*隔行背景色*/
+  font-size: 12px;
+  height: 30px; /*内容行行矩*/
+}
+
+/*el-table样式*/
+:deep(.el-table) {
+  /*边框*/
+  border: 1px solid #D0D0D0FF;
+  border-radius: 6px;
+  /*表头*/
+  .el-table__header-wrapper tr th {
+    padding: 0;
+    font-size: 12px;
+    background-color: #b1d8f8 !important;
+  }
+
+  /*单元格*/
+  .el-table__cell {
+    padding: 0;
+  }
+
+  /*内容行操作图标按钮*/
+  .tr-button {
+    min-height: 20px;
+    padding: 0;
+    margin: 0 0 0 2px;
+    color: blue;
+  }
+
+  /*鼠标悬停hover时的高亮颜色*/
+  tbody tr:hover td {
+    //background-color: #91a2f5 !important;
+  }
+}
+
+/*嵌套子表*/
+:deep(.child-table) {
+  /*表头背景色*/
+  .el-table__header-wrapper tr th {
+    color: black;
+    background-color: #d3c9f6 !important;
+  }
+
+  /*表头行按钮*/
+  .th-head-button {
+    min-height: 20px;
+    padding: 0 5px;
+    margin: 1px 0 0 8px;
+    font-size: 12px; /*最小*/
+    float: right;
+    color: blue;
+  }
+
+  /*内容行操作图标按钮*/
+  .tr-button {
+    color: darkred;
+  }
+
+  /*鼠标悬停hover时的高亮颜色*/
+  tbody tr:hover td {
+    background-color: #f5ede3 !important
+  }
+}
+
+/*=============================el-dialog样式===========================*/
+:deep(.el-dialog) {
+  border-radius: 5px;
+  margin: 0 !important;
+  /*头部*/
+  .el-dialog__header{
+    border-radius: 5px;
+    padding: 4px 10px 3px 15px;
+    background-color: #ace5ac;
+  }
+  /*头部关闭图标*/
+  .el-dialog__headerbtn{
+    top:8px;
+    font-size: 18px;
+  }
+  /*头部标签*/
+  .el-dialog__title{
+    font-size: 14px;
+  }
+  /*内容部分*/
+  .el-dialog__body {
+  height: 555px !important;
+  }
+}

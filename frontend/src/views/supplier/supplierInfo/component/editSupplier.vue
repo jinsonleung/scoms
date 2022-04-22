@@ -142,8 +142,8 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="服务类型" prop="service_type">
-                    <el-select v-model="ruleForm.service_type" placeholder="请选择服务类型" clearable class="w100">
+                  <el-form-item label="公司类型" prop="enterprise_type">
+                    <el-select v-model="ruleForm.enterprise_type" placeholder="请选择公司类型" clearable class="w100">
                       <el-option
                           v-for="item in SupplierServiceTypes"
                           :key="item.value"
@@ -483,8 +483,8 @@ export default {
       state.ruleForm.province = '';
 			state.ruleForm.city = '';
 			state.ruleForm.district = '';
-			state.ruleForm.cityList = [];
-			state.ruleForm.districtList = [];
+			state.linkage.cityList = [];
+			state.linkage.districtList = [];
 		};
 
     // 省（洲）下拉事件
@@ -492,7 +492,7 @@ export default {
 			state.linkage.cityList = get4LinkageList(2, selVal);
       state.ruleForm.city = '';
 			state.ruleForm.district = '';
-			state.ruleForm.districtList = [];
+			state.linkage.districtList = [];
     }
 
     // 市下拉事件
@@ -543,9 +543,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-:deep(.el-dialog__body) {
-  height: 553px !important;
-}
+@import "/@/theme/public/elementui-reset.scss";
+//:deep(.el-dialog__body) {
+//  height: 553px !important;
+//}
 
 .statusDesc{
   margin:0;

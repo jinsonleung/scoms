@@ -142,8 +142,8 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-                  <el-form-item label="服务类型" prop="service_type">
-                    <el-select v-model="ruleForm.service_type" placeholder="请选择服务类型" clearable class="w100">
+                  <el-form-item label="公司类型" prop="enterprise_type">
+                    <el-select v-model="ruleForm.enterprise_type" placeholder="请选择服务类型" clearable class="w100">
                       <el-option
                           v-for="item in SupplierServiceTypes"
                           :key="item.value"
@@ -299,7 +299,7 @@ export default {
         province: '',
         city: '',
         district: '',
-        service_type: '',
+        enterprise_type: '',
         website: '',
         legal_person_name: '',
         legal_person_phone: '',
@@ -429,8 +429,8 @@ export default {
       state.ruleForm.province = '';
 			state.ruleForm.city = '';
 			state.ruleForm.district = '';
-			state.ruleForm.cityList = [];
-			state.ruleForm.districtList = [];
+			state.linkage.cityList = [];
+			state.linkage.districtList = [];
 		};
 
     // 省（洲）下拉事件
@@ -438,7 +438,7 @@ export default {
 			state.linkage.cityList = get4LinkageList(2, selVal);
       state.ruleForm.city = '';
 			state.ruleForm.district = '';
-			state.ruleForm.districtList = [];
+			state.linkage.districtList = [];
     }
 
     // 市下拉事件
@@ -451,10 +451,8 @@ export default {
     // 区（县）下拉事件
     const onDistrictChange = (selVal: any) => {
       // 获取市的区域编号
-      console.log('district==', selVal)
+      // console.log('district==', selVal)
     }
-
-
     // 页面加载时
     onMounted(() => {
       state.ruleForm.status=statusOptions[0].value;
@@ -491,27 +489,38 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-:deep(.el-dialog__body) {
-  height: 555px !important;
-  //margin-right: 40px;
-}
+@import "/@/theme/public/elementui-reset.scss";
 
-//:deep(.el-tabs) {
-//  .el-tabs__content {
-//    margin-right: 10px;
-//    max-height: 320px;
-//    overflow: auto;
+//:deep(.el-dialog) {
+//  border-radius: 5px;
+//  margin: 0 !important;
+//  .el-dialog__header{
+//    //height: 40px;
+//    border-radius: 5px;
+//    padding: 6px 10px 5px 15px;
+//    background-color: #ace5ac;
+//  }
+//  .el-dialog__headerbtn{
+//    top:10px;
+//    font-size: 18px;
+//  }
+//  .el-dialog__title{
+//    font-size: 16px;
+//  }
+//  .el-dialog__body {
+//  height: 555px !important;
 //  }
 //}
 
-  .statusDesc{
-    margin:0;
-    padding:0;
-    li {
-      font-size: small;
-      list-style: none;
-      line-height: 20px;
-    }
+.statusDesc {
+  margin: 0;
+  padding: 0;
+
+  li {
+    font-size: small;
+    list-style: none;
+    line-height: 20px;
   }
+}
 
 </style>
